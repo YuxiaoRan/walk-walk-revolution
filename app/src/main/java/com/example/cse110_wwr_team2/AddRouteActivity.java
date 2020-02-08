@@ -16,13 +16,19 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class AddRouteActivity extends AppCompatActivity {
-    FloatingActionButton fab = findViewById(R.id.done_add);
-    AutoCompleteTextView start = findViewById(R.id.start_point);
-    AutoCompleteTextView name = findViewById(R.id.route_name);
+
+    FloatingActionButton fab;
+    AutoCompleteTextView start;
+    AutoCompleteTextView name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
+
+        fab = findViewById(R.id.done_add);
+        start = findViewById(R.id.start_point);
+        name = findViewById(R.id.route_name);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
