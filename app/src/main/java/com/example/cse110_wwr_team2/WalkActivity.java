@@ -3,6 +3,7 @@ package com.example.cse110_wwr_team2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +19,25 @@ public class WalkActivity extends AppCompatActivity {
     private LocalTime base;
     private MyTimer myTimer;
     private boolean isCancel;
+    private String route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("TAG","onCreate");
         setContentView(R.layout.activity_walk);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        int height = sharedPreferences.getInt("height", 0);
+
+        // get the string passed from route activity
+        Intent intent = getIntent();
+        route = intent.getStringExtra("routeName");
+        if(route != null) {
+            // set the text in UI
+            TextView RouteName = findViewById(R.id.routeName);
+            RouteName.setText(route);
+        }
 
         Button stopBtn = findViewById(R.id.stop_walking);
         timer = findViewById(R.id.timer);
@@ -43,9 +57,13 @@ public class WalkActivity extends AppCompatActivity {
     }
 
     public void launchAddRoute(){
-        Intent intent = new Intent(this, AddRouteActivity.class);
-        startActivity(intent);
-        //finish();
+        if(route == null) {
+            Intent intent = new Intent(this, AddRouteActivity.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(this, RouteActivity.class);
+            startActivity(intent);
+        }
     }
 
     private class MyTimer extends AsyncTask<String, String, String>{

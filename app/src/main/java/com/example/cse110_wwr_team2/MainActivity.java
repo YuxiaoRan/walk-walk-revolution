@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
 
     private Button toRoute;
+    private Button startRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // NOTE: for InputHeight page test only
-        // clearSharedPreferences();
+        // clearUserInfo();
+
+        // NOTE: for route details test only
+        // clearRouteDetails();
 
         // check if user has input height
         checkUserInputHeight();
@@ -27,8 +31,15 @@ public class MainActivity extends AppCompatActivity {
         toRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: jump to RouteActivity
                 goToRoute();
+            }
+        });
+
+        startRoute = (Button) findViewById(R.id.button_start);
+        startRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToWalk();
             }
         });
     }
@@ -37,9 +48,22 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
     }
+  
+    private void goToWalk() {
+        Intent intent = new Intent(this, WalkActivity.class);
+        String routeName = null;
+        intent.putExtra("routeName", routeName);
+        startActivity(intent);
+    }
 
-    private void clearSharedPreferences() {
+    private void clearUserInfo() {
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences.Editor editor = spfs.edit();
+        editor.clear().commit();
+    }
+
+    private void clearRouteDetails() {
+        SharedPreferences spfs = getSharedPreferences("route_list", MODE_PRIVATE);
         SharedPreferences.Editor editor = spfs.edit();
         editor.clear().commit();
     }
