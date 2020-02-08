@@ -41,13 +41,23 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
 
         Button start = findViewById(R.id.done_add);
-
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchWalk();
+            }
+        });
 
 
     }
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchWalk(){
+        Intent intent = new Intent(this, WalkActivity.class);
         startActivity(intent);
     }
 

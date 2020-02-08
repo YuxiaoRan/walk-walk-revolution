@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
  
-        <activity android:name=".WalkActivity">
+        <activity android:name=".WalkActivity" />
         <activity android:name=".RouteDetailsActivity"></activity>
         <activity android:name=".AddRouteActivity" />
         <activity android:name=".MainActivity" />
