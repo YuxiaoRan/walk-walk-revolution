@@ -20,14 +20,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         // get the string passed from route activity
         Intent intent = getIntent();
-        String route = intent.getExtras().getString("route");
-        String[] info = route.split(" ");
+        String[] route = intent.getStringArrayExtra("route");
 
         // set the text in UI
         TextView RouteName = findViewById(R.id.route_name);
-        RouteName.setText(info[0]);
+        RouteName.setText(route[0]);
         TextView StartPoint = findViewById(R.id.start_point);
-        StartPoint.setText(info[1]);
+        StartPoint.setText(route[1]);
 
         Button back = findViewById(R.id.done_add);
         back.setOnClickListener(new View.OnClickListener() {
@@ -38,10 +37,6 @@ public class RouteDetailsActivity extends AppCompatActivity {
         });
 
         Button start = findViewById(R.id.done_add);
-
-
-
-
     }
 
     public void launchRoute(){

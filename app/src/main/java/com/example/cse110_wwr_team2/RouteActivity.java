@@ -2,6 +2,7 @@ package com.example.cse110_wwr_team2;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,13 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class RouteActivity extends AppCompatActivity {
 
     ListView listView;
-
+    ArrayList<Route> routes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +28,12 @@ public class RouteActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.route_list);
 
-        // should be a list of route
-        final ArrayList<String> routes = new ArrayList<String>();
 
-        routes.add("route1 start1");
-        routes.add("route2 start2");
-        routes.add("route3 start3");
-        routes.add("route4 start4");
+        getAllRoutes();
+
 
         // set the route list to the adapter and display on listView
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,routes);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
         listView.setAdapter(arrayAdapter);
 
         // set listener on clicking an item in the list
@@ -62,10 +62,23 @@ public class RouteActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void launchRouteDetails(String route){
+    public void launchRouteDetails(Route route){
         Intent intent = new Intent(this, RouteDetailsActivity.class);
-        intent.putExtra("route", route);
+        intent.putExtra("route", route.toList());
         startActivity(intent);
+    }
+
+    public void getAllRoutes(){
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+
+        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+        Iterator<String> itr = routes_list.iterator();
+        while(itr.hasNext()){
+            String route_name = itr.next();
+            String route_start_point = spfs.getString(route_name + "_start_point", "");
+            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
+            routes.add(new Route(route_name, route_start_point, step_cnt));
+        }
     }
 
 }
