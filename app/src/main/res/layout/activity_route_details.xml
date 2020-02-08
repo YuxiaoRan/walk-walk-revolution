@@ -15,7 +15,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text = ""
+
         android:textSize="20sp"
+
         />
     <TextView
         android:layout_width="fill_parent"
@@ -29,6 +31,7 @@
         android:layout_height="wrap_content"
         android:text = ""
         android:textSize="20sp"
+
         />
     <TextView
         android:layout_width="fill_parent"
@@ -77,5 +80,6 @@
             app:rippleColor="#1F000000" />
 
     </LinearLayout>
+
 
 </LinearLayout>

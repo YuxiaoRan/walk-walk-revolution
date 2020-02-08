@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class RouteDetailsActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(route[1]);
 
+
         Button back = findViewById(R.id.done_add);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,11 +38,23 @@ public class RouteDetailsActivity extends AppCompatActivity {
             }
         });
 
-        Button start = findViewById(R.id.done_add);
+        Button start = findViewById(R.id.start_walk);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchWalk();
+            }
+        });
+        
     }
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchWalk(){
+        Intent intent = new Intent(this, WalkActivity.class);
         startActivity(intent);
     }
 
