@@ -34,7 +34,7 @@ public class Route {
     }
 
     public String toString(){
-        return "Start point: " + this.start_point + " Route Name: " + this.name;
+        return "Route Name: " + this.name + " Start point: " + this.start_point;
     }
 
     public String[] toList(){
