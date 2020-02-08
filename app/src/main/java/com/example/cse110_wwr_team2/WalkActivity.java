@@ -30,6 +30,7 @@ public class WalkActivity extends AppCompatActivity {
             public void onClick(View v) {
                 myTimer.cancel(true);
                 launchAddRoute();
+
             }
         });
     }
