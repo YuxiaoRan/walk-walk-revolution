@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
 
     private Button toRoute;
+    private Button startRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,25 @@ public class MainActivity extends AppCompatActivity {
                 goToRoute();
             }
         });
+
+        startRoute = (Button) findViewById(R.id.button_start);
+        startRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToWalk();
+            }
+        });
     }
 
     private void goToRoute() {
         Intent intent = new Intent(this, RouteActivity.class);
+        startActivity(intent);
+    }
+  
+    private void goToWalk() {
+        Intent intent = new Intent(this, WalkActivity.class);
+        String routeName = null;
+        intent.putExtra("routeName", routeName);
         startActivity(intent);
     }
 
