@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO: jump to RouteActivity
-                // goToRoute();
+                goToRoute();
             }
         });
     }
 
     private void goToRoute() {
-        // Intent intent = new Intent(this, RouteActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, RouteActivity.class);
+        startActivity(intent);
     }
 
     private void clearSharedPreferences() {
