@@ -28,20 +28,22 @@ public class InputHeightActivity extends AppCompatActivity {
                 SharedPreferences spfs = getSharedPreferences("height", MODE_PRIVATE);
                 SharedPreferences.Editor editor = spfs.edit();
 
-                // TODO: handle invalid number
+                // handle invalid number
                 int heightInt = 0;
                 try {
+                    // save input and jump to main page
                     heightInt = Integer.parseInt(heightInput.getText().toString());
+                    editor.putInt("height", heightInt);
+                    editor.apply();
+                    Toast.makeText(InputHeightActivity.this,
+                            "Height saved", Toast.LENGTH_SHORT).show();
+                    finish();
                 } catch (NumberFormatException e) {
+                    // prompt the user to re-input
                     Toast.makeText(InputHeightActivity.this,
                             "Please input a whole number", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                editor.putInt("height", heightInt);
-                editor.apply();
-                Toast.makeText(InputHeightActivity.this,
-                        "Height saved", Toast.LENGTH_SHORT).show();
             }
         });
     }
