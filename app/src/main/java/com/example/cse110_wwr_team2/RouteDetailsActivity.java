@@ -37,7 +37,6 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchRoute();
             }
         });
-
         Button start = findViewById(R.id.start_walk);
         start.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,20 +16,27 @@ import java.time.format.DateTimeFormatter;
 public class WalkActivity extends AppCompatActivity {
     public TextView timer;
     private LocalTime base;
+    private MyTimer myTimer;
+    private boolean isCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("TAG","onCreate");
         setContentView(R.layout.activity_walk);
+
         Button stopBtn = findViewById(R.id.stop_walking);
         timer = findViewById(R.id.timer);
         base = LocalTime.now();
-        final MyTimer myTimer = new MyTimer();
+        myTimer = new MyTimer();
+        isCancel = false;
         myTimer.execute();
+
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myTimer.cancel(true);
+                isCancel = true;
+                myTimer.cancel(isCancel);
                 launchAddRoute();
             }
         });
@@ -37,6 +45,7 @@ public class WalkActivity extends AppCompatActivity {
     public void launchAddRoute(){
         Intent intent = new Intent(this, AddRouteActivity.class);
         startActivity(intent);
+        //finish();
     }
 
     private class MyTimer extends AsyncTask<String, String, String>{
@@ -45,7 +54,8 @@ public class WalkActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... param){
             try{
-                while(true){
+                Log.d("TAG","In Task");
+                while(!isCancel){
                     long baseSec = base.getSecond();
                     long baseMin = base.getMinute();
                     long baseHr = base.getHour();
@@ -73,6 +83,12 @@ public class WalkActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             timer.setText(values[0]);
+        }
+
+        @Override
+        protected  void onCancelled(){
+            super.onCancelled();
+            Log.d("TAG","onCancelled");
         }
     }
 }
