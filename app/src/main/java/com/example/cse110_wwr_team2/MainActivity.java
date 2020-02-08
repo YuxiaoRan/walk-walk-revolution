@@ -1,5 +1,4 @@
 package com.example.cse110_wwr_team2;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private String fitnessServiceKey = "GOOGLE_FIT";
 
     private Button toRoute;
 
