@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">cse110-wwr-team2</string>
     <string name="route_name">route name</string>
     <string name="start_point">start point</string>
     <string name="new_route">New Route</string>
@@ -11,4 +10,12 @@
     <string name="distance">0</string>
     <string name="stop_walking">STOP</string>
 
+    <string name="app_name">Walk-Walk Revolution</string>
+    <string name="server_client_id">
+        65341593736-sigpmap8t83o0qjging2qriemksk2l80.apps.googleusercontent.com</string>
+    <string name="sign_in_button_text">Sign-in with Google</string>
+    <string name="prompt_input_height_1">
+        Hello there! \nTo calculate your steps, \nplease tell us your height:</string>
+    <string name="prompt_input_height_2">Input your height here</string>
+    <string name="button_done_text">Start!</string>
 </resources>
