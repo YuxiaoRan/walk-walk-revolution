@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.button.MaterialButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,13 +30,19 @@ public class RouteDetailsActivity extends AppCompatActivity {
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(info[1]);
 
-        FloatingActionButton fab = findViewById(R.id.done_add);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        Button back = findViewById(R.id.done_add);
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchRoute();
             }
         });
+
+
+        Button start = findViewById(R.id.done_add);
+
+
 
     }
 

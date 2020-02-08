@@ -9,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RouteActivity"></activity>
-        <activity android:name=".RouteDetailsActivity" />
+ 
+        <activity android:name=".WalkActivity">
+        <activity android:name=".RouteDetailsActivity"></activity>
         <activity android:name=".AddRouteActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".WalkActivity">
+        <activity android:name=".RouteActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
