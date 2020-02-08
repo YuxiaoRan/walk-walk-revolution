@@ -45,7 +45,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchWalk();
             }
         });
-
+        
     }
 
     public void launchRoute(){
