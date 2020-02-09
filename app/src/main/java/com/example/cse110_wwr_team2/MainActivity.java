@@ -21,19 +21,26 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "StepCountActivity";
     private TextView textSteps;
     private FitnessService fitnessService;
-
-
-
     private Button toRoute;
     private Button startRoute;
+    private long step_cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //fitnessService.updateStepCount();
+        // NOTE: for InputHeight page test only
+        // clearUserInfo();
+
+        // NOTE: for route details test only
+        // clearRouteDetails();
+
+        // check if user has input height
+        checkUserInputHeight();
 
         // Step counter stuff
-        textSteps = findViewById(R.id.totalMileDisplay);
+        textSteps = findViewById(R.id.totalStepDisplay);
 
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
@@ -43,24 +50,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-
-
-                fitnessService.updateStepCount();
-
+        fitnessService.updateStepCount();
         fitnessService.setup();
-
-        //fitnessService.updateStepCount();
-
-
-
-        // NOTE: for InputHeight page test only
-        // clearUserInfo();
-
-        // NOTE: for route details test only
-        // clearRouteDetails();
-
-        // check if user has input height
-        checkUserInputHeight();
+        step_cnt = fitnessService.getTotalStep();
 
         toRoute = (Button) findViewById(R.id.button_route);
         toRoute.setOnClickListener(new View.OnClickListener() {

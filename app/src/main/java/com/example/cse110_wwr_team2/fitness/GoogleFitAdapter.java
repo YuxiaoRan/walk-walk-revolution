@@ -163,7 +163,7 @@ public class GoogleFitAdapter implements FitnessService {
                         });
     }
 
-    public long returntotalStep() {
+    public long getTotalStep() {
         return totalStep;
     }
     @Override

@@ -22,8 +22,11 @@ public class WalkActivity extends AppCompatActivity {
     public TextView timer;
     private LocalTime base;
     private MyTimer myTimer;
+//    private MyStepCounter myStepCounter;
     private boolean isCancel;
     private String route;
+    private long step_orig;
+    private long updated_step_cnt;
 
     //For main activity step count
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -38,6 +41,14 @@ public class WalkActivity extends AppCompatActivity {
         Log.d("TAG","onCreate");
         setContentView(R.layout.activity_walk);
 
+        // Get the route name
+        Intent intent = getIntent();
+        route = intent.getStringExtra("routeName");
+        if(route != null) {
+            // set the text in UI
+            TextView RouteName = findViewById(R.id.routeName);
+            RouteName.setText(route);
+        }
 
         // Step counter stuff
         textSteps = findViewById(R.id.step_count);
@@ -50,37 +61,27 @@ public class WalkActivity extends AppCompatActivity {
             }
         });
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-
-                fitnessService.updateStepCount();
+        step_orig = fitnessService.getTotalStep();
+        fitnessService.updateStepCount();
         fitnessService.setup();
-
-
-
-
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         int height = sharedPreferences.getInt("height", 0);
 
-        // get the string passed from route activity
-        Intent intent = getIntent();
-        route = intent.getStringExtra("routeName");
-        if(route != null) {
-            // set the text in UI
-            TextView RouteName = findViewById(R.id.routeName);
-            RouteName.setText(route);
-        }
-
         Button stopBtn = findViewById(R.id.stop_walking);
         timer = findViewById(R.id.timer);
         base = LocalTime.now();
         myTimer = new MyTimer();
+//        myStepCounter = new MyStepCounter();
         isCancel = false;
         myTimer.execute();
+//        myStepCounter.execute();
 
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updated_step_cnt = fitnessService.getTotalStep() - step_orig;
                 isCancel = true;
                 myTimer.cancel(isCancel);
                 launchAddRoute();
@@ -97,6 +98,39 @@ public class WalkActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+//    private class MyStepCounter extends AsyncTask<String, String, String>{
+//        private String resp;
+//        private long step_cnt;
+//        @Override
+//        protected String doInBackground(String... param){
+//            Log.d("Tag", "In Task");
+//            while(!isCancel){
+//                fitnessService.updateStepCount();
+//                long step_now = fitnessService.getTotalStep();
+//                step_cnt = step_now - step_orig;
+//                publishProgress(Long.toString(step_cnt));
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (Exception e){
+//                    e.printStackTrace();
+//                    resp = e.getMessage();
+//                }
+//            }
+//            resp = "done";
+//            return resp;
+//        }
+//
+//        public long getStepCnt(){return step_cnt;}
+//
+//        @Override
+//        protected void onPreExecute() {textSteps.setText("0");}
+//
+//        @Override
+//        protected void onProgressUpdate(String... param){
+//            textSteps.setText(param[0]);
+//        }
+//    }
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
@@ -136,13 +170,13 @@ public class WalkActivity extends AppCompatActivity {
         }
 
         @Override
-        protected  void onCancelled(){
+        protected void onCancelled(){
             super.onCancelled();
             Log.d("TAG","onCancelled");
         }
     }
 
     public void setStepCount(long stepCount) {
-        textSteps.setText(String.valueOf(stepCount));
+        textSteps.setText(String.valueOf(stepCount - step_orig));
     }
 }
