@@ -6,12 +6,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.cse110_wwr_team2.fitness.FitnessService;
+import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
+import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private String fitnessServiceKey = "GOOGLE_FIT";
+    private String mainKey = "main";
+    private String walkKey = "walk";
+    private FitnessService fitnessService;
 
     private Button toRoute;
     private Button startRoute;
+    private TextView stepCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,24 @@ public class MainActivity extends AppCompatActivity {
                 goToWalk();
             }
         });
+
+        stepCount = findViewById(R.id.main_step_count);
+
+        FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(AppCompatActivity mainActivity) {
+                return new MainFitAdapter((MainActivity) mainActivity);
+            }
+        });
+        FitnessServiceFactory.put(walkKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(AppCompatActivity walkActivity) {
+                return new WalkFitAdapter((WalkActivity) walkActivity);
+            }
+        });
+        fitnessService = FitnessServiceFactory.create(mainKey, this);
+        fitnessService.setup();
+        //fitnessService.updateStepCount();
     }
 
     private void goToRoute() {
@@ -85,5 +112,13 @@ public class MainActivity extends AppCompatActivity {
     private void goToInputHeight() {
         Intent intent = new Intent(this, InputHeightActivity.class);
         startActivity(intent);
+    }
+
+    public void setStepCount(long total){
+        stepCount.setText(String.valueOf(total));
+    }
+
+    public void setMainKey(String mainKey) {
+        this.mainKey = mainKey;
     }
 }
