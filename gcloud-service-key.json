@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "igneous-gamma-267611",
+  "private_key_id": "a693f55cdeb82824b72c3668dad774d01058b02a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCq787pYKm2pLC1\nyRCKNuLcAnfWu24BTBArBrgKIi9y0mIgvfFaVmwbRaB7JXY5zFgyOik8S+jc2+I8\nu0FFiimtcUv2CUvqmGtvMEbTlB8WzwTdmsD9GsXomQOzzldf612+rrlOCFIgSXy5\npz5PiaeauL6+JzdqaIymDoXb9BKSJMrwdloL4VeHmCz8CB5P0te3L/VrmfUgq+sH\nXXhHfofkv5pIMhQC42o2TsYll+bgHNGehgPJ/nOiKFse+AffWDmghUyw6/cOYElY\n5EHRk0SPeDaaYTe2V1Um1aC8we/99kxGd6hTsmpfAB5+xKFdiKYc4akjyAPpiaEx\nRw8iy9YXAgMBAAECggEAVTfNxzJ+GYScZlxRZx561eVTGlYBvxrNGq40VTT6w7sX\n2avoJbndFnGNUqd3+9OgipXNVfagJm9mqBFQtprtMT9A9+1lkBShxuJiBPwczbGy\ngsoyeVx+GvohyuPNUpAUAcq4rireyqLoT+QNX/jH+o4s5b7GVUG/ENA/ssrI8Vse\ne5t5Db1ZifGVdLvbd3tlyAna2djvwfE73mGp8xLvyAg90zmSltlO0CNclMYWKGvl\nZ1zOQoV1LZett/EdkMvvgWr0Bl1sTJ9iuSH6lwBudnpOusHTemDmbOzAyb62MzXG\nunIF6/ZeRoa5CgJ5FBKsEBIym0HXRtnMan9rymYcvQKBgQDdOoCQyM/c8ZlnfuQR\n6RPghZQ+t3j5oUdlkGiXo/Xg3oEtL002DCkVrhzb0swBOgw1hPfk0beZCreuMwm3\nmZiqwhVz8z3cv/Dv3oxGE/PfRB+qWRTBcvzdc4n6/X5GG8VA4KO1+JABRn34LH9p\nFbxrQhJBuLMZni4r8tUhB1J0/QKBgQDFzbuciUYNQNX9Qx4hld9l3U6LWWCy02o6\nGX8VFzEsC41XQqs9VwtlsRsW2r/+5+SdoC0kXqbMxwh4jZ5Hi2mIFKpjiJiZ75Ez\nCqE68dFLmFp2RMPv7riRTL7HOD3stjVGrZ0AoM/Q/z1M0ofj2LXY4jpq58YNYygQ\nXZZ9zwyNowKBgQCVsTU3Qrnr3YqYjjLSr6ykep5xxYHVH70IyysKmIYSL1ym71/G\nV3ohUlvynnMtzVJfkGaQbRtXMfpRo/VKR2MXABa2C3vrd/EWzbaK4IteomDuyjIS\nJ7VUPw65R3d/BuF04cvEoLkIM+Oe3rUjrPJ+fQmPcOO3TOIfGMQAAk1YHQKBgBE/\nvpOI+P3g4IhEWRVOr3t/kADg22jcvM+yN33MVvJjU4D/hFVGCO1mQ1l72/BLookI\nVcdtJZiH5ro0h0/v3VULkEw7tir+VCgiTisIuVqhP4o+tuNuatPo4F4ZDnVc8kpm\ni2FppJWyHFNdrJH27Oyr1bJK4d96/RxoPN5dtteHAoGBALvbGa8RtmHVIQCzFweH\n/2DYlDWFokOOv65cBQBza3Lzi2JXHTCfW4C/IXrU8bFO+dut1z7GZbwNQ94qytKc\ntovF4l0fWGz8txFdu9oZxrEqVViXBq/v/YHBVOTtFkq51bjZEE0pTTsKXXyRWX5i\niu4mQ4d3TON+fA0rozkSUb3a\n-----END PRIVATE KEY-----\n",
+  "client_email": "travisci-service-account@igneous-gamma-267611.iam.gserviceaccount.com",
+  "client_id": "106632539644713925603",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/travisci-service-account%40igneous-gamma-267611.iam.gserviceaccount.com"
+}
