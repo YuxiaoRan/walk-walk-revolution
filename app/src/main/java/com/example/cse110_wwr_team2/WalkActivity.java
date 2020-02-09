@@ -60,9 +60,11 @@ public class WalkActivity extends AppCompatActivity {
         if(route == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
             startActivity(intent);
+            finish();
         }else{
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
