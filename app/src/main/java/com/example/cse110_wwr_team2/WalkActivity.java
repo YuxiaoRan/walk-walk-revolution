@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_wwr_team2.fitness.FitnessService;
+import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+import com.example.cse110_wwr_team2.fitness.GoogleFitAdapter;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,11 +25,39 @@ public class WalkActivity extends AppCompatActivity {
     private boolean isCancel;
     private String route;
 
+    //For main activity step count
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final String TAG = "WalkActivity";
+    private TextView textSteps;
+    private FitnessService fitnessService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("TAG","onCreate");
         setContentView(R.layout.activity_walk);
+
+
+        // Step counter stuff
+        textSteps = findViewById(R.id.step_count);
+
+        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint2() {
+            @Override
+            public FitnessService create(WalkActivity stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+
+                fitnessService.updateStepCount();
+        fitnessService.setup();
+
+
+
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         int height = sharedPreferences.getInt("height", 0);
@@ -108,5 +140,9 @@ public class WalkActivity extends AppCompatActivity {
             super.onCancelled();
             Log.d("TAG","onCancelled");
         }
+    }
+
+    public void setStepCount(long stepCount) {
+        textSteps.setText(String.valueOf(stepCount));
     }
 }
