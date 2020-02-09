@@ -25,6 +25,8 @@ public class AddRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
+        Intent intent = getIntent();
+        final int step_cnt = intent.getIntExtra("step_cnt", 0);
 
         fab = findViewById(R.id.done_add);
         start = findViewById(R.id.start_point);
@@ -45,7 +47,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    addNewRoute(name.getText().toString(), start.getText().toString());
+                    addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt);
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",
@@ -59,6 +61,7 @@ public class AddRouteActivity extends AppCompatActivity {
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
@@ -79,7 +82,7 @@ public class AddRouteActivity extends AppCompatActivity {
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void addNewRoute(String route_name, String start_point){
+    public void addNewRoute(String route_name, String start_point, int step_cnt){
         SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -87,7 +90,7 @@ public class AddRouteActivity extends AppCompatActivity {
             routes_list.add(route_name);
             editor.putStringSet("route_list", routes_list);
             editor.putString(route_name + "_start_point", start_point);
-            editor.putInt(route_name + "_step_cnt", 0);
+            editor.putInt(route_name + "_step_cnt", step_cnt);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);

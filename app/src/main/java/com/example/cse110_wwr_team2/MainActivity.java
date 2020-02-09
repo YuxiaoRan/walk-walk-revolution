@@ -2,22 +2,34 @@ package com.example.cse110_wwr_team2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.cse110_wwr_team2.fitness.FitnessService;
+import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+import com.example.cse110_wwr_team2.fitness.GoogleFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
 
+    //For main activity step count
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final String TAG = "StepCountActivity";
+    private TextView textSteps;
+    private FitnessService fitnessService;
     private Button toRoute;
     private Button startRoute;
+    private long step_cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //fitnessService.updateStepCount();
         // NOTE: for InputHeight page test only
         // clearUserInfo();
 
@@ -26,6 +38,21 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user has input height
         checkUserInputHeight();
+
+        // Step counter stuff
+        textSteps = findViewById(R.id.totalStepDisplay);
+
+        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(MainActivity stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        fitnessService.updateStepCount();
+        fitnessService.setup();
+        step_cnt = fitnessService.getTotalStep();
 
         toRoute = (Button) findViewById(R.id.button_route);
         toRoute.setOnClickListener(new View.OnClickListener() {
@@ -85,5 +112,10 @@ public class MainActivity extends AppCompatActivity {
     private void goToInputHeight() {
         Intent intent = new Intent(this, InputHeightActivity.class);
         startActivity(intent);
+    }
+
+    // Set the initial step count
+    public void setStepCount(long stepCount) {
+        textSteps.setText(String.valueOf(stepCount));
     }
 }

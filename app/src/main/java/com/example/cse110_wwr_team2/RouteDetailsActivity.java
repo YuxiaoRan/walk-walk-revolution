@@ -44,19 +44,24 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchWalk(route[0]);
             }
         });
-        
+
     }
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
         intent.putExtra("routeName", route);
         startActivity(intent);
+        finish();
     }
 
-
+    @Override
+    public void onBackPressed(){
+        launchRoute();
+    }
 }
