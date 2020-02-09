@@ -22,7 +22,7 @@ public class WalkActivity extends AppCompatActivity {
     public TextView timer;
     private LocalTime base;
     private MyTimer myTimer;
-//    private MyStepCounter myStepCounter;
+    private MyStepCounter myStepCounter;
     private boolean isCancel;
     private String route;
     private long step_orig;
@@ -73,10 +73,10 @@ public class WalkActivity extends AppCompatActivity {
         timer = findViewById(R.id.timer);
         base = LocalTime.now();
         myTimer = new MyTimer();
-//        myStepCounter = new MyStepCounter();
+        myStepCounter = new MyStepCounter();
         isCancel = false;
         myTimer.execute();
-//        myStepCounter.execute();
+        myStepCounter.execute();
 
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,38 +99,38 @@ public class WalkActivity extends AppCompatActivity {
         }
     }
 
-//    private class MyStepCounter extends AsyncTask<String, String, String>{
-//        private String resp;
-//        private long step_cnt;
-//        @Override
-//        protected String doInBackground(String... param){
-//            Log.d("Tag", "In Task");
-//            while(!isCancel){
-//                fitnessService.updateStepCount();
-//                long step_now = fitnessService.getTotalStep();
-//                step_cnt = step_now - step_orig;
-//                publishProgress(Long.toString(step_cnt));
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (Exception e){
-//                    e.printStackTrace();
-//                    resp = e.getMessage();
-//                }
-//            }
-//            resp = "done";
-//            return resp;
-//        }
-//
-//        public long getStepCnt(){return step_cnt;}
-//
-//        @Override
-//        protected void onPreExecute() {textSteps.setText("0");}
-//
-//        @Override
-//        protected void onProgressUpdate(String... param){
-//            textSteps.setText(param[0]);
-//        }
-//    }
+    private class MyStepCounter extends AsyncTask<String, String, String>{
+        private String resp;
+        private long step_cnt;
+        @Override
+        protected String doInBackground(String... param){
+            Log.d("Tag", "In Task");
+            while(!isCancel){
+                fitnessService.updateStepCount();
+                long step_now = fitnessService.getTotalStep();
+                step_cnt = step_now - step_orig;
+                publishProgress(Long.toString(step_cnt));
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    resp = e.getMessage();
+                }
+            }
+            resp = "done";
+            return resp;
+        }
+
+        public long getStepCnt(){return step_cnt;}
+
+        @Override
+        protected void onPreExecute() {textSteps.setText("0");}
+
+        @Override
+        protected void onProgressUpdate(String... param){
+            textSteps.setText(param[0]);
+        }
+    }
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
