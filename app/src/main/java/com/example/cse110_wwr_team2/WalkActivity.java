@@ -20,6 +20,7 @@ public class WalkActivity extends AppCompatActivity {
     private MyTimer myTimer;
     private boolean isCancel;
     private String route;
+    private TextView stepCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class WalkActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         int height = sharedPreferences.getInt("height", 0);
+
+        stepCount = findViewById(R.id.step_count);
 
         // get the string passed from route activity
         Intent intent = getIntent();
@@ -55,6 +58,10 @@ public class WalkActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void setStepCount(long total){
+        stepCount.setText(String.valueOf(total));
     }
 
     public void launchAddRoute(){
