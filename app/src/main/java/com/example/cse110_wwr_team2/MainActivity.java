@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
         fitnessService = FitnessServiceFactory.create(mainKey, this);
         fitnessService.setup();
-        //fitnessService.updateStepCount();
+        fitnessService.updateStepCount();
     }
 
     private void goToRoute() {
