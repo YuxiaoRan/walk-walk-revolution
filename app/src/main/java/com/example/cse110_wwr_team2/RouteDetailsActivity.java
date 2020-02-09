@@ -21,7 +21,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         // get the string passed from route activity
         Intent intent = getIntent();
-        String[] route = intent.getStringArrayExtra("route");
+        final String[] route = intent.getStringArrayExtra("route");
 
         // set the text in UI
         TextView RouteName = findViewById(R.id.route_name);
@@ -37,26 +37,31 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchRoute();
             }
         });
-
         Button start = findViewById(R.id.start_walk);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchWalk();
+                launchWalk(route[0]);
             }
         });
-        
+
     }
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
+        finish();
     }
 
-    public void launchWalk(){
+    public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
+        intent.putExtra("routeName", route);
         startActivity(intent);
+        finish();
     }
 
-
+    @Override
+    public void onBackPressed(){
+        launchRoute();
+    }
 }

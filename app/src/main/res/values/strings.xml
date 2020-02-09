@@ -18,4 +18,6 @@
         Hello there! \nTo calculate your steps, \nplease tell us your height:</string>
     <string name="prompt_input_height_2">Input your height here</string>
     <string name="button_done_text">Start!</string>
+    <string name="go_to_routes_text">Go to my routes</string>
+    <string name="start_new_routes_text">Start new route</string>
 </resources>

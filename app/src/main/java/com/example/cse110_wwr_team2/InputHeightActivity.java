@@ -25,7 +25,7 @@ public class InputHeightActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences spfs = getSharedPreferences("height", MODE_PRIVATE);
+                SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
                 SharedPreferences.Editor editor = spfs.edit();
 
                 // handle invalid number
@@ -33,7 +33,14 @@ public class InputHeightActivity extends AppCompatActivity {
                 try {
                     // save input and jump to main page
                     heightInt = Integer.parseInt(heightInput.getText().toString());
+                    // handle non-positive height
+                    if(heightInt <= 0) {
+                        Toast.makeText(InputHeightActivity.this,
+                                "Please input a positive height", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     editor.putInt("height", heightInt);
+                    editor.putBoolean("firstLogin", false);
                     editor.apply();
                     Toast.makeText(InputHeightActivity.this,
                             "Height saved", Toast.LENGTH_SHORT).show();

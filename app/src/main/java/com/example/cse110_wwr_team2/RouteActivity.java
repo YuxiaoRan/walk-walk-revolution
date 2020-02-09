@@ -61,6 +61,7 @@ public class RouteActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddRouteActivity.class);
         Log.d("launch","Add Route from Route");
         startActivity(intent);
+        finish();
     }
 
     public void launchRouteDetails(Route route){
@@ -69,6 +70,7 @@ public class RouteActivity extends AppCompatActivity {
         intent.putExtra("route", route.toList());
 
         startActivity(intent);
+        finish();
     }
 
     /*
@@ -94,5 +96,4 @@ public class RouteActivity extends AppCompatActivity {
             routes.add(new Route(route_name, route_start_point, step_cnt));
         }
     }
-
 }
