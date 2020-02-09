@@ -46,12 +46,21 @@ public class RouteActivity extends AppCompatActivity {
         });
 
         // the floating add button
-        FloatingActionButton fab = findViewById(R.id.add_route);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAdd = findViewById(R.id.add_route);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("button","add route in RouteActivity");
                 launchAddRoute();
+            }
+        });
+
+        FloatingActionButton fabHome = findViewById(R.id.back_home);
+        fabHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("button","back to home activity");
+                launchHome();
             }
         });
 
@@ -69,6 +78,14 @@ public class RouteActivity extends AppCompatActivity {
 
         intent.putExtra("route", route.toList());
 
+        startActivity(intent);
+        finish();
+    }
+
+    // launch main activity
+    public void launchHome(){
+        Intent intent = new Intent(this, MainActivity.class);
+        Log.d("launch","Home from Home");
         startActivity(intent);
         finish();
     }
