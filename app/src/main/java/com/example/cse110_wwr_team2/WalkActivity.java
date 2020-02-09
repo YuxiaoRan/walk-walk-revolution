@@ -68,6 +68,17 @@ public class WalkActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed(){
+        if (route == null){
+            finish();
+        } else {
+            Intent intent = new Intent(this, RouteActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
 
