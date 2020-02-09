@@ -6,9 +6,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.example.cse110_wwr_team2.fitness.FitnessService;
+import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+import com.example.cse110_wwr_team2.fitness.GoogleFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
+
+
+    //For main activity step count
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+    private static final String TAG = "MainActivity";
+    private TextView textSteps;
+    private FitnessService fitnessService;
 
     private Button toRoute;
     private Button startRoute;
@@ -26,6 +41,50 @@ public class MainActivity extends AppCompatActivity {
 
         // check if user has input height
         checkUserInputHeight();
+
+
+        // Step counter stuff
+        textSteps = findViewById(R.id.totalStepDisplay);
+
+        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(MainActivity stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+
+        fitnessService.setup();
+
+
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                fitnessService.updateStepCount();
+            }
+        };
+        final Timer t = new Timer();
+        long delay = 0;
+        long duration = 10;
+        t.scheduleAtFixedRate(task, delay, duration);
+
+
+
+        // NOTE: for InputHeight page test only
+        // clearUserInfo();
+
+        // NOTE: for route details test only
+        // clearRouteDetails();
+
+        // check if user has input height
+        checkUserInputHeight();
+
+        fitnessService.updateStepCount();
+        fitnessService.setup();
+
+
 
         toRoute = (Button) findViewById(R.id.button_route);
         toRoute.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
     }
-  
+
     private void goToWalk() {
         Intent intent = new Intent(this, WalkActivity.class);
         String routeName = null;
@@ -85,5 +144,9 @@ public class MainActivity extends AppCompatActivity {
     private void goToInputHeight() {
         Intent intent = new Intent(this, InputHeightActivity.class);
         startActivity(intent);
+    }
+
+    public void setStepCount(long stepCount) {
+        textSteps.setText(String.valueOf(stepCount));
     }
 }
