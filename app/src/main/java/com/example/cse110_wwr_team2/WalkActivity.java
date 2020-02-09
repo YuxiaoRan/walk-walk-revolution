@@ -52,6 +52,7 @@ public class WalkActivity extends AppCompatActivity {
                 isCancel = true;
                 myTimer.cancel(isCancel);
                 launchAddRoute();
+
             }
         });
     }
