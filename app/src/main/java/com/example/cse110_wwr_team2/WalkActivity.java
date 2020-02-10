@@ -28,7 +28,7 @@ public class WalkActivity extends AppCompatActivity {
     private TextView stepCount;
     private String walkKey;
     private FitnessService fitnessService;
-    private final long HALF_MINUTE = 30 * 1000;
+    private final long TEN_SEC = 10 * 1000;
     private WalkTracker walkTracker;
 
     @Override
@@ -70,6 +70,7 @@ public class WalkActivity extends AppCompatActivity {
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fitnessService.updateStepCount(); //to finalize the total steps
                 isCancel = true;
                 myTimer.cancel(isCancel);
                 walkTracker.cancel(isCancel);
@@ -163,7 +164,7 @@ public class WalkActivity extends AppCompatActivity {
                 Log.d("TAG","In WalkTracker Task");
                 while(!isCancel) {
                     publishProgress(resp);
-                    long time = HALF_MINUTE;
+                    long time = TEN_SEC;
                     Thread.sleep(time);
                 }
             }catch(Exception e){

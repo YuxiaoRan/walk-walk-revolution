@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WalkTracker walkTracker;
     private boolean isCancel;
-    private final long HALF_MINUTE = 30 * 1000;
+    private final long TEN_SEC = 10 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("TAG","In Task");
                 while(!isCancel) {
                     publishProgress(resp);
-                    long time = HALF_MINUTE;
+                    long time = TEN_SEC;
                     Thread.sleep(time);
                 }
             }catch(Exception e){
