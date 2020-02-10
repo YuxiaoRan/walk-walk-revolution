@@ -40,6 +40,7 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             // int position is the position index of the clicked item in the list
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("button", "item " + position + "in list");
                 launchRouteDetails(routes.get(position));
             }
         });
@@ -49,6 +50,7 @@ public class RouteActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("button","add route in RouteActivity");
                 launchAddRoute();
             }
         });
@@ -57,13 +59,16 @@ public class RouteActivity extends AppCompatActivity {
 
     public void launchAddRoute(){
         Intent intent = new Intent(this, AddRouteActivity.class);
+        Log.d("launch","Add Route from Route");
         startActivity(intent);
         finish();
     }
 
     public void launchRouteDetails(Route route){
         Intent intent = new Intent(this, RouteDetailsActivity.class);
+
         intent.putExtra("route", route.toList());
+
         startActivity(intent);
         finish();
     }
