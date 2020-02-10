@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 public class WalkActivity extends AppCompatActivity {
     public TextView timer;
     private LocalTime base;
+    private long baseStep;
     private MyTimer myTimer;
     private boolean isCancel;
     private String route;
@@ -73,6 +74,8 @@ public class WalkActivity extends AppCompatActivity {
     public void setStepCount(long total){
         stepCount.setText(String.valueOf(total));
     }
+    public void setBaseStep(long baseStep){this.baseStep = baseStep;}
+    public long getBaseStep(){return this.baseStep;}
 
     public void launchAddRoute(){
         if(route == null) {
@@ -132,7 +135,7 @@ public class WalkActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             timer.setText(values[0]);
-            //fitnessService.updateStepCount();
+            fitnessService.updateStepCount();
         }
 
         @Override

@@ -42,7 +42,7 @@ public class WalkFitAdapter implements FitnessService {
                     account,
                     fitnessOptions);
         } else {
-            updateStepCount();
+            getCurrentStep();
             startRecording();
         }
     }
@@ -70,6 +70,38 @@ public class WalkFitAdapter implements FitnessService {
 
 
     /**
+     *  Reads the current daily step total
+     */
+    public void getCurrentStep(){
+        if (account == null) {
+            return;
+        }
+        Fitness.getHistoryClient(activity, account)
+                .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
+                .addOnSuccessListener(
+                        new OnSuccessListener<DataSet>() {
+                            @Override
+                            public void onSuccess(DataSet dataSet) {
+                                Log.d(TAG, dataSet.toString());
+                                long total =
+                                        dataSet.isEmpty()
+                                                ? 0
+                                                : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+
+                                activity.setBaseStep(total);
+                                Log.d(TAG, "Total steps so far: " + total);
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "There was a problem getting the current step count.", e);
+                            }
+                        });
+    }
+
+    /**
      * Reads the current daily step total, computed from midnight of the current day on the device's
      * current timezone.
      */
@@ -90,7 +122,8 @@ public class WalkFitAdapter implements FitnessService {
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
-                                activity.setStepCount(total);
+                                long base = activity.getBaseStep();
+                                activity.setStepCount(total-base);
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
@@ -98,7 +131,7 @@ public class WalkFitAdapter implements FitnessService {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.d(TAG, "There was a problem getting the step count.", e);
+                                Log.d(TAG, "There was a problem calculating the step count.", e);
                             }
                         });
     }

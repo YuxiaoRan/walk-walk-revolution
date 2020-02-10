@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // NOTE: for InputHeight page test only
-        // clearUserInfo();
+        //clearUserInfo();
 
         // NOTE: for route details test only
-        // clearRouteDetails();
+        //clearRouteDetails();
 
         // check if user has input height
         checkUserInputHeight();
