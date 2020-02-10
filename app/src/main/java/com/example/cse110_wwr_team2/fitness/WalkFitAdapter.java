@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class WalkFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
-    private final String TAG = "GoogleFitAdapter";
+    private final String TAG = "WalkFitAdapter";
     private GoogleSignInAccount account;
 
     private WalkActivity activity;
@@ -102,8 +102,7 @@ public class WalkFitAdapter implements FitnessService {
     }
 
     /**
-     * Reads the current daily step total, computed from midnight of the current day on the device's
-     * current timezone.
+     * Reads the current daily step total, computed the total step counts after starting a route
      */
     public void updateStepCount() {
         if (account == null) {
@@ -121,10 +120,10 @@ public class WalkFitAdapter implements FitnessService {
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
-
+                                Log.d(TAG, "current steps count: " + total);
                                 long base = activity.getBaseStep();
                                 activity.setStepCount(total-base);
-                                Log.d(TAG, "Total steps: " + total);
+                                Log.d(TAG, "Total steps count travelled: " + total);
                             }
                         })
                 .addOnFailureListener(

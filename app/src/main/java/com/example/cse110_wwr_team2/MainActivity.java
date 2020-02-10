@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WalkTracker walkTracker;
     private boolean isCancel;
+    private final long HALF_MINUTE = 30 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,15 @@ public class MainActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(mainKey, this);
         fitnessService.setup();
         walkTracker = new WalkTracker();
-       walkTracker.execute();
+        isCancel = false;
+        walkTracker.execute();
 
         startRoute = (Button) findViewById(R.id.button_start);
         startRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isCancel = true;
+                walkTracker.cancel(isCancel);
                 goToWalk();
             }
         });
@@ -140,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... param){
             try{
                 Log.d("TAG","In Task");
-                while(!isCancel){
+                while(!isCancel) {
                     publishProgress(resp);
+                    long time = HALF_MINUTE;
+                    Thread.sleep(time);
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -152,12 +157,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result){
-            fitnessService.updateStepCount();
+
         }
 
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
+            fitnessService.updateStepCount();
         }
 
         @Override

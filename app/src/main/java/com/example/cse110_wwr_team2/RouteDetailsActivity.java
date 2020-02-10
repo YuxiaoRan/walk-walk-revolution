@@ -56,6 +56,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
         intent.putExtra("routeName", route);
+        intent.putExtra("walkKey", "walk");
         startActivity(intent);
         finish();
     }

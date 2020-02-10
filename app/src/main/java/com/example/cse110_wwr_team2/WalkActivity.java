@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,8 @@ public class WalkActivity extends AppCompatActivity {
     private TextView stepCount;
     private String walkKey;
     private FitnessService fitnessService;
+    private final long HALF_MINUTE = 30 * 1000;
+    private WalkTracker walkTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +56,23 @@ public class WalkActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(walkKey, this);
         fitnessService.setup();
 
+        isCancel = false;
+
         Button stopBtn = findViewById(R.id.stop_walking);
         timer = findViewById(R.id.timer);
         base = LocalTime.now();
         myTimer = new MyTimer();
-        isCancel = false;
-        myTimer.execute();
+        myTimer.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        walkTracker= new WalkTracker();
+        walkTracker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isCancel = true;
                 myTimer.cancel(isCancel);
+                walkTracker.cancel(isCancel);
                 launchAddRoute();
 
             }
@@ -102,6 +110,7 @@ public class WalkActivity extends AppCompatActivity {
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
+        private String ifUpdate;
 
         @Override
         protected String doInBackground(String... param){
@@ -135,6 +144,43 @@ public class WalkActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             timer.setText(values[0]);
+            //fitnessService.updateStepCount();
+        }
+
+        @Override
+        protected  void onCancelled(){
+            super.onCancelled();
+            Log.d("TAG","onCancelled");
+        }
+    }
+
+    private class WalkTracker extends AsyncTask<String, String, String> {
+        private String resp;
+
+        @Override
+        protected String doInBackground(String... param){
+            try{
+                Log.d("TAG","In WalkTracker Task");
+                while(!isCancel) {
+                    publishProgress(resp);
+                    long time = HALF_MINUTE;
+                    Thread.sleep(time);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
             fitnessService.updateStepCount();
         }
 
