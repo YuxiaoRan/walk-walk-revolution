@@ -56,7 +56,7 @@
         android:layout_marginTop="41dp"
         android:layout_marginEnd="181dp"
         android:layout_marginBottom="200dp"
-        android:text="NAN"
+        android:text="@string/step_count"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/button_start"
         app:layout_constraintEnd_toEndOf="parent"

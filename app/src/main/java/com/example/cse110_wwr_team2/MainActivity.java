@@ -3,7 +3,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +14,9 @@ import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
 import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainActivity extends AppCompatActivity {
     private String mainKey = "main";
@@ -22,16 +27,20 @@ public class MainActivity extends AppCompatActivity {
     private Button startRoute;
     private TextView stepCount;
 
+    private WalkTracker walkTracker;
+    private boolean isCancel;
+    private final long TEN_SEC = 10 * 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // NOTE: for InputHeight page test only
-        // clearUserInfo();
+        //clearUserInfo();
 
         // NOTE: for route details test only
-        // clearRouteDetails();
+        //clearRouteDetails();
 
         // check if user has input height
         checkUserInputHeight();
@@ -41,14 +50,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 goToRoute();
-            }
-        });
-
-        startRoute = (Button) findViewById(R.id.button_start);
-        startRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToWalk();
             }
         });
 
@@ -68,7 +69,19 @@ public class MainActivity extends AppCompatActivity {
         });
         fitnessService = FitnessServiceFactory.create(mainKey, this);
         fitnessService.setup();
-        fitnessService.updateStepCount();
+        walkTracker = new WalkTracker();
+        isCancel = false;
+        walkTracker.execute();
+
+        startRoute = (Button) findViewById(R.id.button_start);
+        startRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCancel = true;
+                walkTracker.cancel(isCancel);
+                goToWalk();
+            }
+        });
     }
 
     private void goToRoute() {
@@ -80,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WalkActivity.class);
         String routeName = null;
         intent.putExtra("routeName", routeName);
+        intent.putExtra("walkKey",walkKey);
         startActivity(intent);
     }
 
@@ -120,5 +134,42 @@ public class MainActivity extends AppCompatActivity {
 
     public void setMainKey(String mainKey) {
         this.mainKey = mainKey;
+    }
+
+    private class WalkTracker extends AsyncTask<String, String, String> {
+        private String resp;
+
+        @Override
+        protected String doInBackground(String... param){
+            try{
+                Log.d("TAG","In Task");
+                while(!isCancel) {
+                    publishProgress(resp);
+                    long time = TEN_SEC;
+                    Thread.sleep(time);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            fitnessService.updateStepCount();
+        }
+
+        @Override
+        protected  void onCancelled(){
+            super.onCancelled();
+            Log.d("TAG","onCancelled");
+        }
     }
 }
