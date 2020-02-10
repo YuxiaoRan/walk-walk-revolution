@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView stepCount;
 
     private WalkTracker walkTracker;
-    //private boolean isCancel;
+    private boolean isCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(mainKey, this);
         fitnessService.setup();
         walkTracker = new WalkTracker();
-        walkTracker.execute();
+       walkTracker.execute();
 
         startRoute = (Button) findViewById(R.id.button_start);
         startRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //isCancel = true;
+                isCancel = true;
                 goToWalk();
             }
         });
@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WalkActivity.class);
         String routeName = null;
         intent.putExtra("routeName", routeName);
+        intent.putExtra("walkKey",walkKey);
         startActivity(intent);
     }
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... param){
             try{
                 Log.d("TAG","In Task");
-                while(true){
+                while(!isCancel){
                     publishProgress(resp);
                 }
             }catch(Exception e){

@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_wwr_team2.fitness.FitnessService;
+import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,6 +24,8 @@ public class WalkActivity extends AppCompatActivity {
     private boolean isCancel;
     private String route;
     private TextView stepCount;
+    private String walkKey;
+    private FitnessService fitnessService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,11 @@ public class WalkActivity extends AppCompatActivity {
             TextView RouteName = findViewById(R.id.routeName);
             RouteName.setText(route);
         }
+
+
+        walkKey = intent.getStringExtra("walkKey");
+        fitnessService = FitnessServiceFactory.create(walkKey, this);
+        fitnessService.setup();
 
         Button stopBtn = findViewById(R.id.stop_walking);
         timer = findViewById(R.id.timer);
@@ -122,6 +132,7 @@ public class WalkActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             timer.setText(values[0]);
+            //fitnessService.updateStepCount();
         }
 
         @Override
