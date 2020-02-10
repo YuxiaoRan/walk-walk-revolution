@@ -26,10 +26,13 @@ public class MainActivity extends AppCompatActivity {
     private Button toRoute;
     private Button startRoute;
     private TextView stepCount;
+    private TextView CurrDistance;
 
     private WalkTracker walkTracker;
     private boolean isCancel;
     private final long TEN_SEC = 10 * 1000;
+
+    private final double STEP_OVER_HEIGHT = 0.414;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         stepCount = findViewById(R.id.main_step_count);
+        CurrDistance = findViewById(R.id.main_distance);
 
         FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -132,8 +136,18 @@ public class MainActivity extends AppCompatActivity {
         stepCount.setText(String.valueOf(total));
     }
 
+    public void setCurrDistance(double distance){
+        CurrDistance.setText(String.valueOf(distance));
+    }
+
     public void setMainKey(String mainKey) {
         this.mainKey = mainKey;
+    }
+
+    public int getUserHeight(){
+        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+        int height = spfs.getInt("height",0);
+        return height;
     }
 
     private class WalkTracker extends AsyncTask<String, String, String> {

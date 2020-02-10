@@ -18,6 +18,7 @@ public class MainFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "MainFitAdapter";
     private GoogleSignInAccount account;
+    private final double STEP_OVER_HEIGHT = 0.414;
 
     private MainActivity activity;
 
@@ -90,6 +91,7 @@ public class MainFitAdapter implements FitnessService {
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
                                 activity.setStepCount(total);
+                                activity.setCurrDistance(activity.getUserHeight() * total * STEP_OVER_HEIGHT);
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
