@@ -30,6 +30,7 @@ public class WalkActivity extends AppCompatActivity {
     private FitnessService fitnessService;
     private final long TEN_SEC = 10 * 1000;
     private WalkTracker walkTracker;
+    private TextView distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class WalkActivity extends AppCompatActivity {
         int height = sharedPreferences.getInt("height", 0);
 
         stepCount = findViewById(R.id.step_count);
+        distance = findViewById(R.id.distance);
 
         // get the string passed from route activity
         Intent intent = getIntent();
@@ -83,8 +85,14 @@ public class WalkActivity extends AppCompatActivity {
     public void setStepCount(long total){
         stepCount.setText(String.valueOf(total));
     }
+    public void setDistance(double d){distance.setText(String.valueOf(d));}
     public void setBaseStep(long baseStep){this.baseStep = baseStep;}
     public long getBaseStep(){return this.baseStep;}
+    public int getUserHeight(){
+        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+        int height = spfs.getInt("height",0);
+        return height;
+    }
 
     public void launchAddRoute(){
         if(route == null) {
