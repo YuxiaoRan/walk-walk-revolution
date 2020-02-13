@@ -114,7 +114,7 @@ public class RouteActivity extends AppCompatActivity {
             String route_name = itr.next();
             String route_start_point = spfs.getString(route_name + "_start_point", "");
             int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
-            routes.add(new Route(route_name, route_start_point, step_cnt));
+            routes.add(new Route(route_start_point, route_name, step_cnt));
         }
     }
 }
