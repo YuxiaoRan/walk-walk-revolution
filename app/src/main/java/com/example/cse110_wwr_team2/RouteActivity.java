@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -41,7 +43,7 @@ public class RouteActivity extends AppCompatActivity {
             // int position is the position index of the clicked item in the list
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("button", "item " + position + "in list");
-                launchRouteDetails(routes.get(position));
+                launchRouteDetails(position);
             }
         });
 
@@ -73,10 +75,12 @@ public class RouteActivity extends AppCompatActivity {
         finish();
     }
 
-    public void launchRouteDetails(Route route){
+    public void launchRouteDetails(int i){
         Intent intent = new Intent(this, RouteDetailsActivity.class);
-
-        intent.putExtra("route", route.toList());
+        Bundle args = new Bundle();
+        args.putSerializable("route_list",(Serializable)routes);
+        intent.putExtra("BUNDLE",args);
+        intent.putExtra("index", i);
 
         startActivity(intent);
         finish();
