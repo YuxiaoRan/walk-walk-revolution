@@ -16,6 +16,7 @@ import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class WalkActivity extends AppCompatActivity {
     private String TAG = "WalkActivity";
@@ -24,19 +25,25 @@ public class WalkActivity extends AppCompatActivity {
     private long baseStep;
     private MyTimer myTimer;
     private boolean isCancel;
-    private String route;
+    //private String route;
     private TextView stepCount;
     private String walkKey;
     private FitnessService fitnessService;
     private final long TEN_SEC = 10 * 1000;
     private WalkTracker walkTracker;
     private TextView distance;
+    private long currStep;
+    private Route currRoute;
+    private ArrayList<Route> routes;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_walk);
+
+        currStep = 0;
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         int height = sharedPreferences.getInt("height", 0);
@@ -46,11 +53,26 @@ public class WalkActivity extends AppCompatActivity {
 
         // get the string passed from route activity
         Intent intent = getIntent();
-        route = intent.getStringExtra("routeName");
-        if(route != null) {
-            // set the text in UI
+        index = intent.getIntExtra("index",-1);
+
+
+//        route = intent.getStringExtra("routeName");
+//        if(route != null) {
+//            // set the text in UI
+//            TextView RouteName = findViewById(R.id.routeName);
+//            RouteName.setText(route);
+//        }
+
+        /* change of logic, using the object directly to easier modify steps saved
+            set currRoute only when it is actually passed
+         */
+        if(index != -1){
+
+            Bundle args = intent.getBundleExtra("BUNDLE");
+            routes = (ArrayList<Route>) args.getSerializable("route_list");
+            currRoute = routes.get(index);
             TextView RouteName = findViewById(R.id.routeName);
-            RouteName.setText(route);
+            RouteName.setText(currRoute.getName());
         }
 
 
@@ -77,12 +99,12 @@ public class WalkActivity extends AppCompatActivity {
                 myTimer.cancel(isCancel);
                 walkTracker.cancel(isCancel);
                 launchAddRoute();
-
             }
         });
     }
 
     public void setStepCount(long total){
+        currStep = total;
         stepCount.setText(String.valueOf(total));
     }
     public void setDistance(double d){distance.setText(String.valueOf(d));}
@@ -95,11 +117,13 @@ public class WalkActivity extends AppCompatActivity {
     }
 
     public void launchAddRoute(){
-        if(route == null) {
+        if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
+            intent.putExtra("step_cnt", currStep);
             startActivity(intent);
             finish();
         }else{
+            currRoute.updateStep(currStep);
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
@@ -108,7 +132,7 @@ public class WalkActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if (route == null){
+        if (currRoute == null){
             finish();
         } else {
             Intent intent = new Intent(this, RouteActivity.class);
