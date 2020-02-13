@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class WalkActivity extends AppCompatActivity {
+    private String TAG = "WalkActivity";
     public TextView timer;
     private LocalTime base;
     private long baseStep;
@@ -35,7 +35,7 @@ public class WalkActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("TAG","onCreate");
+        Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_walk);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
@@ -119,12 +119,11 @@ public class WalkActivity extends AppCompatActivity {
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
-        private String ifUpdate;
 
         @Override
         protected String doInBackground(String... param){
             try{
-                Log.d("TAG","In Task");
+                Log.d(TAG,"In MyTimer Task");
                 while(!isCancel){
                     long baseSec = base.getSecond();
                     long baseMin = base.getMinute();
@@ -159,7 +158,7 @@ public class WalkActivity extends AppCompatActivity {
         @Override
         protected  void onCancelled(){
             super.onCancelled();
-            Log.d("TAG","onCancelled");
+            Log.d(TAG,"onCancelled");
         }
     }
 
@@ -169,7 +168,7 @@ public class WalkActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... param){
             try{
-                Log.d("TAG","In WalkTracker Task");
+                Log.d(TAG,"In WalkTracker Task");
                 while(!isCancel) {
                     publishProgress(resp);
                     long time = TEN_SEC;
@@ -196,7 +195,7 @@ public class WalkActivity extends AppCompatActivity {
         @Override
         protected  void onCancelled(){
             super.onCancelled();
-            Log.d("TAG","onCancelled");
+            Log.d(TAG,"onCancelled");
         }
     }
 }

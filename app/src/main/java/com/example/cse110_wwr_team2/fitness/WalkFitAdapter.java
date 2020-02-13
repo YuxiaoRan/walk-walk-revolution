@@ -3,7 +3,6 @@ package com.example.cse110_wwr_team2.fitness;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import com.example.cse110_wwr_team2.MainActivity;
 import com.example.cse110_wwr_team2.WalkActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
