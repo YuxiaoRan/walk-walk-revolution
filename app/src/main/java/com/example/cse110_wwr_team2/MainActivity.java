@@ -15,9 +15,6 @@ import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
 import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public class MainActivity extends AppCompatActivity {
     private String mainKey = "main";
     private String walkKey = "walk";
