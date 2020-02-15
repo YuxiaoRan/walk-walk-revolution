@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -55,6 +57,22 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
             }
         });
+
+        /*
+        ChipGroup chipGroup = findViewById(R.id.tags);
+
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null)
+                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getChipText(), Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+        */
     }
 
 

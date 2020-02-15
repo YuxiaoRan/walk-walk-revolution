@@ -41,6 +41,9 @@ public class MainActivityFirstSigninTest {
     @Test
     public void testMainActivityFirstSignin() throws InterruptedException {
         mActivityTestRule.launchActivity(null);
+
+
+
         SharedPreferences spfs = mActivityTestRule.getActivity()
                 .getSharedPreferences("user", Context.MODE_PRIVATE);
         spfs.edit().clear().commit();
