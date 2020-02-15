@@ -30,7 +30,7 @@ public class RouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route);
 
         listView = (ListView)findViewById(R.id.route_list);
-        getAllRoutes();
+        routes = RouteSaver.getAllRoutes(this);
 
         // set the route list to the adapter and display on listView
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
@@ -105,17 +105,17 @@ public class RouteActivity extends AppCompatActivity {
      *          "{route_name}_step_cnt" stores the int number of the step counts
      *               of the route with route_name
      */
-    public void getAllRoutes(){
-        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        Iterator<String> itr = routes_list.iterator();
-        routes = new ArrayList<Route>();
-        while(itr.hasNext()){
-            String route_name = itr.next();
-            String route_start_point = spfs.getString(route_name + "_start_point", "");
-            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
-            float distance = spfs.getFloat(route_name+"_distance", 0);
-            routes.add(new Route(route_start_point, route_name, step_cnt,distance));
-        }
-    }
+//    public void getAllRoutes(){
+//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+//        Iterator<String> itr = routes_list.iterator();
+//        routes = new ArrayList<Route>();
+//        while(itr.hasNext()){
+//            String route_name = itr.next();
+//            String route_start_point = spfs.getString(route_name + "_start_point", "");
+//            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
+//            float distance = spfs.getFloat(route_name+"_distance", 0);
+//            routes.add(new Route(route_start_point, route_name, step_cnt,distance));
+//        }
+//    }
 }
