@@ -15,6 +15,8 @@ import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MockActivity extends AppCompatActivity {
     private long currStep;
@@ -83,8 +85,8 @@ public class MockActivity extends AppCompatActivity {
     public void setCurrStep(long stepCount){
         currStep = stepCount;
     }
-    public double getCurrStep(){
-        return (double) currStep;
+    public long getCurrStep(){
+        return currStep;
     }
     public void incrementStep(){
         currStep += 500;
@@ -104,13 +106,37 @@ public class MockActivity extends AppCompatActivity {
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
+            intent.putExtra("distance", Float.parseFloat(distance.getText().toString()));
             startActivity(intent);
             finish();
         }else{
-            currRoute.updateStep(currStep);
+            currRoute.updateStep((int)currStep);
+            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+            UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+    /*
+     * This function will add a new route into the file, by writing a new name
+     * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
+     * accordingly
+     */
+    public void UpdateRoute(String route_name, String start_point, int step_cnt, float distance){
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+        SharedPreferences.Editor editor = spfs.edit();
+        try {
+            routes_list.remove(route_name);
+            routes_list.add(route_name);
+            editor.putStringSet("route_list", routes_list);
+            editor.putString(route_name + "_start_point", start_point);
+            editor.putInt(route_name + "_step_cnt", step_cnt);
+            editor.putFloat(route_name+"_distance",distance);
+            editor.apply();
+        }catch (Exception e){
+            System.err.println(e);
         }
     }
 

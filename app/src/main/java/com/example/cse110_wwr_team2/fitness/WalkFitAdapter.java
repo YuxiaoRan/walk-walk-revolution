@@ -19,6 +19,7 @@ public class WalkFitAdapter implements FitnessService {
     private final String TAG = "WalkFitAdapter";
     private GoogleSignInAccount account;
     private final double STEP_OVER_HEIGHT = 0.414;
+    private final double INCH_PER_MILE = 63360;
 
     private WalkActivity activity;
 
@@ -123,7 +124,7 @@ public class WalkFitAdapter implements FitnessService {
                                 Log.d(TAG, "current steps count: " + total);
                                 int base = activity.getBaseStep();
                                 activity.setStepCount(total-base);
-                                activity.setDistance(activity.getUserHeight() * (total-base) * STEP_OVER_HEIGHT);
+                                activity.setDistance(getDistance(total-base));
                                 Log.d(TAG, "Total steps count travelled: " + total);
                             }
                         })
@@ -136,6 +137,9 @@ public class WalkFitAdapter implements FitnessService {
                         });
     }
 
+    private double getDistance(long stepCount){
+        return activity.getUserHeight() * stepCount * STEP_OVER_HEIGHT / INCH_PER_MILE;
+    }
 
     @Override
     public int getRequestCode() {
