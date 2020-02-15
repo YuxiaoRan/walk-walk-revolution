@@ -17,12 +17,14 @@ import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class WalkActivity extends AppCompatActivity {
     private String TAG = "WalkActivity";
     public TextView timer;
     private LocalTime base;
-    private long baseStep;
+    private int baseStep;
     private MyTimer myTimer;
     private boolean isCancel;
     private TextView stepCount;
@@ -31,7 +33,7 @@ public class WalkActivity extends AppCompatActivity {
     private final long TEN_SEC = 10 * 1000;
     private WalkTracker walkTracker;
     private TextView distance;
-    private long currStep;
+    private int currStep;
     private Route currRoute;
     private ArrayList<Route> routes;
     private int index;
@@ -95,13 +97,13 @@ public class WalkActivity extends AppCompatActivity {
         });
     }
 
-    public void setStepCount(long total){
+    public void setStepCount(int total){
         currStep = total;
         stepCount.setText(String.valueOf(total));
     }
     public void setDistance(double d){distance.setText(String.valueOf(d));}
-    public void setBaseStep(long baseStep){this.baseStep = baseStep;}
-    public long getBaseStep(){return this.baseStep;}
+    public void setBaseStep(int baseStep){this.baseStep = baseStep;}
+    public int getBaseStep(){return this.baseStep;}
     public int getUserHeight(){
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
         int height = spfs.getInt("height",0);
@@ -112,10 +114,13 @@ public class WalkActivity extends AppCompatActivity {
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
+            intent.putExtra("distance",Float.parseFloat(distance.getText().toString()));
             startActivity(intent);
             finish();
         }else{
             currRoute.updateStep(currStep);
+            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+            UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()));
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
@@ -130,6 +135,28 @@ public class WalkActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    /*
+     * This function will add a new route into the file, by writing a new name
+     * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
+     * accordingly
+     */
+    public void UpdateRoute(String route_name, String start_point, int step_cnt, float distance){
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+        SharedPreferences.Editor editor = spfs.edit();
+        try {
+            routes_list.remove(route_name);
+            routes_list.add(route_name);
+            editor.putStringSet("route_list", routes_list);
+            editor.putString(route_name + "_start_point", start_point);
+            editor.putInt(route_name + "_step_cnt", step_cnt);
+            editor.putFloat(route_name+"_distance",distance);
+            editor.apply();
+        }catch (Exception e){
+            System.err.println(e);
         }
     }
 
@@ -214,4 +241,5 @@ public class WalkActivity extends AppCompatActivity {
             Log.d(TAG,"onCancelled");
         }
     }
+
 }

@@ -83,7 +83,7 @@ public class WalkFitAdapter implements FitnessService {
                             @Override
                             public void onSuccess(DataSet dataSet) {
                                 Log.d(TAG, dataSet.toString());
-                                long total =
+                                int total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
@@ -116,12 +116,12 @@ public class WalkFitAdapter implements FitnessService {
                             @Override
                             public void onSuccess(DataSet dataSet) {
                                 Log.d(TAG, dataSet.toString());
-                                long total =
+                                int total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
                                 Log.d(TAG, "current steps count: " + total);
-                                long base = activity.getBaseStep();
+                                int base = activity.getBaseStep();
                                 activity.setStepCount(total-base);
                                 activity.setDistance(activity.getUserHeight() * (total-base) * STEP_OVER_HEIGHT);
                                 Log.d(TAG, "Total steps count travelled: " + total);
