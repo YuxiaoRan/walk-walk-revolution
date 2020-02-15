@@ -50,7 +50,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt, distance);
+                    RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt, distance,AddRouteActivity.this);
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",
@@ -101,20 +101,20 @@ public class AddRouteActivity extends AppCompatActivity {
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance){
-        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        SharedPreferences.Editor editor = spfs.edit();
-        try {
-            routes_list.add(route_name);
-            editor.putStringSet("route_list", routes_list);
-            editor.putString(route_name + "_start_point", start_point);
-            editor.putInt(route_name + "_step_cnt", step_cnt);
-            editor.putFloat(route_name + "_distance", distance);
-            editor.apply();
-        }catch (Exception e){
-            System.err.println(e);
-        }
-    }
+//    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance){
+//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+//        SharedPreferences.Editor editor = spfs.edit();
+//        try {
+//            routes_list.add(route_name);
+//            editor.putStringSet("route_list", routes_list);
+//            editor.putString(route_name + "_start_point", start_point);
+//            editor.putInt(route_name + "_step_cnt", step_cnt);
+//            editor.putFloat(route_name + "_distance", distance);
+//            editor.apply();
+//        }catch (Exception e){
+//            System.err.println(e);
+//        }
+//    }
 
 }
