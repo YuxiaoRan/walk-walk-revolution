@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Route implements Serializable {
     private String start_point;
     private String name;
-    private long step_cnt;
+    private int step_cnt;
 
     public Route(String start_point, String name, int step_cnt){
         this.start_point = start_point;
@@ -27,11 +27,11 @@ public class Route implements Serializable {
         return this.name;
     }
 
-    public long getStepCnt(){
+    public int getStepCnt(){
         return this.step_cnt;
     }
 
-    public void updateStep(long new_step_cnt){
+    public void updateStep(int new_step_cnt){
         this.step_cnt = new_step_cnt;
     }
 
