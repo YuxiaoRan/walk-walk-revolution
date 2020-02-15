@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -50,15 +51,16 @@ public class MockActivity extends AppCompatActivity {
         // get the string passed from route activity
         Intent intent = getIntent();
         index = intent.getIntExtra("index",-1);
+
         /* change of logic, using the object directly to easier modify steps saved
             set currRoute only when it is actually passed
          */
         if(index != -1){
-
             Bundle args = intent.getBundleExtra("BUNDLE");
             routes = (ArrayList<Route>) args.getSerializable("route_list");
+            Log.d("route_list", routes.toString());
             currRoute = routes.get(index);
-            TextView RouteName = findViewById(R.id.routeName);
+            TextView RouteName = findViewById(R.id.mock_routeName);
             RouteName.setText(currRoute.getName());
         }
         String time = intent.getStringExtra("timer");

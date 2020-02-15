@@ -4,18 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class InputMockTime extends AppCompatActivity {
+    private String TAG = "InputMockTime";
     private LocalTime base;
     private LocalTime curr;
     private EditText inputTime;
@@ -27,19 +32,28 @@ public class InputMockTime extends AppCompatActivity {
         inputTime = findViewById(R.id.mock_curr_time);
         btn = findViewById(R.id.mock_time_btn);
 
-        base = LocalTime.now();
+        long base_millis = System.currentTimeMillis();
+        base = LocalDateTime.ofInstant(Instant.ofEpochMilli(base_millis),
+                ZoneId.systemDefault()).toLocalTime();
+        Log.d(TAG, "Base Millisecond: "+base_millis);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
-                    curr = LocalTime.parse(inputTime.getText().toString());
+                    //curr = LocalTime.parse(inputTime.getText().toString());
+                    long curr_millis = Long.parseLong(inputTime.getText().toString());
+                    curr = LocalDateTime.ofInstant(Instant.ofEpochMilli(curr_millis),
+                            ZoneId.systemDefault()).toLocalTime();
+                    Log.d(TAG, "Current Millisecond: "+curr_millis);
                     if(curr.isBefore(base)){
+                        Log.d(TAG, "The input time is too early");
                         laterToast();
-                        return;
+                        //return;
                     }
-                }catch (DateTimeParseException date_exception){
+                }catch (Exception e){
+                    Log.d(TAG, "There is an exception"+e.toString());
                     formatToast();
-                    return;
+                    //return;
                 }
                 startMocking();
             }
