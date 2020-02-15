@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button toRoute;
     private Button startRoute;
+    private Button mock;
     private TextView stepCount;
     private TextView CurrDistance;
 
@@ -45,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
         // check if user has input height
         checkUserInputHeight();
 
-        toRoute = (Button) findViewById(R.id.button_route);
-        toRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToRoute();
-            }
-        });
 
         stepCount = findViewById(R.id.main_step_count);
         CurrDistance = findViewById(R.id.main_distance);
@@ -83,6 +77,26 @@ public class MainActivity extends AppCompatActivity {
                 goToWalk();
             }
         });
+
+        toRoute = (Button) findViewById(R.id.button_route);
+        toRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCancel = true;
+                walkTracker.cancel(isCancel);
+                goToRoute();
+            }
+        });
+
+        mock = findViewById(R.id.mock_btn);
+        mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isCancel = true;
+                walkTracker.cancel(isCancel);
+                goToMock();
+            }
+        });
     }
 
     private void goToRoute() {
@@ -95,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         String routeName = null;
         intent.putExtra("routeName", routeName);
         intent.putExtra("walkKey",walkKey);
+        startActivity(intent);
+    }
+
+    private void goToMock(){
+        Intent intent = new Intent(this, InputMockTime.class);
         startActivity(intent);
     }
 

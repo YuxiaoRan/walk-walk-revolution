@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".InputHeightActivity"></activity>
+        <activity android:name=".InputMockTime"></activity>
+        <activity android:name=".MockActivity" />
+        <activity android:name=".InputHeightActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,12 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRouteActivity"></activity>
-        <activity android:name=".WalkActivity"></activity>
-        <activity android:name=".RouteDetailsActivity"></activity>
-        <activity android:name=".RouteActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
-
+        <activity android:name=".AddRouteActivity" />
+        <activity android:name=".WalkActivity" />
+        <activity android:name=".RouteDetailsActivity" />
+        <activity android:name=".RouteActivity" />
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

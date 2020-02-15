@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:gravity="start"
+        android:layout_marginTop="0dp"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -138,19 +138,27 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             tools:context=".MainActivity">
-        <Button
-            android:id="@+id/button_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_new_routes_text"
-            android:textSize="24sp"
-            tools:text="START NEW ROUTE" />
+
+            <Button
+                android:id="@+id/button_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_new_routes_text"
+                android:textSize="24sp"
+                tools:text="START NEW ROUTE" />
 
             <Button
                 android:id="@+id/button_route"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/go_to_routes_text"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/mock_btn"
+                android:layout_width="242dp"
+                android:layout_height="wrap_content"
+                android:text="@string/mock_btn"
                 android:textSize="24sp" />
 
         </LinearLayout>
