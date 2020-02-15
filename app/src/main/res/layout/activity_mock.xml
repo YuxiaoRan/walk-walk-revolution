@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MockActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context=".MockActivity">
+
+        <TextView
+            android:id="@+id/mock_routeName"
+            android:layout_width="185dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="118dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="118dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/new_route"
+            android:textSize="36sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/mock_Time_Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/mock_Time_Title" />
+
+        <TextView
+            android:id="@+id/mock_Time_Title"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="174dp"
+            android:layout_marginEnd="175dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/timer_title"
+            android:textSize="24sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/mock_timer"
+            app:layout_constraintEnd_toEndOf="@id/mock_routeName"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mock_timer"
+            android:layout_width="110dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="158dp"
+            android:layout_marginEnd="159dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/timer"
+            android:textSize="24sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/mock_update_btn"
+            app:layout_constraintEnd_toEndOf="@id/mock_step_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mock_step_title"
+            android:layout_width="129dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="147dp"
+            android:layout_marginEnd="147dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/step_title"
+            android:textSize="24sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/mock_step_count"
+            app:layout_constraintEnd_toEndOf="@id/mock_timer"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mock_step_count"
+            android:layout_width="63dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="179dp"
+            android:layout_marginEnd="179dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/step_count"
+            android:textSize="24sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/mock_update_btn"
+            app:layout_constraintEnd_toEndOf="@id/mock_step_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/mock_update_btn"
+            android:layout_width="218dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="106dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/update_btn"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/mock_distance_title"
+            app:layout_constraintEnd_toEndOf="@id/mock_step_count"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mock_distance_title"
+            android:layout_width="82dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="174dp"
+            android:layout_marginEnd="174dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/distance_title"
+            android:textSize="24sp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/mock_distance"
+            app:layout_constraintEnd_toEndOf="@id/mock_update_btn"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/mock_distance"
+            android:layout_width="109dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="154dp"
+            android:layout_marginEnd="199dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:text="@string/distance"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/mock_stop_walking"
+            app:layout_constraintEnd_toEndOf="@id/mock_distance_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/mock_stop_walking"
+            android:layout_width="104dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="161dp"
+            android:layout_marginEnd="162dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/stop_walking"
+            android:gravity="center"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,6 @@ public class WalkActivity extends AppCompatActivity {
     private long baseStep;
     private MyTimer myTimer;
     private boolean isCancel;
-    //private String route;
     private TextView stepCount;
     private String walkKey;
     private FitnessService fitnessService;
@@ -55,13 +54,6 @@ public class WalkActivity extends AppCompatActivity {
         Intent intent = getIntent();
         index = intent.getIntExtra("index",-1);
 
-
-//        route = intent.getStringExtra("routeName");
-//        if(route != null) {
-//            // set the text in UI
-//            TextView RouteName = findViewById(R.id.routeName);
-//            RouteName.setText(route);
-//        }
 
         /* change of logic, using the object directly to easier modify steps saved
             set currRoute only when it is actually passed

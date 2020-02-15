@@ -72,7 +72,7 @@ public class WalkFitAdapter implements FitnessService {
     /**
      *  Reads the current daily step total
      */
-    public void getCurrentStep(){
+    private void getCurrentStep(){
         if (account == null) {
             return;
         }

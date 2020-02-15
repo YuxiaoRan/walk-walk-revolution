@@ -23,4 +23,8 @@
     <string name="main_step_count_title">Total Step Count:</string>
     <string name="main_current_title">Current Day</string>
     <string name="last_intention_title">Last Intentional Walk</string>
+    <string name="update_btn">Increment Step Counts</string>
+    <string name="mock_btn">Mock</string>
+    <string name="mock_time_title">Please enter a valid time in hh:mm:ss</string>
+    <string name="mock_time">00:00:00</string>
 </resources>
