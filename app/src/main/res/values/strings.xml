@@ -23,4 +23,11 @@
     <string name="main_step_count_title">Total Step Count:</string>
     <string name="main_current_title">Current Day</string>
     <string name="last_intention_title">Last Intentional Walk</string>
+    <string name="height_unit_ft">ft.</string>
+    <string name="height_unit_in">in.</string>
+    <string name="feature_prompt">How does this route look like? (optional)</string>
+    <string name="update_btn">Increment Step Counts</string>
+    <string name="mock_btn">Mock</string>
+    <string name="mock_time_title">Please enter a valid time in millisecond</string>
+    <string name="mock_time">time in millisecond</string>
 </resources>
