@@ -22,6 +22,8 @@ public class AddRouteActivity extends AppCompatActivity {
     FloatingActionButton fab;
     AutoCompleteTextView start;
     AutoCompleteTextView name;
+    EditText note;
+    int[] features;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +31,11 @@ public class AddRouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_route);
         Intent intent = getIntent();
         final int step_cnt = intent.getIntExtra("step_cnt", 0);
-
+        features = new int[5];
         fab = findViewById(R.id.done_add);
         start = findViewById(R.id.start_point);
         name = findViewById(R.id.route_name);
+        note = findViewById(R.id.note);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +52,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt);
+                    addNewRoute(step_cnt);
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",
@@ -64,21 +67,25 @@ public class AddRouteActivity extends AppCompatActivity {
         ChipGroup streetTags = findViewById(R.id.street_tags);
         ChipGroup surfaceTags = findViewById(R.id.surface_tags);
         ChipGroup difficultyTags = findViewById(R.id.difficulty_tags);
-
-        // TODO: template
-        shapeTags.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-
-                Chip chip = chipGroup.findViewById(i);
-                if (chip != null) {
-                    // TODO: store selected tag
-                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getChipText(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        ChipGroup[] allChips = {shapeTags, flatnessTags, streetTags, surfaceTags, difficultyTags};
+        setChipChangeListener(allChips);
     }
 
+    public void setChipChangeListener(ChipGroup[] chips){
+        for (int i = 0; i < chips.length; i ++){
+            final int index = i;
+            chips[i].setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(ChipGroup chipGroup, int j) {
+                    Chip chip = chipGroup.findViewById(j);
+                    if (chip != null){
+                        Toast.makeText(getApplicationContext(), "Route is " + chip.getChipText() + " index is " + index, Toast.LENGTH_SHORT).show();
+                        features[index] = j;
+                    }
+                }
+            });
+        }
+    }
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
@@ -86,6 +93,13 @@ public class AddRouteActivity extends AppCompatActivity {
         finish();
     }
 
+    private String returnFeatures(){
+        String f = "";
+        for(int i = 0; i < features.length; i ++){
+            f += features[i];
+        }
+        return f;
+    }
 
     /*
      * This function checks whether the route_name already exists in the routes_list,
@@ -104,7 +118,10 @@ public class AddRouteActivity extends AppCompatActivity {
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void addNewRoute(String route_name, String start_point, int step_cnt){
+    public void addNewRoute(int step_cnt){
+        String route_name = name.getText().toString();
+        String start_point = start.getText().toString();
+        String note_txt = note.getText().toString();
         SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -113,6 +130,8 @@ public class AddRouteActivity extends AppCompatActivity {
             editor.putStringSet("route_list", routes_list);
             editor.putString(route_name + "_start_point", start_point);
             editor.putInt(route_name + "_step_cnt", step_cnt);
+            editor.putString(route_name + "_note", note_txt);
+            editor.putString(route_name + "_features", returnFeatures());
             editor.apply();
         }catch (Exception e){
             System.err.println(e);

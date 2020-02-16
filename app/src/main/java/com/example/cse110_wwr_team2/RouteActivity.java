@@ -81,7 +81,6 @@ public class RouteActivity extends AppCompatActivity {
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", i);
-
         startActivity(intent);
         finish();
     }
@@ -109,12 +108,14 @@ public class RouteActivity extends AppCompatActivity {
         SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         Iterator<String> itr = routes_list.iterator();
-        routes = new ArrayList<Route>();
+        routes = new ArrayList<>();
         while(itr.hasNext()){
             String route_name = itr.next();
             String route_start_point = spfs.getString(route_name + "_start_point", "");
             int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
-            routes.add(new Route(route_start_point, route_name, step_cnt));
+            String note = spfs.getString(route_name+"_note", "");
+            String features = spfs.getString(route_name+"_feature", "00000");
+            routes.add(new Route(route_start_point, route_name, step_cnt, note, features));
         }
     }
 }

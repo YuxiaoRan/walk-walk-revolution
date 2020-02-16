@@ -3,9 +3,11 @@ package com.example.cse110_wwr_team2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,7 +18,9 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
     private Route currRoute;
     private ArrayList<Route> routes;
+    private EditText note;
     private int index;
+    private String curr_note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,11 @@ public class RouteDetailsActivity extends AppCompatActivity {
         RouteName.setText(currRoute.getName());
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(currRoute.getStartPoint());
-
+        note = findViewById(R.id.note);
+        curr_note = currRoute.getNote();
+        if (!curr_note.equals("")) {
+            note.setText(currRoute.getNote());
+        }
 
         Button back = findViewById(R.id.done_add);
         back.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +66,12 @@ public class RouteDetailsActivity extends AppCompatActivity {
     }
 
     public void launchRoute(){
+        if(!curr_note.equals(note.getText().toString())) {
+            SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+            SharedPreferences.Editor editor = spfs.edit();
+            editor.putString(currRoute.getName()+"_note", note.getText().toString());
+            editor.commit();
+        }
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
         finish();

@@ -49,6 +49,12 @@
         android:textSize="18dp"
         />
 
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="fill_parent"
+        android:layout_height="100sp"
+        android:hint="Notes"
+        android:textAlignment="viewStart" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/shape_tags"
@@ -200,7 +206,6 @@
     </com.google.android.material.chip.ChipGroup>
 
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/done_add"
         android:layout_width="wrap_content"
@@ -210,6 +215,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_done" />
