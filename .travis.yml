@@ -41,7 +41,7 @@ android:
 jobs:
   include:
     - name: unit_test
-      script: ./gradlew lint androidTest
+      script: ./gradlew lint test
     - name: android_test
 
       #if: (type = push AND branch IN (master, dev)) OR (type = pull_request)
