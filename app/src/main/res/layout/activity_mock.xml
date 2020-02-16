@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MockActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".MockActivity">
+
+        <TextView
+            android:id="@+id/mock_routeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_route"
+            android:textSize="36sp"
+             />
+
+        <TextView
+            android:id="@+id/mock_Time_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer_title"
+            android:textSize="24sp"
+             />
+
+        <TextView
+            android:id="@+id/mock_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer"
+            android:textSize="24sp"
+             />
+
+        <TextView
+            android:id="@+id/mock_step_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/step_title"
+            android:textSize="24sp"
+             />
+
+        <TextView
+            android:id="@+id/mock_step_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/step_count"
+            android:textSize="24sp"
+             />
+
+        <Button
+            android:id="@+id/mock_update_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_btn"
+             />
+
+        <TextView
+            android:id="@+id/mock_distance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/distance_title"
+            android:textSize="24sp"
+            />
+
+        <TextView
+            android:id="@+id/mock_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/distance"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/mock_stop_walking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_walking"
+            android:textColor="@color/design_default_color_primary"
+            android:textSize="24sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,8 @@ import android.widget.Toast;
 
 public class InputHeightActivity extends AppCompatActivity {
 
-    EditText heightInput;
+    EditText heightInputFt;
+    EditText heightInputIn;
     private Button btnDone;
 
     @Override
@@ -19,7 +20,8 @@ public class InputHeightActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_height);
 
-        heightInput = findViewById(R.id.input_height);
+        heightInputFt = findViewById(R.id.input_height_ft);
+        heightInputIn = findViewById(R.id.input_height_in);
         btnDone = findViewById(R.id.button_done);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
@@ -32,23 +34,25 @@ public class InputHeightActivity extends AppCompatActivity {
                 int heightInt = 0;
                 try {
                     // save input and jump to main page
-                    heightInt = Integer.parseInt(heightInput.getText().toString());
+                    int heightIntFt = Integer.parseInt(heightInputFt.getText().toString());
+                    int heightIntIn = Integer.parseInt(heightInputIn.getText().toString());
                     // handle non-positive height
-                    if(heightInt <= 0) {
+                    if(heightIntFt <= 0 || heightIntIn <= 0) {
                         Toast.makeText(InputHeightActivity.this,
                                 "Please input a positive height", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    heightInt = 12 * heightIntFt + heightIntIn;
                     editor.putInt("height", heightInt);
                     editor.putBoolean("firstLogin", false);
                     editor.apply();
                     Toast.makeText(InputHeightActivity.this,
-                            "Height saved", Toast.LENGTH_SHORT).show();
+                            "Height saved: " + heightInt + " inches", Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (NumberFormatException e) {
                     // prompt the user to re-input
                     Toast.makeText(InputHeightActivity.this,
-                            "Please input a whole number", Toast.LENGTH_SHORT).show();
+                            "Please input whole numbers", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

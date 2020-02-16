@@ -27,7 +27,6 @@ public class WalkActivity extends AppCompatActivity {
     private int baseStep;
     private MyTimer myTimer;
     private boolean isCancel;
-    //private String route;
     private TextView stepCount;
     private String walkKey;
     private FitnessService fitnessService;
@@ -57,13 +56,6 @@ public class WalkActivity extends AppCompatActivity {
         Intent intent = getIntent();
         index = intent.getIntExtra("index",-1);
 
-
-//        route = intent.getStringExtra("routeName");
-//        if(route != null) {
-//            // set the text in UI
-//            TextView RouteName = findViewById(R.id.routeName);
-//            RouteName.setText(route);
-//        }
 
         /* change of logic, using the object directly to easier modify steps saved
             set currRoute only when it is actually passed
@@ -123,13 +115,15 @@ public class WalkActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance",Float.parseFloat(distance.getText().toString()));
+            saveRecent();
             startActivity(intent);
             finish();
         }else{
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()));
+            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
+            saveRecent();
             startActivity(intent);
             finish();
         }
@@ -146,27 +140,41 @@ public class WalkActivity extends AppCompatActivity {
         }
     }
 
+    private void saveRecent(){
+        SharedPreferences spfs = getSharedPreferences("recent_route", MODE_PRIVATE);
+        float dist = Float.parseFloat(distance.getText().toString());
+        SharedPreferences.Editor editor = spfs.edit();
+        try{
+            editor.clear();
+            editor.putInt("recent_step_cnt", currStep);
+            editor.putFloat("recent_distance", dist);
+        }catch (Exception e){
+            System.err.println(e);
+            Log.d(TAG, "saveRecent: "+e.toString());
+        }
+    }
+
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void UpdateRoute(String route_name, String start_point, int step_cnt, float distance){
-        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        SharedPreferences.Editor editor = spfs.edit();
-        try {
-            routes_list.remove(route_name);
-            routes_list.add(route_name);
-            editor.putStringSet("route_list", routes_list);
-            editor.putString(route_name + "_start_point", start_point);
-            editor.putInt(route_name + "_step_cnt", step_cnt);
-            editor.putFloat(route_name+"_distance",distance);
-            editor.apply();
-        }catch (Exception e){
-            System.err.println(e);
-        }
-    }
+//    public void UpdateRoute(String route_name, String start_point, int step_cnt, float distance){
+//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+//        SharedPreferences.Editor editor = spfs.edit();
+//        try {
+//            routes_list.remove(route_name);
+//            routes_list.add(route_name);
+//            editor.putStringSet("route_list", routes_list);
+//            editor.putString(route_name + "_start_point", start_point);
+//            editor.putInt(route_name + "_step_cnt", step_cnt);
+//            editor.putFloat(route_name+"_distance",distance);
+//            editor.apply();
+//        }catch (Exception e){
+//            System.err.println(e);
+//        }
+//    }
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;
