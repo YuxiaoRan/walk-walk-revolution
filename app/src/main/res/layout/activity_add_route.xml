@@ -36,16 +36,23 @@
         android:text="@string/start_point"
         />
 
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="fill_parent"
+        android:layout_height="100sp"
+        android:hint="Notes"
+        android:textAlignment="viewStart" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/done_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:src="@drawable/ic_done" />
 
 </LinearLayout>

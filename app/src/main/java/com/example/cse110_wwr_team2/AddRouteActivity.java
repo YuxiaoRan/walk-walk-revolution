@@ -20,6 +20,7 @@ public class AddRouteActivity extends AppCompatActivity {
     FloatingActionButton fab;
     AutoCompleteTextView start;
     AutoCompleteTextView name;
+    EditText note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class AddRouteActivity extends AppCompatActivity {
         fab = findViewById(R.id.done_add);
         start = findViewById(R.id.start_point);
         name = findViewById(R.id.route_name);
+        note = findViewById(R.id.note);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +49,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt);
+                    addNewRoute(step_cnt);
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",
@@ -63,7 +65,6 @@ public class AddRouteActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
     /*
      * This function checks whether the route_name already exists in the routes_list,
@@ -82,7 +83,10 @@ public class AddRouteActivity extends AppCompatActivity {
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void addNewRoute(String route_name, String start_point, int step_cnt){
+    public void addNewRoute(int step_cnt){
+        String route_name = name.getText().toString();
+        String start_point = start.getText().toString();
+        String note_txt = note.getText().toString();
         SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -91,6 +95,7 @@ public class AddRouteActivity extends AppCompatActivity {
             editor.putStringSet("route_list", routes_list);
             editor.putString(route_name + "_start_point", start_point);
             editor.putInt(route_name + "_step_cnt", step_cnt);
+            editor.putString(route_name + "_note", note_txt);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);
