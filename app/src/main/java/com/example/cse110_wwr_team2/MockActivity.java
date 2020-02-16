@@ -121,6 +121,15 @@ public class MockActivity extends AppCompatActivity {
             finish();
         }
     }
+
+    /*
+    private void saveRecent(){
+        float dist = 0;
+    }
+*/
+
+
+
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"

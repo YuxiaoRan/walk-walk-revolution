@@ -37,7 +37,7 @@ public class InputHeightActivityUnitTest {
         scenario.onActivity(activity -> {
 
             // edit text and click button
-            EditText heightInput = activity.findViewById(R.id.input_height);
+            EditText heightInput = activity.findViewById(R.id.input_height_ft);
             Button btnDone = activity.findViewById(R.id.button_done);
             heightInput.setText(input.toString());
             btnDone.performClick();

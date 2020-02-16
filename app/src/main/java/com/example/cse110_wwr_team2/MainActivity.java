@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         // NOTE: for route details test only
         //clearRouteDetails();
+        //clearAllRoute();
 
         // check if user has input height
         checkUserInputHeight();
@@ -125,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void clearRouteDetails() {
         SharedPreferences spfs = getSharedPreferences("route_list", MODE_PRIVATE);
+        SharedPreferences.Editor editor = spfs.edit();
+        editor.clear().commit();
+    }
+
+    private void clearAllRoute() {
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         SharedPreferences.Editor editor = spfs.edit();
         editor.clear().commit();
     }
