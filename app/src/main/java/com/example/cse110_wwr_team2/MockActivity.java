@@ -105,7 +105,8 @@ public class MockActivity extends AppCompatActivity {
         return height;
     }
     public void setDistance(double dist){
-        distance.setText(Double.toString(dist));
+        double adjDist = Math.floor(dist*100) / 100;
+        distance.setText(Double.toString(adjDist));
     }
     public void launchAddRoute(){
         // use shared preferences to store the most recent mocked step and distance
