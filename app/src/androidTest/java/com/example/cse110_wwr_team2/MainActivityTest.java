@@ -38,7 +38,7 @@ public class MainActivityTest {
     @Test
     public void mainActivityTest() {
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.input_height),
+                allOf(withId(R.id.input_height_ft),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

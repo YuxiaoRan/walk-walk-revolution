@@ -1,6 +1,8 @@
 package com.example.cse110_wwr_team2.fitness;
 
 import androidx.annotation.NonNull;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.cse110_wwr_team2.MainActivity;
@@ -14,11 +16,14 @@ import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class MainFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "MainFitAdapter";
     private GoogleSignInAccount account;
     private final double STEP_OVER_HEIGHT = 0.414;
+    private final double INCH_PER_MILE = 63360;
 
     private MainActivity activity;
 
@@ -85,13 +90,17 @@ public class MainFitAdapter implements FitnessService {
                             @Override
                             public void onSuccess(DataSet dataSet) {
                                 Log.d(TAG, dataSet.toString());
-                                long total =
+
+//                                if(dataSet.isEmpty())
+//                                    activity.ClearMockData();
+
+                                int total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
 
                                 activity.setStepCount(total);
-                                activity.setCurrDistance(activity.getUserHeight() * total * STEP_OVER_HEIGHT);
+                                activity.setCurrDistance(getDistance(total));
                                 Log.d(TAG, "Total steps: " + total);
                             }
                         })
@@ -104,6 +113,11 @@ public class MainFitAdapter implements FitnessService {
                         });
     }
 
+
+
+    private double getDistance(long stepCount){
+        return activity.getUserHeight() * stepCount * STEP_OVER_HEIGHT / INCH_PER_MILE;
+    }
 
     @Override
     public int getRequestCode() {

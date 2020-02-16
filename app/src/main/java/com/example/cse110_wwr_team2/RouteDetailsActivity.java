@@ -73,7 +73,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchWalk(currRoute.getName());
             }
         });
-
+        Button mock = findViewById(R.id.mock_route);
+        mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchMock();
+            }
+        });
     }
     private void setSelectChips(ChipGroup[] allchips, String features){
         final int[] prefix = {findViewById(R.id.shape1).getId(),
@@ -108,6 +114,16 @@ public class RouteDetailsActivity extends AppCompatActivity {
         intent.putExtra("index", index);
         intent.putExtra("routeName", route);
         intent.putExtra("walkKey", "walk");
+        startActivity(intent);
+        finish();
+    }
+
+    public void launchMock(){
+        Intent intent = new Intent(this, InputMockTime.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route_list",(Serializable)routes);
+        intent.putExtra("BUNDLE",args);
+        intent.putExtra("index", index);
         startActivity(intent);
         finish();
     }

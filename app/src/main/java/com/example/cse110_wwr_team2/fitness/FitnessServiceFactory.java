@@ -3,6 +3,7 @@ package com.example.cse110_wwr_team2.fitness;
 import android.util.Log;
 
 import com.example.cse110_wwr_team2.MainActivity;
+import com.example.cse110_wwr_team2.MockActivity;
 import com.example.cse110_wwr_team2.WalkActivity;
 
 import java.util.HashMap;
@@ -28,6 +29,11 @@ public class FitnessServiceFactory {
     public static FitnessService create(String key, WalkActivity walkActivity) {
         Log.i(TAG, String.format("creating FitnessService for WalkActivity with key %s", key));
         return blueprints.get(key).create(walkActivity);
+    }
+
+    public static FitnessService create(String key, MockActivity mockActivity) {
+        Log.i(TAG, String.format("creating FitnessService for MockActivity with key %s", key));
+        return blueprints.get(key).create(mockActivity);
     }
 
     public interface BluePrint {
