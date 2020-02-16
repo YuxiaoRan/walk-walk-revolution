@@ -1,6 +1,8 @@
 package com.example.cse110_wwr_team2.fitness;
 
 import androidx.annotation.NonNull;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.cse110_wwr_team2.MainActivity;
@@ -13,6 +15,8 @@ import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class MainFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
@@ -86,7 +90,11 @@ public class MainFitAdapter implements FitnessService {
                             @Override
                             public void onSuccess(DataSet dataSet) {
                                 Log.d(TAG, dataSet.toString());
-                                long total =
+
+//                                if(dataSet.isEmpty())
+//                                    activity.ClearMockData();
+
+                                int total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
@@ -104,6 +112,8 @@ public class MainFitAdapter implements FitnessService {
                             }
                         });
     }
+
+
 
     private double getDistance(long stepCount){
         return activity.getUserHeight() * stepCount * STEP_OVER_HEIGHT / INCH_PER_MILE;

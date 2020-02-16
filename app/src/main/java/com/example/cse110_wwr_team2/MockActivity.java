@@ -104,6 +104,9 @@ public class MockActivity extends AppCompatActivity {
         distance.setText(Double.toString(dist));
     }
     public void launchAddRoute(){
+        // use shared preferences to store the most recent mocked step and distance
+        saveMockData();
+
         Log.d(TAG, "launchAddRoute: "+"currStep: "+currStep+" distance: "+distance.getText().toString());
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
@@ -122,6 +125,18 @@ public class MockActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    // save the mocking data for displaying on main page, etc
+    private void saveMockData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        int last_mock_step = sharedPreferences.getInt("mock_step",0);
+        float last_mock_distance = sharedPreferences.getFloat("mock_distance",0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("mock_step", currStep+last_mock_step);
+        editor.putFloat("mock_distance",Float.parseFloat(distance.getText().toString()) + last_mock_distance);
+        editor.commit();
     }
 
 
