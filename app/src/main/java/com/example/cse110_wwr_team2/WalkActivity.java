@@ -115,6 +115,7 @@ public class WalkActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance",Float.parseFloat(distance.getText().toString()));
+            saveRecent();
             startActivity(intent);
             finish();
         }else{
@@ -122,6 +123,7 @@ public class WalkActivity extends AppCompatActivity {
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
             RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
+            saveRecent();
             startActivity(intent);
             finish();
         }
@@ -135,6 +137,20 @@ public class WalkActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void saveRecent(){
+        SharedPreferences spfs = getSharedPreferences("recent_route", MODE_PRIVATE);
+        float dist = Float.parseFloat(distance.getText().toString());
+        SharedPreferences.Editor editor = spfs.edit();
+        try{
+            editor.clear();
+            editor.putInt("recent_step_cnt", currStep);
+            editor.putFloat("recent_distance", dist);
+        }catch (Exception e){
+            System.err.println(e);
+            Log.d(TAG, "saveRecent: "+e.toString());
         }
     }
 

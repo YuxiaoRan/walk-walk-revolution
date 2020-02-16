@@ -48,22 +48,23 @@ public class InputMockTime extends AppCompatActivity {
                     if(curr.isBefore(base)){
                         Log.d(TAG, "The input time is too early");
                         laterToast();
-                        //return;
+                        return;
                     }
                 }catch (Exception e){
                     Log.d(TAG, "There is an exception"+e.toString());
                     formatToast();
-                    //return;
+                    return;
                 }
                 startMocking();
             }
         });
     }
     private void laterToast(){
-        Toast.makeText(this, "Please enter a time later than"+base.toString(), Toast.LENGTH_LONG);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        Toast.makeText(InputMockTime.this, "Please enter a time later than"+formatter.format(base), Toast.LENGTH_LONG).show();
     }
     private void formatToast(){
-        Toast.makeText(this, "Check the format of your input", Toast.LENGTH_LONG);
+        Toast.makeText(InputMockTime.this, "Check the format of your input", Toast.LENGTH_LONG).show();
     }
     private void startMocking(){
         Intent inIntent = getIntent();

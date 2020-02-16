@@ -109,6 +109,7 @@ public class MockActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance", Float.parseFloat(distance.getText().toString()));
+            saveRecent();
             startActivity(intent);
             finish();
         }else{
@@ -117,16 +118,28 @@ public class MockActivity extends AppCompatActivity {
             //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
             RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
+            saveRecent();
             startActivity(intent);
             finish();
         }
     }
 
-    /*
+
     private void saveRecent(){
-        float dist = 0;
+        SharedPreferences spfs = getSharedPreferences("recent_route", MODE_PRIVATE);
+        float dist = Float.parseFloat(distance.getText().toString());
+        SharedPreferences.Editor editor = spfs.edit();
+        try{
+            editor.clear();
+            editor.putInt("recent_step_cnt", currStep);
+            editor.putFloat("recent_distance", dist);
+            editor.apply();
+        }catch (Exception e){
+            System.err.println(e);
+            Log.d(TAG, "saveRecent: "+e.toString());
+        }
     }
-*/
+
 
 
 
