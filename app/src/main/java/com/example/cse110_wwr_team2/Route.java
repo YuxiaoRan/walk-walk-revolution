@@ -16,12 +16,13 @@ public class Route implements Serializable {
     private float distance;
     private String features;
 
-    public Route(String start_point, String name, int step_cnt, String note, float distance){
+    public Route(String start_point, String name, int step_cnt, String note, String features, float distance){
         this.start_point = start_point;
         this.name = name;
         this.step_cnt = step_cnt;
         this.note = note;
-        this.features = "00000";
+        if(features == null)
+            this.features = "00000";
         this.distance = distance;
     }
 

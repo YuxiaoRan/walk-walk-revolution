@@ -54,11 +54,8 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-//<<<<<<< jerryxu
-                    addNewRoute(step_cnt);
-//=======
-                    RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(), step_cnt, distance,AddRouteActivity.this);
-//>>>>>>> Leo
+                    RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
+                            step_cnt, distance,note.getText().toString(), returnFeatures(),AddRouteActivity.this);
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",
@@ -152,7 +149,7 @@ public class AddRouteActivity extends AppCompatActivity {
         }
     }
 =======
-//    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance){
+//    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance, String note_txt, String feature){
 //        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
 //        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
 //        SharedPreferences.Editor editor = spfs.edit();
@@ -161,7 +158,8 @@ public class AddRouteActivity extends AppCompatActivity {
 //            editor.putStringSet("route_list", routes_list);
 //            editor.putString(route_name + "_start_point", start_point);
 //            editor.putInt(route_name + "_step_cnt", step_cnt);
-//            editor.putFloat(route_name + "_distance", distance);
+//            editor.putString(route_name + "_note", note_txt);
+//            editor.putString(route_name + "_features", feature);
 //            editor.apply();
 //        }catch (Exception e){
 //            System.err.println(e);

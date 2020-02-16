@@ -27,13 +27,15 @@ public class RouteSaver {
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         Iterator<String> itr = routes_list.iterator();
-        ArrayList<Route> routes = new ArrayList<Route>();
+        ArrayList<Route> routes = new ArrayList<>();
         while(itr.hasNext()){
             String route_name = itr.next();
             String route_start_point = spfs.getString(route_name + "_start_point", "");
             int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
+            String note = spfs.getString(route_name+"_note", "");
+            String features = spfs.getString(route_name+"_features", "00000");
             float distance = spfs.getFloat(route_name+"_distance", 0);
-            routes.add(new Route(route_start_point, route_name, step_cnt,distance));
+            routes.add(new Route(route_start_point, route_name, step_cnt, note, features, distance));
         }
         return routes;
     }
@@ -65,7 +67,8 @@ public class RouteSaver {
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public static void addNewRoute(String route_name, String start_point, int step_cnt, float distance,Context context){
+    public static void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
+                                   String note_txt, String feature, Context context){
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -74,7 +77,8 @@ public class RouteSaver {
             editor.putStringSet("route_list", routes_list);
             editor.putString(route_name + "_start_point", start_point);
             editor.putInt(route_name + "_step_cnt", step_cnt);
-            editor.putFloat(route_name + "_distance", distance);
+            editor.putString(route_name + "_note", note_txt);
+            editor.putString(route_name + "_features", feature);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);
