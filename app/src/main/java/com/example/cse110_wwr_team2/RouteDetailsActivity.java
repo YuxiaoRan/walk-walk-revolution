@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +36,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
         index = intent.getIntExtra("index",-1);
 
         currRoute = routes.get(index);
-
+        ChipGroup shapeTags = findViewById(R.id.shape_tags);
+        ChipGroup flatnessTags = findViewById(R.id.flatness_tags);
+        ChipGroup streetTags = findViewById(R.id.street_tags);
+        ChipGroup surfaceTags = findViewById(R.id.surface_tags);
+        ChipGroup difficultyTags = findViewById(R.id.difficulty_tags);
+        ChipGroup[] allChips = {shapeTags, flatnessTags, streetTags, surfaceTags, difficultyTags};
+        setSelectChips(allChips, currRoute.getFeatures());
 
         // set the text in UI
         TextView RouteName = findViewById(R.id.route_name);
@@ -64,7 +71,16 @@ public class RouteDetailsActivity extends AppCompatActivity {
         });
 
     }
-
+    private void setSelectChips(ChipGroup[] allchips, String features){
+        System.out.println(features);
+        for (int i = 0; i < features.length(); i++){
+            int index = Character.getNumericValue(features.charAt(i));
+            System.out.println(index);
+            if(index != 0){
+                allchips[i].findViewById(i * 2 + index).setSelected(true);
+            }
+        }
+    }
     public void launchRoute(){
         if(!curr_note.equals(note.getText().toString())) {
             SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);

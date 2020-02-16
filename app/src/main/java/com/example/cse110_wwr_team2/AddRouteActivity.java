@@ -80,7 +80,7 @@ public class AddRouteActivity extends AppCompatActivity {
                     Chip chip = chipGroup.findViewById(j);
                     if (chip != null){
                         Toast.makeText(getApplicationContext(), "Route is " + chip.getChipText() + " index is " + index, Toast.LENGTH_SHORT).show();
-                        features[index] = j;
+                        features[index] = j - index * 2;
                     }
                 }
             });

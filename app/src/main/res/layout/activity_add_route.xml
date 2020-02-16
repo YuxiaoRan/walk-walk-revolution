@@ -39,6 +39,12 @@
         android:text="@string/start_point"
         />
 
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="fill_parent"
+        android:layout_height="100sp"
+        android:hint="Notes"
+        android:textAlignment="viewStart" />
 
     <TextView
         android:id="@+id/feature_prompt"
@@ -48,13 +54,6 @@
         android:text="@string/feature_prompt"
         android:textSize="18dp"
         />
-
-    <EditText
-        android:id="@+id/note"
-        android:layout_width="fill_parent"
-        android:layout_height="100sp"
-        android:hint="Notes"
-        android:textAlignment="viewStart" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/shape_tags"
