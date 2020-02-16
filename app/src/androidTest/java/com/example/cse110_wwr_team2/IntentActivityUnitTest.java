@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_wwr_team2.fitness.FitnessService;
@@ -42,7 +43,7 @@ public class IntentActivityUnitTest {
 
         btn = routeActivity.findViewById(R.id.start_walk);
         try {
-            runOnUiThread(() -> {
+            UiThreadStatement.runOnUiThread(() -> {
                 btn.performClick();
                 TextView steps = routeActivity.findViewById(R.id.step_count);
                 TextView distance = routeActivity.findViewById(R.id.distance);

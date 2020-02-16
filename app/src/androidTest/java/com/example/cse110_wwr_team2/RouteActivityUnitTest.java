@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_wwr_team2.fitness.FitnessService;
@@ -53,7 +54,7 @@ public class RouteActivityUnitTest {
 
         Button btn = routeActivity.findViewById(R.id.stop_walking);
         try {
-            runOnUiThread(() -> {
+            UiThreadStatement.runOnUiThread(() -> {
 
                 btn.performClick();
                 // Stop Walk/Add Walk and test that values are not null
