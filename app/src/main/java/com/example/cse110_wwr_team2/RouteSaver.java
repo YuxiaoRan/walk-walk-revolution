@@ -80,4 +80,14 @@ public class RouteSaver {
             System.err.println(e);
         }
     }
+
+
+    // clear the mock data saved at midnight
+    public static void ClearMockData(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MOCKING",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("mock_step", 0);
+        editor.putFloat("mock_distance",0);
+        editor.commit();
+    }
 }

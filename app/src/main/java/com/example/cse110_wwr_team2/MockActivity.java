@@ -14,6 +14,7 @@ import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,6 +31,7 @@ public class MockActivity extends AppCompatActivity {
     private Route currRoute;
     private ArrayList<Route> routes;
     private int index;
+    private String startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class MockActivity extends AppCompatActivity {
         String time = intent.getStringExtra("timer");
         timer.setText(time);
 
+        startTime = intent.getStringExtra("time");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +90,7 @@ public class MockActivity extends AppCompatActivity {
     public void setCurrStep(int stepCount){
         currStep = stepCount;
     }
-    public long getCurrStep(){
+    public int getCurrStep(){
         return currStep;
     }
     public void incrementStep(){
@@ -105,6 +109,9 @@ public class MockActivity extends AppCompatActivity {
         distance.setText(Double.toString(adjDist));
     }
     public void launchAddRoute(){
+        // use shared preferences to store the most recent mocked step and distance
+        saveMockData();
+
         Log.d(TAG, "launchAddRoute: "+"currStep: "+currStep+" distance: "+distance.getText().toString());
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
@@ -125,6 +132,18 @@ public class MockActivity extends AppCompatActivity {
         }
     }
 
+    // save the mocking data for displaying on main page, etc
+    private void saveMockData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        int last_mock_step = sharedPreferences.getInt("mock_step",0);
+        float last_mock_distance = sharedPreferences.getFloat("mock_distance",0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("mock_step", currStep+last_mock_step);
+        editor.putFloat("mock_distance",Float.parseFloat(distance.getText().toString()) + last_mock_distance);
+        editor.commit();
+    }
+
 
     private void saveRecent(){
         SharedPreferences spfs = getSharedPreferences("recent_route", MODE_PRIVATE);
@@ -134,6 +153,7 @@ public class MockActivity extends AppCompatActivity {
             editor.clear();
             editor.putInt("recent_step_cnt", currStep);
             editor.putFloat("recent_distance", dist);
+            editor.putString("time", startTime);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);
