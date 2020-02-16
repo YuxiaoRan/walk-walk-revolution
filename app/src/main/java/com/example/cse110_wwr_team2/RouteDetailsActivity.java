@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
@@ -44,6 +47,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         ChipGroup[] allChips = {shapeTags, flatnessTags, streetTags, surfaceTags, difficultyTags};
         setSelectChips(allChips, currRoute.getFeatures());
 
+
         // set the text in UI
         TextView RouteName = findViewById(R.id.route_name);
         RouteName.setText(currRoute.getName());
@@ -72,12 +76,15 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
     }
     private void setSelectChips(ChipGroup[] allchips, String features){
-        System.out.println(features);
+        final int[] prefix = {findViewById(R.id.shape1).getId(),
+                findViewById(R.id.flatness1).getId(),
+                findViewById(R.id.street1).getId(),
+                findViewById(R.id.surface1).getId(),
+                findViewById(R.id.diff1).getId()};
         for (int i = 0; i < features.length(); i++){
             int index = Character.getNumericValue(features.charAt(i));
-            System.out.println(index);
             if(index != 0){
-                allchips[i].findViewById(i * 2 + index).setSelected(true);
+                allchips[i].findViewById(prefix[i] + index - 1).setSelected(true);
             }
         }
     }

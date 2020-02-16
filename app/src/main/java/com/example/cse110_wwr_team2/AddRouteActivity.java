@@ -78,8 +78,13 @@ public class AddRouteActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(ChipGroup chipGroup, int j) {
                     Chip chip = chipGroup.findViewById(j);
+                    j = j % 11;
+                    if (j == 0){
+                        j = 11;
+                    }
                     if (chip != null){
-                        Toast.makeText(getApplicationContext(), "Route is " + chip.getChipText() + " index is " + index, Toast.LENGTH_SHORT).show();
+                        int num = j - index * 2;
+                        Toast.makeText(getApplicationContext(), "The id is " + j + " and the number is" + num, Toast.LENGTH_SHORT).show();
                         features[index] = j - index * 2;
                     }
                 }
@@ -98,6 +103,7 @@ public class AddRouteActivity extends AppCompatActivity {
         for(int i = 0; i < features.length; i ++){
             f += features[i];
         }
+        System.out.println(f);
         return f;
     }
 
