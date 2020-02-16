@@ -46,9 +46,6 @@ public class WalkActivity extends AppCompatActivity {
 
         currStep = 0;
 
-        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-        int height = sharedPreferences.getInt("height", 0);
-
         stepCount = findViewById(R.id.step_count);
         distance = findViewById(R.id.distance);
 
@@ -61,7 +58,6 @@ public class WalkActivity extends AppCompatActivity {
             set currRoute only when it is actually passed
          */
         if(index != -1){
-
             Bundle args = intent.getBundleExtra("BUNDLE");
             routes = (ArrayList<Route>) args.getSerializable("route_list");
             currRoute = routes.get(index);
@@ -92,6 +88,7 @@ public class WalkActivity extends AppCompatActivity {
                 isCancel = true;
                 myTimer.cancel(isCancel);
                 walkTracker.cancel(isCancel);
+                updateInformation();
                 launchAddRoute();
             }
         });
@@ -138,6 +135,11 @@ public class WalkActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public void updateInformation(){
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+
     }
 
     private void saveRecent(){
