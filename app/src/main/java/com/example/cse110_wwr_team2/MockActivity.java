@@ -19,7 +19,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class MockActivity extends AppCompatActivity {
-    private long currStep;
+    private String TAG = "MockActivity";
+    private int currStep;
     private Button btn;
     private Button stop;
     private TextView stepCount;
@@ -82,7 +83,7 @@ public class MockActivity extends AppCompatActivity {
             }
         });
     }
-    public void setCurrStep(long stepCount){
+    public void setCurrStep(int stepCount){
         currStep = stepCount;
     }
     public long getCurrStep(){
@@ -103,21 +104,45 @@ public class MockActivity extends AppCompatActivity {
         distance.setText(Double.toString(dist));
     }
     public void launchAddRoute(){
+        Log.d(TAG, "launchAddRoute: "+"currStep: "+currStep+" distance: "+distance.getText().toString());
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance", Float.parseFloat(distance.getText().toString()));
+            saveRecent();
             startActivity(intent);
             finish();
         }else{
-            currRoute.updateStep((int)currStep);
+            currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
+            //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
+            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
+            saveRecent();
             startActivity(intent);
             finish();
         }
     }
+
+
+    private void saveRecent(){
+        SharedPreferences spfs = getSharedPreferences("recent_route", MODE_PRIVATE);
+        float dist = Float.parseFloat(distance.getText().toString());
+        SharedPreferences.Editor editor = spfs.edit();
+        try{
+            editor.clear();
+            editor.putInt("recent_step_cnt", currStep);
+            editor.putFloat("recent_distance", dist);
+            editor.apply();
+        }catch (Exception e){
+            System.err.println(e);
+            Log.d(TAG, "saveRecent: "+e.toString());
+        }
+    }
+
+
+
+
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
