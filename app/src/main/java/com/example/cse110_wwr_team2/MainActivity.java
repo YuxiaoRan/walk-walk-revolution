@@ -175,12 +175,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setStepCount(long total){
-        stepCount.setText(String.valueOf(total));
+
+    public void setStepCount(int total){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        int mock_step = sharedPreferences.getInt("mock_step",0);
+
+        stepCount.setText(String.valueOf(total+mock_step));
     }
 
     public void setCurrDistance(double distance){
-        CurrDistance.setText(String.valueOf(distance));
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
+        CurrDistance.setText(String.valueOf(distance + mock_distance));
     }
 
     public void setMainKey(String mainKey) {
@@ -191,6 +197,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
         int height = spfs.getInt("height",0);
         return height;
+    }
+
+    public void ClearMockData(){
+        RouteSaver.ClearMockData(this);
     }
 
     private class WalkTracker extends AsyncTask<String, String, String> {

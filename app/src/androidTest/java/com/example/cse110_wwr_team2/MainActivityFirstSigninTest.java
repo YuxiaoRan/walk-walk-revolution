@@ -52,7 +52,7 @@ public class MainActivityFirstSigninTest {
         ViewInteraction button = onView(withId(R.id.button_done));
         button.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatEditText = onView(withId(R.id.input_height));
+        ViewInteraction appCompatEditText = onView(withId(R.id.input_height_ft));
         appCompatEditText.perform(replaceText("175"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(withId(R.id.button_done));
