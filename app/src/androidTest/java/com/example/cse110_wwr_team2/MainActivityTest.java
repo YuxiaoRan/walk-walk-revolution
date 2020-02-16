@@ -38,14 +38,24 @@ public class MainActivityTest {
     @Test
     public void mainActivityTest() {
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.input_height),
+                allOf(withId(R.id.input_height_ft),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("180"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.input_height_in),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.button_done), withText("Start!"),
