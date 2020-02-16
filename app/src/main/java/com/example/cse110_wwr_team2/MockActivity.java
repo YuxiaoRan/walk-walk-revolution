@@ -14,6 +14,7 @@ import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,6 +31,7 @@ public class MockActivity extends AppCompatActivity {
     private Route currRoute;
     private ArrayList<Route> routes;
     private int index;
+    private String startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class MockActivity extends AppCompatActivity {
         String time = intent.getStringExtra("timer");
         timer.setText(time);
 
+        startTime = intent.getStringExtra("time");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +90,7 @@ public class MockActivity extends AppCompatActivity {
     public void setCurrStep(int stepCount){
         currStep = stepCount;
     }
-    public long getCurrStep(){
+    public int getCurrStep(){
         return currStep;
     }
     public void incrementStep(){
@@ -148,6 +152,7 @@ public class MockActivity extends AppCompatActivity {
             editor.clear();
             editor.putInt("recent_step_cnt", currStep);
             editor.putFloat("recent_distance", dist);
+            editor.putString("time", startTime);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);

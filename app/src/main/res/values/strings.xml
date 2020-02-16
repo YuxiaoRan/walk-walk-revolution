@@ -9,7 +9,8 @@
     <string name="distance_title">Miles:</string>
     <string name="distance">0</string>
     <string name="stop_walking">STOP</string>
-
+    <string name="main_intention_time_title">Time:</string>>
+    <string name="main_intention_time">NAN</string>>
     <string name="app_name">Walk-Walk Revolution</string>
     <string name="server_client_id">
         65341593736-sigpmap8t83o0qjging2qriemksk2l80.apps.googleusercontent.com</string>

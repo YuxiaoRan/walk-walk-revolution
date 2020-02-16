@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView CurrDistance;
     private TextView lastStepCnt;
     private TextView lastDist;
+    private TextView lastTime;
 
     private WalkTracker walkTracker;
     private boolean isCancel;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         lastStepCnt = findViewById(R.id.main_intention_step_count);
         lastDist = findViewById(R.id.main_intention_distance);
+        lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
 
         FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
@@ -133,9 +135,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("recent_route", MODE_PRIVATE);
         int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
         float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
+        String startTime = sharedPreferences.getString("time", "NAN");
         Log.d(TAG, "setUpLastStat: "+"lastStepCount "+lastStep+" lastDistance "+lastDistance);
         lastStepCnt.setText(Integer.toString(lastStep));
         lastDist.setText(Float.toString(lastDistance));
+        lastTime.setText(startTime);
     }
 
     private void clearUserInfo() {
