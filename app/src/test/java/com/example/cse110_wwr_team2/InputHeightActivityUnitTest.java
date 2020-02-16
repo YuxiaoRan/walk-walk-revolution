@@ -19,7 +19,8 @@ import static com.google.common.truth.Truth.assertThat;
 public class InputHeightActivityUnitTest {
 
     private Intent intent;
-    private static final Integer MY_HEIGHT = 175;
+    private static final Integer MY_HEIGHT = 5;
+    private static final int EXPECTED_HEIGHT = 65;
     private static final Integer INVALID_HEIGHT = -2;
     private static final String WRONG_FORMAT = "abc";
     private static final int DEFAULT_HEIGHT = 0;
@@ -37,9 +38,11 @@ public class InputHeightActivityUnitTest {
         scenario.onActivity(activity -> {
 
             // edit text and click button
-            EditText heightInput = activity.findViewById(R.id.input_height);
+            EditText heightInputFt = activity.findViewById(R.id.input_height_ft);
+            EditText heightInputIn = activity.findViewById(R.id.input_height_in);
             Button btnDone = activity.findViewById(R.id.button_done);
-            heightInput.setText(input.toString());
+            heightInputFt.setText(input.toString());
+            heightInputIn.setText(input.toString());
             btnDone.performClick();
 
             // test shared prefs
@@ -59,7 +62,7 @@ public class InputHeightActivityUnitTest {
     @Test
     public void testInputHeight() {
         // input 175
-        automatedTestInputHeight(MY_HEIGHT, MY_HEIGHT, false);
+        automatedTestInputHeight(MY_HEIGHT, EXPECTED_HEIGHT, false);
 
         // invalid inputs: non-positive height and wrong format
         automatedTestInputHeight(INVALID_HEIGHT, DEFAULT_HEIGHT, DEFAULT_FIRST_LOGIN);

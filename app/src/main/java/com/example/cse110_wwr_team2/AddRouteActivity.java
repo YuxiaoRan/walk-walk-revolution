@@ -58,21 +58,25 @@ public class AddRouteActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        ChipGroup chipGroup = findViewById(R.id.tags);
+        // backend part of tags
+        ChipGroup shapeTags = findViewById(R.id.shape_tags);
+        ChipGroup flatnessTags = findViewById(R.id.flatness_tags);
+        ChipGroup streetTags = findViewById(R.id.street_tags);
+        ChipGroup surfaceTags = findViewById(R.id.surface_tags);
+        ChipGroup difficultyTags = findViewById(R.id.difficulty_tags);
 
-        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        // TODO: template
+        shapeTags.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
 
                 Chip chip = chipGroup.findViewById(i);
-                if (chip != null)
+                if (chip != null) {
+                    // TODO: store selected tag
                     Toast.makeText(getApplicationContext(), "Chip is " + chip.getChipText(), Toast.LENGTH_SHORT).show();
-
-
+                }
             }
         });
-        */
     }
 
 
