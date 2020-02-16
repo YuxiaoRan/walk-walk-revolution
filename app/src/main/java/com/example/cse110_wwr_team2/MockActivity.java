@@ -19,7 +19,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class MockActivity extends AppCompatActivity {
-    private long currStep;
+    private String TAG = "MockActivity";
+    private int currStep;
     private Button btn;
     private Button stop;
     private TextView stepCount;
@@ -82,7 +83,7 @@ public class MockActivity extends AppCompatActivity {
             }
         });
     }
-    public void setCurrStep(long stepCount){
+    public void setCurrStep(int stepCount){
         currStep = stepCount;
     }
     public long getCurrStep(){
@@ -103,6 +104,7 @@ public class MockActivity extends AppCompatActivity {
         distance.setText(Double.toString(dist));
     }
     public void launchAddRoute(){
+        Log.d(TAG, "launchAddRoute: "+"currStep: "+currStep+" distance: "+distance.getText().toString());
         if(currRoute == null) {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
@@ -110,9 +112,10 @@ public class MockActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }else{
-            currRoute.updateStep((int)currStep);
+            currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
+            //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
+            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
             startActivity(intent);
             finish();
