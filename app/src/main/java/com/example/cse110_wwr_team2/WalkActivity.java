@@ -148,6 +148,9 @@ public class WalkActivity extends AppCompatActivity {
             editor.clear();
             editor.putInt("recent_step_cnt", currStep);
             editor.putFloat("recent_distance", dist);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            editor.putString("time", formatter.format(base));
+            editor.apply();
         }catch (Exception e){
             System.err.println(e);
             Log.d(TAG, "saveRecent: "+e.toString());

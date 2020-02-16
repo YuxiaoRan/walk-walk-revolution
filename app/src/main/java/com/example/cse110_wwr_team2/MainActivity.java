@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView CurrDistance;
     private TextView lastStepCnt;
     private TextView lastDist;
+    private TextView lastTime;
 
     private WalkTracker walkTracker;
     private boolean isCancel;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         lastStepCnt = findViewById(R.id.main_intention_step_count);
         lastDist = findViewById(R.id.main_intention_distance);
+        lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
 
         FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
@@ -133,9 +135,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("recent_route", MODE_PRIVATE);
         int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
         float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
+        String startTime = sharedPreferences.getString("time", "NAN");
         Log.d(TAG, "setUpLastStat: "+"lastStepCount "+lastStep+" lastDistance "+lastDistance);
         lastStepCnt.setText(Integer.toString(lastStep));
         lastDist.setText(Float.toString(lastDistance));
+        lastTime.setText(startTime);
     }
 
     private void clearUserInfo() {
@@ -175,12 +179,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setStepCount(long total){
-        stepCount.setText(String.valueOf(total));
+
+    public void setStepCount(int total){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        int mock_step = sharedPreferences.getInt("mock_step",0);
+
+        stepCount.setText(String.valueOf(total+mock_step));
     }
 
     public void setCurrDistance(double distance){
-        CurrDistance.setText(String.valueOf(distance));
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
+        CurrDistance.setText(String.valueOf(distance + mock_distance));
     }
 
     public void setMainKey(String mainKey) {
@@ -191,6 +201,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
         int height = spfs.getInt("height",0);
         return height;
+    }
+
+    public void ClearMockData(){
+        RouteSaver.ClearMockData(this);
     }
 
     private class WalkTracker extends AsyncTask<String, String, String> {

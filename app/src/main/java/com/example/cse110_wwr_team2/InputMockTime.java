@@ -70,6 +70,9 @@ public class InputMockTime extends AppCompatActivity {
         Intent inIntent = getIntent();
         Intent outIntent = new Intent(this, MockActivity.class);
         String duration = getDuration();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        outIntent.putExtra("time", formatter.format(base));
         outIntent.putExtra("timer", duration);
         outIntent.putExtra("BUNDLE", inIntent.getBundleExtra("BUNDLE"));
         outIntent.putExtra("index", inIntent.getIntExtra("index",-1));
