@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class AddRouteActivity extends AppCompatActivity {
-
+    private String TAG ="AddRouteActivity";
     FloatingActionButton fab;
     AutoCompleteTextView start;
     AutoCompleteTextView name;
@@ -27,6 +28,7 @@ public class AddRouteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_route);
         Intent intent = getIntent();
@@ -56,6 +58,7 @@ public class AddRouteActivity extends AppCompatActivity {
                 if (checkName(name.getText().toString())){
                     RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
                             step_cnt, distance,note.getText().toString(), returnFeatures(),AddRouteActivity.this);
+                    Log.d(TAG, "onClick: "+returnFeatures());
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",

@@ -68,7 +68,7 @@ public class RouteSaver {
      * accordingly
      */
     public static void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
-                                   String note_txt, String feature, Context context){
+                                   String note_txt, String features, Context context){
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -78,7 +78,8 @@ public class RouteSaver {
             editor.putString(route_name + "_start_point", start_point);
             editor.putInt(route_name + "_step_cnt", step_cnt);
             editor.putString(route_name + "_note", note_txt);
-            editor.putString(route_name + "_features", feature);
+            editor.putString(route_name + "_features", features);
+            editor.putFloat(route_name + "_distance", distance);
             editor.apply();
         }catch (Exception e){
             System.err.println(e);

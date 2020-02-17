@@ -21,8 +21,7 @@ public class Route implements Serializable {
         this.name = name;
         this.step_cnt = step_cnt;
         this.note = note;
-        if(features == null)
-            this.features = "00000";
+        this.features = features;
         this.distance = distance;
     }
 
