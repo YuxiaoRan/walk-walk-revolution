@@ -30,6 +30,8 @@ public class MockWalkAdapter implements FitnessService {
     @Override
     public void updateStepCount(){
         activity.incrementStep();
+        //System.out.println(getDistance(activity.getCurrStep()));
+        //System.out.println(activity.getUserHeight());
         activity.setDistance(getDistance(activity.getCurrStep()));
         activity.setStepCount();
     }

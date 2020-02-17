@@ -3,17 +3,20 @@ package com.example.cse110_wwr_team2;
 import android.content.SharedPreferences;
 import android.widget.TextView;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.content.Context.MODE_PRIVATE;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
+@RunWith(AndroidJUnit4.class)
 public class MainActivityUnitTest {
 
     @Rule
@@ -28,6 +31,7 @@ public class MainActivityUnitTest {
 
     @Test
     public void testMainLaunch() {
+
         TextView mainSteps = mainActivity.findViewById(R.id.main_step_count);
         TextView mainDistance = mainActivity.findViewById(R.id.main_distance);
 
