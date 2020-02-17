@@ -23,17 +23,13 @@ public class DisplayDistanceTraveledTest {
         scenario = scenarioRule.getScenario();
     }
 
-    // fill in id when master is updated
-    private void init(MainActivity mainActivity) {
-        //DistanceTraveled = mainActivity.findViewById();
-    }
 
     @Test
     public void testDistanceDisplayed(){
-//        scenario.onActivity(activity -> {
-//             DistanceTraveled = activity.findViewById(R.id.);
-//             assertTrue(DistanceTraveled.isShown());
-//        });
+        scenario.onActivity(activity -> {
+             DistanceTraveled = activity.findViewById(R.id.main_distance);
+             assertTrue(DistanceTraveled.isShown());
+        });
     }
 
 

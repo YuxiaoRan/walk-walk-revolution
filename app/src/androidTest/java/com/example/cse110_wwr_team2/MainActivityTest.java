@@ -35,6 +35,8 @@ public class MainActivityTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    public ActivityTestRule<FirstPageActivity> firstPageActivityActivityTestRule = new ActivityTestRule<>(FirstPageActivity.class);
+
     @Test
     public void mainActivityTest() {
         ViewInteraction appCompatEditText = onView(
