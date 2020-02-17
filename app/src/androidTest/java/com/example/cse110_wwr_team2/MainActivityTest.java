@@ -1,6 +1,7 @@
 package com.example.cse110_wwr_team2;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -33,162 +34,72 @@ import static org.hamcrest.Matchers.allOf;
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class, true, false);
 
     public ActivityTestRule<FirstPageActivity> firstPageActivityActivityTestRule = new ActivityTestRule<>(FirstPageActivity.class);
 
     @Test
     public void mainActivityTest() {
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.input_height_ft),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
+
+
+        Intent i = new Intent();
+        i.putExtra("test_label", true);
+        mActivityTestRule.launchActivity(i);
+
+        ViewInteraction appCompatEditText = onView(withId(R.id.input_height_ft));
         appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.input_height_in),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
+        ViewInteraction appCompatEditText2 = onView(withId(R.id.input_height_in));
+        appCompatEditText2.perform(replaceText("5"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.button_done), withText("Start!"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
+        ViewInteraction appCompatButton = onView(withId(R.id.button_done));
         appCompatButton.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_start), withText("Start new route"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        ViewInteraction button2 = onView(withId(R.id.button_start));
+        button2.check(matches(isDisplayed()));
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.stop_walking),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+        ViewInteraction button3 = onView(withId(R.id.button_route));
+        button3.check(matches(isDisplayed()));
+
+        ViewInteraction button4 = onView(withId(R.id.mock_btn));
+        button4.check(matches(isDisplayed()));
+
+        // deprecated tests
+        /*
+        ViewInteraction button = onView(withId(R.id.stop_walking));
         button.check(matches(isDisplayed()));
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.routeName), withText("New Route"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
+        ViewInteraction textView = onView(withId(R.id.routeName));
         textView.check(matches(withText("New Route")));
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.Time_Title), withText("Timer"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
+        ViewInteraction textView2 = onView(withId(R.id.Time_Title));
         textView2.check(matches(isDisplayed()));
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.step_title), withText("Step Count"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
+        ViewInteraction textView3 = onView(withId(R.id.step_title));
         textView3.check(matches(isDisplayed()));
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.distance_title), withText("Miles"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
+        ViewInteraction textView4 = onView(withId(R.id.distance_title));
         textView4.check(matches(isDisplayed()));
 
-        ViewInteraction textView5 = onView(
-                allOf(withId(R.id.distance_title), withText("Miles"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
+        ViewInteraction textView5 = onView(withId(R.id.distance_title));
         textView5.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.stop_walking), withText("STOP"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+        ViewInteraction appCompatButton3 = onView(withId(R.id.stop_walking));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatAutoCompleteTextView = onView(
-                allOf(withId(R.id.route_name),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
+        ViewInteraction appCompatAutoCompleteTextView = onView(withId(R.id.route_name));
         appCompatAutoCompleteTextView.perform(replaceText("aaaaa"), closeSoftKeyboard());
 
-        ViewInteraction appCompatAutoCompleteTextView2 = onView(
-                allOf(withId(R.id.start_point),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
+        ViewInteraction appCompatAutoCompleteTextView2 = onView(withId(R.id.start_point));
         appCompatAutoCompleteTextView2.perform(replaceText("b"), closeSoftKeyboard());
 
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.done_add),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
+        ViewInteraction floatingActionButton = onView(withId(R.id.done_add));
         floatingActionButton.perform(click());
 
-        ViewInteraction textView6 = onView(
-                allOf(withId(android.R.id.text1), withText("Route Name: b Start point: aaaaa"),
-                        childAtPosition(
-                                allOf(withId(R.id.route_list),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
+        ViewInteraction textView6 = onView(withId(android.R.id.text1));
         textView6.check(matches(isDisplayed()));
+        */
     }
 
     private static Matcher<View> childAtPosition(
