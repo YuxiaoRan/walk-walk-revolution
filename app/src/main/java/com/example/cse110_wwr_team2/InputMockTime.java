@@ -61,7 +61,7 @@ public class InputMockTime extends AppCompatActivity {
     }
     private void laterToast(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        Toast.makeText(InputMockTime.this, "Please enter a time later than"+formatter.format(base), Toast.LENGTH_LONG).show();
+        Toast.makeText(InputMockTime.this, "Please enter a time later than "+formatter.format(base), Toast.LENGTH_LONG).show();
     }
     private void formatToast(){
         Toast.makeText(InputMockTime.this, "Check the format of your input", Toast.LENGTH_LONG).show();

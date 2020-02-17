@@ -147,7 +147,7 @@ public class AddRouteUnitTest {
 
 
 
-    @After
+        @After
     public void tearDown() {
         routeActivity = null;
     }

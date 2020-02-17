@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.content.Context.MODE_PRIVATE;
-import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 

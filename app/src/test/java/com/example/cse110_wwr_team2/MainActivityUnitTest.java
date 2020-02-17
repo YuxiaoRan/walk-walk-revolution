@@ -1,12 +1,15 @@
 package com.example.cse110_wwr_team2;
 
 import android.content.Context;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
 
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -24,6 +27,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityUnitTest {
 
+    private Intent intent;
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class, true, false);
 
@@ -46,6 +50,7 @@ public class MainActivityUnitTest {
     @Test
     public void testMainLaunch() {
 
+
         mActivityTestRule.launchActivity(new Intent().putExtra("test_label", true));
         mainActivity = mActivityTestRule.getActivity();
 
@@ -59,6 +64,7 @@ public class MainActivityUnitTest {
         assertNotNull(mainDistance);
         assertNotNull(lastSteps);
         assertNotNull(lastDistance);
+
     }
 
     @Test
