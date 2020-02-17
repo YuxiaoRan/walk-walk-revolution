@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         setUpLastStat();
 
 
-        // not testing
+        // not mocking
         if(!isMock) {
             FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
                 @Override
