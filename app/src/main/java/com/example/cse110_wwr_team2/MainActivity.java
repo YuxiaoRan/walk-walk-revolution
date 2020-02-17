@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
 
         // NOTE: for InputHeight page test only
-        // clearUserInfo();
+        //clearUserInfo();
 
         // NOTE: for route details test only
         //clearRouteDetails();
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         // check if user has input height
         checkUserInputHeight();
 
+        Intent i = getIntent();
+        boolean isTest = i.getBooleanExtra("test_label", false);
 
         stepCount = findViewById(R.id.main_step_count);
         CurrDistance = findViewById(R.id.main_distance);
@@ -61,53 +63,83 @@ public class MainActivity extends AppCompatActivity {
         lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
 
-        FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(AppCompatActivity mainActivity) {
-                return new MainFitAdapter((MainActivity) mainActivity);
-            }
-        });
-        FitnessServiceFactory.put(walkKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(AppCompatActivity walkActivity) {
-                return new WalkFitAdapter((WalkActivity) walkActivity);
-            }
-        });
-        fitnessService = FitnessServiceFactory.create(mainKey, this);
-        fitnessService.setup();
-        walkTracker = new WalkTracker();
-        isCancel = false;
-        walkTracker.execute();
+        // not testing
+        if(!isTest) {
+            FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
+                @Override
+                public FitnessService create(AppCompatActivity mainActivity) {
+                    return new MainFitAdapter((MainActivity) mainActivity);
+                }
+            });
+            FitnessServiceFactory.put(walkKey, new FitnessServiceFactory.BluePrint() {
+                @Override
+                public FitnessService create(AppCompatActivity walkActivity) {
+                    return new WalkFitAdapter((WalkActivity) walkActivity);
+                }
+            });
+            fitnessService = FitnessServiceFactory.create(mainKey, this);
+            fitnessService.setup();
 
-        startRoute = (Button) findViewById(R.id.button_start);
-        startRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCancel = true;
-                walkTracker.cancel(isCancel);
-                goToWalk();
-            }
-        });
+            walkTracker = new WalkTracker();
+            isCancel = false;
+            walkTracker.execute();
 
-        toRoute = (Button) findViewById(R.id.button_route);
-        toRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isCancel = true;
-                walkTracker.cancel(isCancel);
-                goToRoute();
-            }
-        });
+            startRoute = (Button) findViewById(R.id.button_start);
+            startRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToWalk();
+                }
+            });
 
-        mock = findViewById(R.id.mock_btn);
-        mock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isCancel = true;
-                walkTracker.cancel(isCancel);
-                goToMock();
-            }
-        });
+            toRoute = (Button) findViewById(R.id.button_route);
+            toRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToRoute();
+                }
+            });
+
+            mock = findViewById(R.id.mock_btn);
+            mock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToMock();
+                }
+            });
+        }
+        // while unit testing, avoid using walktracker
+        else {
+            startRoute = (Button) findViewById(R.id.button_start);
+            startRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToWalk();
+                }
+            });
+
+            toRoute = (Button) findViewById(R.id.button_route);
+            toRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToRoute();
+                }
+            });
+
+            mock = findViewById(R.id.mock_btn);
+            mock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToMock();
+                }
+            });
+        }
     }
 
     private void goToRoute() {

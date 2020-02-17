@@ -2,6 +2,7 @@ package com.example.cse110_wwr_team2;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,9 @@ public class MainActivityFirstSigninTest {
 
     @Test
     public void testMainActivityFirstSignin() throws InterruptedException {
-        mActivityTestRule.launchActivity(null);
-
+        Intent i = new Intent();
+        i.putExtra("test_label", true);
+        mActivityTestRule.launchActivity(i);
 
 
         SharedPreferences spfs = mActivityTestRule.getActivity()
@@ -53,11 +55,10 @@ public class MainActivityFirstSigninTest {
         button.check(matches(isDisplayed()));
 
         ViewInteraction appCompatEditText = onView(withId(R.id.input_height_ft));
-
         appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(withId(R.id.input_height_in));
-        appCompatEditText.perform(replaceText("5"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("5"), closeSoftKeyboard());
 
 
         ViewInteraction appCompatButton = onView(withId(R.id.button_done));
