@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="route_names">
+        <item>myFirstRoute</item>
+        <item>mySecondRoute</item>
+        <item>myThirdRoute</item>
+        <item>yourFirstRoute</item>
+        <item>yourSecondRoute</item>
+        <item>yourThirdRoute</item>
+    </array>
+    <array name="start_points">
+        <item>geisel</item>
+        <item>pepper canyon</item>
+        <item>center hall</item>
+        <item>biomedical library</item>
+        <item>warren lecture hall</item>
+        <item>price center</item>
+    </array>
+</resources>

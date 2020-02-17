@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,9 +42,20 @@ public class AddRouteActivity extends AppCompatActivity {
         name = findViewById(R.id.route_name);
         note = findViewById(R.id.note);
 
+        // autocomplete options
+        String[] nameSuggestion = getResources().getStringArray(R.array.route_names);
+        String[] startSuggestion = getResources().getStringArray(R.array.start_points);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.select_dialog_item, nameSuggestion);
+        ArrayAdapter<String> startAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.select_dialog_item, startSuggestion);
+        name.setAdapter(nameAdapter);
+        start.setAdapter(startAdapter);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // If the user does not enter anything in the field
                 if (name.getText().toString().equals("")){
                     Toast.makeText(AddRouteActivity.this,
