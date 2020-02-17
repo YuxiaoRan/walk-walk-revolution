@@ -5,21 +5,12 @@ import android.content.Context;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.fitness.FitnessService;
-import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +18,6 @@ import org.junit.runner.RunWith;
 
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)

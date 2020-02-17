@@ -102,7 +102,7 @@ public class AddRouteActivity extends AppCompatActivity {
                     }
                     if (chip != null){
                         int num = j - index * 2;
-                        Toast.makeText(getApplicationContext(), "The id is " + j + " and the number is" + num, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "The id is " + j + " and the number is" + num, Toast.LENGTH_SHORT).show();
                         features[index] = j - index * 2;
                     }
                 }
