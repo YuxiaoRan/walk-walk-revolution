@@ -1,14 +1,19 @@
 package com.example.cse110_wwr_team2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
+import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,47 +21,100 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4.class)
 public class IntentActivityUnitTest {
-
-    private String walkKey;
-    private FitnessService fitnessService;
-    private int index;
-
-    @Rule
-    public ActivityTestRule<WalkActivity> wActivityTestRule = new ActivityTestRule<>(WalkActivity.class);
-    private WalkActivity walkActivity = null;
+    private static final String TEST_SERVICE = "TEST_SERVICE";
+    private Intent intent;
+    private int stepCount;
+    private final long Fifteen_SEC = 15 * 1000;
+    private final double STEP_OVER_HEIGHT = 0.414;
+    private final double INCH_PER_MILE = 63360;
+    private final int height = 69;
 
 
     @Before
     public void setUp() {
-        walkActivity = wActivityTestRule.getActivity();
-        Intent intent = walkActivity.getIntent();
-        index = intent.getIntExtra("index",-1);
-        walkKey = intent.getStringExtra("walkKey");
-        fitnessService = FitnessServiceFactory.create(walkKey, walkActivity);
-        fitnessService.setup();
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(AppCompatActivity walkActivity) {
+                return new TestFitnessService((WalkActivity) walkActivity);
+            }
+        });
+        intent = new Intent(ApplicationProvider.getApplicationContext(), WalkActivity.class);
+        //index = intent.getIntExtra("index",-1);
+        intent.putExtra("walkKey", TEST_SERVICE);
     }
 
     @Test
-    public void testWalkLaunch() {
+    public void testWalking() {
+        ActivityScenario<WalkActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            SharedPreferences sharedPreferences = activity.getSharedPreferences("user", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("height", height);
 
+            TextView steps = activity.findViewById(R.id.step_count);
+            TextView distance = activity.findViewById(R.id.distance);
+            stepCount = 0;
+            assertEquals("0",steps.getText().toString());
+            assertEquals("0", distance.getText().toString());
 
+            stepCount = 10;
+        });
+        //wait for 15 seconds to wait for the step to update
+        try {
+            Thread.sleep(Fifteen_SEC);
+        }catch (Exception e){
+            System.err.println("There is an exception in thread sleep");
+            assertFalse(true);
+        }
+        scenario.onActivity(activity -> {
+            TextView steps = activity.findViewById(R.id.step_count);
+            TextView distance = activity.findViewById(R.id.distance);
+            assertEquals("10", steps.getText().toString());
+        });
 
-        TextView steps = walkActivity.findViewById(R.id.step_count);
-        TextView distance = walkActivity.findViewById(R.id.distance);
-
-
-        assertNull(steps);
-        assertNull(distance);
 
     }
 
-    @After
-    public void tearDown() {
-        walkActivity = null;
+    private class TestFitnessService implements FitnessService {
+        private static final String TAG = "[TestFitnessService]: ";
+        private WalkActivity walkActivity;
+
+        public TestFitnessService(WalkActivity walkActivity) {
+            this.walkActivity = (WalkActivity)walkActivity;
+        }
+
+        @Override
+        public int getRequestCode() {
+            return 0;
+        }
+
+        @Override
+        public void setup() {
+            System.out.println(TAG + "setup");
+        }
+
+        @Override
+        public void updateStepCount() {
+            System.out.println(TAG + "updateStepCount");
+            walkActivity.setStepCount(stepCount);
+        }
+
+        private double getDistance(long stepCount){
+            return height * stepCount * STEP_OVER_HEIGHT / INCH_PER_MILE;
+        }
     }
+
 }

@@ -17,7 +17,7 @@ import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-    private String mainKey = "main";
+    public String mainKey = "main";
     private String walkKey = "walk";
     private FitnessService fitnessService;
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
 
-        FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put("main", new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(AppCompatActivity mainActivity) {
                 return new MainFitAdapter((MainActivity) mainActivity);

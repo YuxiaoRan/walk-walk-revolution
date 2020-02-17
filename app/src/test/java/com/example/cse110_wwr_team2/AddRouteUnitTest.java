@@ -1,11 +1,15 @@
 package com.example.cse110_wwr_team2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,114 +20,81 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
-import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class AddRouteUnitTest {
+    private FloatingActionButton btn;
+    private AutoCompleteTextView rName;
+    private AutoCompleteTextView start;
 
     @Rule
-    public ActivityTestRule<AddRouteActivity> rActivityTestRule = new ActivityTestRule<>(AddRouteActivity.class);
-    private AddRouteActivity routeActivity = null;
-
+    public ActivityScenarioRule<AddRouteActivity> rActivityTestRule = new ActivityScenarioRule<>(AddRouteActivity.class);
+    private ActivityScenario<AddRouteActivity> scenario;
 
     @Before
     public void setUp() {
-        routeActivity = rActivityTestRule.getActivity();
+        scenario = rActivityTestRule.getScenario();
     }
 
+    private void init(AddRouteActivity routeActivity) {
+        btn = routeActivity.findViewById(R.id.done_add);
+        rName = routeActivity.findViewById(R.id.route_name);
+        start = routeActivity.findViewById(R.id.start_point);
+    }
+
+    /*
     @Test
     public void testRouteLaunch() {
         ListView routeList = routeActivity.findViewById(R.id.route_list);
         assertNull(routeList);
-
-
-    }
+    }*/
 
     @Test
-    public void test1Route() {
+    public void testAddNewRoute() {
 
-        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
-
-        // Stop Walk/Add Walk and test that values are not null
-        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-        rName.setText("Test1");
-        start.setText("UCSD");
-        btn.performClick();
-
-        assertEquals(rName.getText().toString(), "Test1");
-        assertEquals(start.getText().toString(), "UCSD");
-
-        assertNotEquals(rName.getText().toString(), "Test2");
-        assertNotEquals(start.getText().toString(), "Market St.");
-
-
-
-        ArrayList<Route> allRoutes = RouteSaver.getAllRoutes(routeActivity);
-        assertEquals(allRoutes.size(), 1);
-
-    }
-
-    @Test
-    public void test2Route() {
-
-        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
-
-        // Stop Walk/Add Walk and test that values are not null
-        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-        rName.setText("Test1");
-        start.setText("UCSD");
-        btn.performClick();
-
-        assertEquals(rName.getText().toString(), "Test1");
-        assertEquals(start.getText().toString(), "UCSD");
-
-        AutoCompleteTextView rName2 = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start2 = routeActivity.findViewById(R.id.start_point);
-        rName2.setText("Test2");
-        start2.setText("Market St.");
-        btn.performClick();
-        assertEquals(rName2.getText().toString(), "Test2");
-        assertEquals(start2.getText().toString(), "Market St.");
-
-
-
-        ArrayList<Route> allRoutes = RouteSaver.getAllRoutes(routeActivity);
-        assertEquals(allRoutes.size(), 2);
-
-    }
-
-    @Test
-    public void test15Routes() {
-
-        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
-        // Save 15 routes
-        for(int i = 0; i < 15; i++) {
-            AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-            AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-            rName.setText("Test" + i);
-            start.setText("Route" + i);
+        scenario.onActivity(routeActivity->{
+            init(routeActivity);
+            rName.setText("Test1");
+            start.setText("UCSD");
             btn.performClick();
-            assertEquals(rName.getText().toString(), "Test" + i);
-            assertEquals(start.getText().toString(), "Route" + i);
-        }
-
-        ArrayList<Route> allRoutes = RouteSaver.getAllRoutes(routeActivity);
-        assertEquals(allRoutes.size(), 15);
-
+            SharedPreferences spfs = routeActivity.getSharedPreferences("all_routes", Context.MODE_PRIVATE);
+            Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+            // Testing whether the route is added
+            assertTrue(routes_list.contains("Test1"));
+            // Testing if the information is added
+            String startPnt = spfs.getString("Test1"+"_start_point", "");
+            // Testing if the value is correct
+            assertEquals("UCSD", startPnt);
+        });
     }
 
-
-
-
-    @After
-    public void tearDown() {
-        routeActivity = null;
+    @Test
+    public void testAddRouteWithDuplicateName(){
+        scenario.onActivity(routeActivity->{
+            init(routeActivity);
+            rName.setText("Test1");
+            start.setText("UCSD");
+            btn.performClick();
+        });
+        scenario.onActivity(routeActivity->{
+            init(routeActivity);
+            rName.setText("Test1");
+            start.setText("UCB");
+            btn.performClick();
+            // it should still be the same as before because the two route have the duplicate name
+            SharedPreferences spfs = routeActivity.getSharedPreferences("all_routes", Context.MODE_PRIVATE);
+            String startPnt = spfs.getString("Test1"+"_start_point", "");
+            // Testing if the value is correct
+            assertEquals("UCSD", startPnt);
+        });
     }
 }
