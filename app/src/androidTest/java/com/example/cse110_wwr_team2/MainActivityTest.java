@@ -37,7 +37,7 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<>(MainActivity.class, true, false);
 
-    public ActivityTestRule<FirstPageActivity> firstPageActivityActivityTestRule = new ActivityTestRule<>(FirstPageActivity.class);
+
 
     @Test
     public void mainActivityTest() {
