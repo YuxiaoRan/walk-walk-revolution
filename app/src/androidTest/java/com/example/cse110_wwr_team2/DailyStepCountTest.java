@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class DailyStepCountTest {
     @Rule
     public ActivityScenarioRule<MainActivity> scenarioMain = new ActivityScenarioRule<>(MainActivity.class);
@@ -24,14 +26,14 @@ public class DailyStepCountTest {
 
     // fill in id when master is updated
     private void init(MainActivity mainActivity) {
-        //DistanceTraveled = mainActivity.findViewById();
+        DistanceTraveled = mainActivity.findViewById(R.id.main_intention_distance);
     }
 
     @Test
     public void testDistanceDisplayed(){
-//        scenario.onActivity(activity -> {
-//             DistanceTraveled = activity.findViewById(R.id.);
-//             assertTrue(DistanceTraveled.isShown());
-//        });
+        scenariomain.onActivity(activity -> {
+             DistanceTraveled = activity.findViewById(R.id.main_intention_distance);
+             assertTrue(DistanceTraveled.isShown());
+        });
     }
 }

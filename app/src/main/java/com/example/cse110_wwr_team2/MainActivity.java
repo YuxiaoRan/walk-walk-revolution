@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //clearAllRoute();
 
         // check if user has input height
-        checkUserInputHeight();
+        // checkUserInputHeight();
 
 
         stepCount = findViewById(R.id.main_step_count);
@@ -160,24 +160,24 @@ public class MainActivity extends AppCompatActivity {
         editor.clear().commit();
     }
 
-    private void checkUserInputHeight() {
-        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
-
-        int heightInt = spfs.getInt("height", 0);
-        boolean isFirstTime = spfs.getBoolean("firstLogin", true);
-
-        if(heightInt > 0 && !isFirstTime) {
-            return;
-        } else {
-            // if it's first-time login, go to InputHeight page
-            goToInputHeight();
-        }
-    }
-
-    private void goToInputHeight() {
-        Intent intent = new Intent(this, InputHeightActivity.class);
-        startActivity(intent);
-    }
+//    private void checkUserInputHeight() {
+//        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+//
+//        int heightInt = spfs.getInt("height", 0);
+//        boolean isFirstTime = spfs.getBoolean("firstLogin", true);
+//
+//        if(heightInt > 0 && !isFirstTime) {
+//            return;
+//        } else {
+//            // if it's first-time login, go to InputHeight page
+//            goToInputHeight();
+//        }
+//    }
+//
+//    private void goToInputHeight() {
+//        Intent intent = new Intent(this, InputHeightActivity.class);
+//        startActivity(intent);
+//    }
 
 
     public void setStepCount(int total){
