@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -28,7 +30,7 @@ public class RouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route);
 
         listView = (ListView)findViewById(R.id.route_list);
-        getAllRoutes();
+        routes = RouteSaver.getAllRoutes(this);
 
         // set the route list to the adapter and display on listView
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
@@ -40,16 +42,27 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             // int position is the position index of the clicked item in the list
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                launchRouteDetails(routes.get(position));
+                Log.d("button", "item " + position + "in list");
+                launchRouteDetails(position);
             }
         });
 
         // the floating add button
-        FloatingActionButton fab = findViewById(R.id.add_route);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAdd = findViewById(R.id.add_route);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("button","add route in RouteActivity");
                 launchAddRoute();
+            }
+        });
+
+        FloatingActionButton fabHome = findViewById(R.id.back_home);
+        fabHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("button","back to home activity");
+                launchHome();
             }
         });
 
@@ -57,13 +70,26 @@ public class RouteActivity extends AppCompatActivity {
 
     public void launchAddRoute(){
         Intent intent = new Intent(this, AddRouteActivity.class);
+        Log.d("launch","Add Route from Route");
         startActivity(intent);
         finish();
     }
 
-    public void launchRouteDetails(Route route){
+    public void launchRouteDetails(int i){
         Intent intent = new Intent(this, RouteDetailsActivity.class);
-        intent.putExtra("route", route.toList());
+        Bundle args = new Bundle();
+        args.putSerializable("route_list",(Serializable)routes);
+        intent.putExtra("BUNDLE",args);
+        intent.putExtra("index", i);
+
+        startActivity(intent);
+        finish();
+    }
+
+    // launch main activity
+    public void launchHome(){
+        Intent intent = new Intent(this, MainActivity.class);
+        Log.d("launch","Home from Home");
         startActivity(intent);
         finish();
     }
@@ -79,16 +105,17 @@ public class RouteActivity extends AppCompatActivity {
      *          "{route_name}_step_cnt" stores the int number of the step counts
      *               of the route with route_name
      */
-    public void getAllRoutes(){
-        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        Iterator<String> itr = routes_list.iterator();
-        routes = new ArrayList<Route>();
-        while(itr.hasNext()){
-            String route_name = itr.next();
-            String route_start_point = spfs.getString(route_name + "_start_point", "");
-            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
-            routes.add(new Route(route_name, route_start_point, step_cnt));
-        }
-    }
+//    public void getAllRoutes(){
+//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
+//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
+//        Iterator<String> itr = routes_list.iterator();
+//        routes = new ArrayList<Route>();
+//        while(itr.hasNext()){
+//            String route_name = itr.next();
+//            String route_start_point = spfs.getString(route_name + "_start_point", "");
+//            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
+//            float distance = spfs.getFloat(route_name+"_distance", 0);
+//            routes.add(new Route(route_start_point, route_name, step_cnt,distance));
+//        }
+//    }
 }

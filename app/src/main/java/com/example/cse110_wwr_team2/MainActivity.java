@@ -3,104 +3,143 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
-import com.example.cse110_wwr_team2.fitness.GoogleFitAdapter;
+import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
+import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    private String fitnessServiceKey = "GOOGLE_FIT";
-
-
-    //For main activity step count
-    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
-    private static final String TAG = "MainActivity";
-    private TextView textSteps;
+    private String TAG = "MainActivity";
+    private String mainKey = "main";
+    private String walkKey = "walk";
     private FitnessService fitnessService;
 
     private Button toRoute;
     private Button startRoute;
+    private Button mock;
+    private TextView stepCount;
+    private TextView CurrDistance;
+    private TextView lastStepCnt;
+    private TextView lastDist;
+    private TextView lastTime;
+
+    private WalkTracker walkTracker;
+    private boolean isCancel;
+    private final long TEN_SEC = 10 * 1000;
+
+    private final double STEP_OVER_HEIGHT = 0.414;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate: ");
 
         // NOTE: for InputHeight page test only
-        // clearUserInfo();
+        //clearUserInfo();
 
         // NOTE: for route details test only
-        // clearRouteDetails();
+        //clearRouteDetails();
+        //clearAllRoute();
 
         // check if user has input height
         checkUserInputHeight();
 
+        Intent i = getIntent();
+        boolean isTest = i.getBooleanExtra("test_label", false);
 
-        // Step counter stuff
-        textSteps = findViewById(R.id.totalStepDisplay);
+        stepCount = findViewById(R.id.main_step_count);
+        CurrDistance = findViewById(R.id.main_distance);
 
-        String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
-        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-            @Override
-            public FitnessService create(MainActivity stepCountActivity) {
-                return new GoogleFitAdapter(stepCountActivity);
-            }
-        });
-        fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
+        lastStepCnt = findViewById(R.id.main_intention_step_count);
+        lastDist = findViewById(R.id.main_intention_distance);
+        lastTime = findViewById(R.id.main_intention_time);
+        setUpLastStat();
 
-        fitnessService.setup();
+        // not testing
+        if(!isTest) {
+            FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
+                @Override
+                public FitnessService create(AppCompatActivity mainActivity) {
+                    return new MainFitAdapter((MainActivity) mainActivity);
+                }
+            });
+            FitnessServiceFactory.put(walkKey, new FitnessServiceFactory.BluePrint() {
+                @Override
+                public FitnessService create(AppCompatActivity walkActivity) {
+                    return new WalkFitAdapter((WalkActivity) walkActivity);
+                }
+            });
+            fitnessService = FitnessServiceFactory.create(mainKey, this);
+            fitnessService.setup();
 
+            walkTracker = new WalkTracker();
+            isCancel = false;
+            walkTracker.execute();
 
+            startRoute = (Button) findViewById(R.id.button_start);
+            startRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToWalk();
+                }
+            });
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                fitnessService.updateStepCount();
-            }
-        };
-        final Timer t = new Timer();
-        long delay = 0;
-        long duration = 10;
-        t.scheduleAtFixedRate(task, delay, duration);
+            toRoute = (Button) findViewById(R.id.button_route);
+            toRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToRoute();
+                }
+            });
 
+            mock = findViewById(R.id.mock_btn);
+            mock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isCancel = true;
+                    walkTracker.cancel(isCancel);
+                    goToMock();
+                }
+            });
+        }
+        // while unit testing, avoid using walktracker
+        else {
+            startRoute = (Button) findViewById(R.id.button_start);
+            startRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToWalk();
+                }
+            });
 
+            toRoute = (Button) findViewById(R.id.button_route);
+            toRoute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToRoute();
+                }
+            });
 
-        // NOTE: for InputHeight page test only
-        // clearUserInfo();
-
-        // NOTE: for route details test only
-        // clearRouteDetails();
-
-        // check if user has input height
-        checkUserInputHeight();
-
-        fitnessService.updateStepCount();
-        fitnessService.setup();
-
-
-
-        toRoute = (Button) findViewById(R.id.button_route);
-        toRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToRoute();
-            }
-        });
-
-        startRoute = (Button) findViewById(R.id.button_start);
-        startRoute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToWalk();
-            }
-        });
+            mock = findViewById(R.id.mock_btn);
+            mock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToMock();
+                }
+            });
+        }
     }
 
     private void goToRoute() {
@@ -112,7 +151,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WalkActivity.class);
         String routeName = null;
         intent.putExtra("routeName", routeName);
+        intent.putExtra("walkKey",walkKey);
         startActivity(intent);
+    }
+
+    private void goToMock(){
+        Intent intent = new Intent(this, InputMockTime.class);
+        startActivity(intent);
+    }
+
+    /**
+     * the method to set up last intentional step count and distance
+     */
+    private void setUpLastStat(){
+        SharedPreferences sharedPreferences = getSharedPreferences("recent_route", MODE_PRIVATE);
+        int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
+        float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
+        String startTime = sharedPreferences.getString("time", "NAN");
+        Log.d(TAG, "setUpLastStat: "+"lastStepCount "+lastStep+" lastDistance "+lastDistance);
+        lastStepCnt.setText(Integer.toString(lastStep));
+        lastDist.setText(Float.toString(lastDistance));
+        lastTime.setText(startTime);
     }
 
     private void clearUserInfo() {
@@ -123,6 +182,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void clearRouteDetails() {
         SharedPreferences spfs = getSharedPreferences("route_list", MODE_PRIVATE);
+        SharedPreferences.Editor editor = spfs.edit();
+        editor.clear().commit();
+    }
+
+    private void clearAllRoute() {
+        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
         SharedPreferences.Editor editor = spfs.edit();
         editor.clear().commit();
     }
@@ -146,7 +211,68 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setStepCount(long stepCount) {
-        textSteps.setText(String.valueOf(stepCount));
+
+    public void setStepCount(int total){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        int mock_step = sharedPreferences.getInt("mock_step",0);
+
+        stepCount.setText(String.valueOf(total+mock_step));
+    }
+
+    public void setCurrDistance(double distance){
+        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
+        CurrDistance.setText(String.valueOf(distance + mock_distance));
+    }
+
+    public void setMainKey(String mainKey) {
+        this.mainKey = mainKey;
+    }
+
+    public int getUserHeight(){
+        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+        int height = spfs.getInt("height",0);
+        return height;
+    }
+
+    public void ClearMockData(){
+        RouteSaver.ClearMockData(this);
+    }
+
+    private class WalkTracker extends AsyncTask<String, String, String> {
+        private String resp;
+
+        @Override
+        protected String doInBackground(String... param){
+            try{
+                Log.d("TAG","In Task");
+                while(!isCancel) {
+                    publishProgress(resp);
+                    long time = TEN_SEC;
+                    Thread.sleep(time);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                resp = e.getMessage();
+            }
+            return resp;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            fitnessService.updateStepCount();
+        }
+
+        @Override
+        protected  void onCancelled(){
+            super.onCancelled();
+            Log.d("TAG","onCancelled");
+        }
     }
 }

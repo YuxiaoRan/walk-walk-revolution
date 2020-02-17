@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.android.material.button.MaterialButton;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class RouteDetailsActivity extends AppCompatActivity {
+
+    private Route currRoute;
+    private ArrayList<Route> routes;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +25,19 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
         // get the string passed from route activity
         Intent intent = getIntent();
-        final String[] route = intent.getStringArrayExtra("route");
+        // final String[] route = intent.getStringArrayExtra("route");
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        routes = (ArrayList<Route>) args.getSerializable("route_list");
+        index = intent.getIntExtra("index",-1);
+
+        currRoute = routes.get(index);
+
 
         // set the text in UI
         TextView RouteName = findViewById(R.id.route_name);
-        RouteName.setText(route[0]);
+        RouteName.setText(currRoute.getName());
         TextView StartPoint = findViewById(R.id.start_point);
-        StartPoint.setText(route[1]);
+        StartPoint.setText(currRoute.getStartPoint());
 
 
         Button back = findViewById(R.id.done_add);
@@ -41,10 +51,16 @@ public class RouteDetailsActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchWalk(route[0]);
+                launchWalk(currRoute.getName());
             }
         });
-
+        Button mock = findViewById(R.id.mock_route);
+        mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchMock();
+            }
+        });
     }
 
     public void launchRoute(){
@@ -55,7 +71,22 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
     public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route_list",(Serializable)routes);
+        intent.putExtra("BUNDLE",args);
+        intent.putExtra("index", index);
         intent.putExtra("routeName", route);
+        intent.putExtra("walkKey", "walk");
+        startActivity(intent);
+        finish();
+    }
+
+    public void launchMock(){
+        Intent intent = new Intent(this, InputMockTime.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route_list",(Serializable)routes);
+        intent.putExtra("BUNDLE",args);
+        intent.putExtra("index", index);
         startActivity(intent);
         finish();
     }

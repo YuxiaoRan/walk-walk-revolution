@@ -5,11 +5,12 @@
     <string name="timer_title">Timer</string>
     <string name="timer">00:00:00</string>
     <string name="step_title">Step Count</string>
-    <string name="step_count">0</string>
-    <string name="distance_title">Miles</string>
+    <string name="step_count">NAN</string>
+    <string name="distance_title">Miles:</string>
     <string name="distance">0</string>
     <string name="stop_walking">STOP</string>
-
+    <string name="main_intention_time_title">Time:</string>>
+    <string name="main_intention_time">NAN</string>>
     <string name="app_name">Walk-Walk Revolution</string>
     <string name="server_client_id">
         65341593736-sigpmap8t83o0qjging2qriemksk2l80.apps.googleusercontent.com</string>
@@ -20,4 +21,14 @@
     <string name="button_done_text">Start!</string>
     <string name="go_to_routes_text">Go to my routes</string>
     <string name="start_new_routes_text">Start new route</string>
+    <string name="main_step_count_title">Total Step Count:</string>
+    <string name="main_current_title">Current Day</string>
+    <string name="last_intention_title">Last Intentional Walk</string>
+    <string name="height_unit_ft">ft.</string>
+    <string name="height_unit_in">in.</string>
+    <string name="feature_prompt">How does this route look like? (optional)</string>
+    <string name="update_btn">Increment Step Counts</string>
+    <string name="mock_btn">Mock</string>
+    <string name="mock_time_title">Please enter a valid time in millisecond</string>
+    <string name="mock_time">time in millisecond</string>
 </resources>
