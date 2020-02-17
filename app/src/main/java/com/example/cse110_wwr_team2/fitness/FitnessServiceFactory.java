@@ -21,11 +21,12 @@ public class FitnessServiceFactory {
         blueprints.put(key, bluePrint);
     }
 
-    public static FitnessService create(String key, MainActivity mainActivity) {
-        Log.i(TAG, String.format("creating FitnessService for MainActivity with key %s", key));
-        return blueprints.get(key).create(mainActivity);
+    public static FitnessService create(String key, AppCompatActivity activity) {
+        Log.i(TAG, String.format("creating FitnessService for activity with key %s", key));
+        return blueprints.get(key).create(activity);
     }
 
+    /*
     public static FitnessService create(String key, WalkActivity walkActivity) {
         Log.i(TAG, String.format("creating FitnessService for WalkActivity with key %s", key));
         return blueprints.get(key).create(walkActivity);
@@ -34,7 +35,7 @@ public class FitnessServiceFactory {
     public static FitnessService create(String key, MockActivity mockActivity) {
         Log.i(TAG, String.format("creating FitnessService for MockActivity with key %s", key));
         return blueprints.get(key).create(mockActivity);
-    }
+    }*/
 
     public interface BluePrint {
         FitnessService create(AppCompatActivity activity);
