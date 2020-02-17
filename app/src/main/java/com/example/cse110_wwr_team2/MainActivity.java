@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         // checkUserInputHeight();
 
         Intent i = getIntent();
-        boolean isTest = i.getBooleanExtra("test_label", false);
+        boolean isMock = i.getBooleanExtra("test_label", false);
 
         stepCount = findViewById(R.id.main_step_count);
         CurrDistance = findViewById(R.id.main_distance);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // not testing
-        if(!isTest) {
+        if(!isMock) {
             FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
                 @Override
                 public FitnessService create(AppCompatActivity mainActivity) {
