@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class WalkActivity extends AppCompatActivity {
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private String TAG = "WalkActivity";
     public TextView timer;
     private LocalTime base;

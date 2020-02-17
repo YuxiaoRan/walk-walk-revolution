@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 
@@ -119,10 +120,31 @@ public class AddRouteUnitTest {
 
     }
 
+    @Test
+    public void testNoRouteValues() {
+        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
+        btn.performClick();
+
+        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your route name");
+
+    }
+
+    @Test
+    public void testNoStartValues() {
+        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+        rName.setText("Test2");
+        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
+        btn.performClick();
+
+        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your start point");
+    }
 
 
 
-    @After
+        @After
     public void tearDown() {
         routeActivity = null;
     }

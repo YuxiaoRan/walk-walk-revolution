@@ -1,8 +1,11 @@
 package com.example.cse110_wwr_team2;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.TextView;
 
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -19,6 +22,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityUnitTest {
 
+    private Intent intent;
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -31,17 +35,22 @@ public class MainActivityUnitTest {
 
     @Test
     public void testMainLaunch() {
+        intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
 
-        TextView mainSteps = mainActivity.findViewById(R.id.main_step_count);
-        TextView mainDistance = mainActivity.findViewById(R.id.main_distance);
+        //Main activity
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent);
+        scenario.onActivity(activity -> {
+            TextView mainSteps = mainActivity.findViewById(R.id.main_step_count);
+            TextView mainDistance = mainActivity.findViewById(R.id.main_distance);
 
-        TextView lastSteps = mainActivity.findViewById(R.id.main_intention_step_count);
-        TextView lastDistance = mainActivity.findViewById(R.id.main_intention_distance);
+            TextView lastSteps = mainActivity.findViewById(R.id.main_intention_step_count);
+            TextView lastDistance = mainActivity.findViewById(R.id.main_intention_distance);
 
-        assertNotNull(mainSteps);
-        assertNotNull(mainDistance);
-        assertNotNull(lastSteps);
-        assertNotNull(lastDistance);
+            assertNotNull(mainSteps);
+            assertNotNull(mainDistance);
+            assertNotNull(lastSteps);
+            assertNotNull(lastDistance);
+        });
     }
 
     @Test
