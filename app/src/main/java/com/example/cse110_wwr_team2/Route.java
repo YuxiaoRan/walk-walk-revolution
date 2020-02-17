@@ -11,13 +11,17 @@ import java.io.Serializable;
 public class Route implements Serializable {
     private String start_point;
     private String name;
+    private String note;
     private int step_cnt;
     private float distance;
+    private String features;
 
-    public Route(String start_point, String name, int step_cnt, float distance){
+    public Route(String start_point, String name, int step_cnt, String note, String features, float distance){
         this.start_point = start_point;
         this.name = name;
         this.step_cnt = step_cnt;
+        this.note = note;
+        this.features = features;
         this.distance = distance;
     }
 
@@ -28,6 +32,20 @@ public class Route implements Serializable {
     public void setDistance(float distance){
         this.distance = distance;
     }
+
+    public Route(String start_point, String name, int step_cnt, String note, String features){
+        this.start_point = start_point;
+        this.name = name;
+        this.step_cnt = step_cnt;
+        this.note = note;
+        this.features = features;
+    }
+
+    public String getFeatures(){return this.features;}
+
+    public String getNote(){return this.note;}
+
+    public void updateNote(String newNote) {this.note = newNote;}
 
     public String getStartPoint(){
         return this.start_point;
@@ -50,7 +68,7 @@ public class Route implements Serializable {
     }
 
     public String toString(){
-        return "Route Name: " + this.name + " Start point: " + this.start_point + " Step Count: " + this.step_cnt;
+        return "Route Name: " + this.name + "\nStart point: " + this.start_point + "\nStep Count: " + this.step_cnt;
     }
 
     public String[] toList(){

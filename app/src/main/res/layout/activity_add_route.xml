@@ -8,87 +8,223 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     tools:context=".AddRouteActivity">
-
-    <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/route_name"
-        android:hint="@string/route_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:completionThreshold="1"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/route_name"
-        />
-
-    <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/start_point"
-        android:hint="@string/start_point"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:completionThreshold="1"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/start_point"
-        />
-
-
-    <TextView
-        android:id="@+id/feature_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/feature_prompt"
-        android:textSize="18dp"
-        />
-
-    <!--
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/tags"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:singleSelection="true">
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Entry"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/route_name"
+            android:hint="@string/route_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:completionThreshold="1"
+            />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tag1"/>
+            android:layout_gravity="center"
+            android:text="@string/route_name"
+            />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/start_point"
+            android:hint="@string/start_point"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:completionThreshold="1"
+            />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tag2"/>
+            android:layout_gravity="center"
+            android:text="@string/start_point"
+            />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <EditText
+            android:id="@+id/note"
+            android:layout_width="fill_parent"
+            android:layout_height="100sp"
+            android:hint="Notes"
+            android:textAlignment="viewStart" />
+
+        <TextView
+            android:id="@+id/feature_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tag3"/>
+            android:layout_marginTop="50dp"
+            android:text="@string/feature_prompt"
+            android:textSize="18dp"
+            />
 
-    </com.google.android.material.chip.ChipGroup>
-    -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/shape_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="loop"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="out-and-back"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/flatness_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="flat"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="hilly"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/street_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="street"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="trail"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/surface_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="even surface"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="uneven surface"/>
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/difficulty_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="20dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="easy"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="moderate"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="difficult"/>
+
+        </com.google.android.material.chip.ChipGroup>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/done_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_done" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/done_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_done" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
