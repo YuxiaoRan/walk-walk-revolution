@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class RouteDetailsActivity extends AppCompatActivity {
 
+    // For testing
     private Route currRoute;
     private ArrayList<Route> routes;
     private int index;
@@ -23,45 +24,49 @@ public class RouteDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_details);
 
+
         // get the string passed from route activity
         Intent intent = getIntent();
+
         // final String[] route = intent.getStringArrayExtra("route");
-        Bundle args = intent.getBundleExtra("BUNDLE");
-        routes = (ArrayList<Route>) args.getSerializable("route_list");
-        index = intent.getIntExtra("index",-1);
 
-        currRoute = routes.get(index);
+            Bundle args = intent.getBundleExtra("BUNDLE");
+            routes = (ArrayList<Route>) args.getSerializable("route_list");
+            index = intent.getIntExtra("index", -1);
 
-
-        // set the text in UI
-        TextView RouteName = findViewById(R.id.route_name);
-        RouteName.setText(currRoute.getName());
-        TextView StartPoint = findViewById(R.id.start_point);
-        StartPoint.setText(currRoute.getStartPoint());
+            currRoute = routes.get(index);
 
 
-        Button back = findViewById(R.id.done_add);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchRoute();
-            }
-        });
-        Button start = findViewById(R.id.start_walk);
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchWalk(currRoute.getName());
-            }
-        });
-        Button mock = findViewById(R.id.mock_route);
-        mock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchMock();
-            }
-        });
-    }
+            // set the text in UI
+            TextView RouteName = findViewById(R.id.route_name);
+            RouteName.setText(currRoute.getName());
+            TextView StartPoint = findViewById(R.id.start_point);
+            StartPoint.setText(currRoute.getStartPoint());
+
+
+            Button back = findViewById(R.id.done_add);
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchRoute();
+                }
+            });
+            Button start = findViewById(R.id.start_walk);
+            start.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchWalk(currRoute.getName());
+                }
+            });
+            Button mock = findViewById(R.id.mock_route);
+            mock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchMock();
+                }
+            });
+        }
+
 
     public void launchRoute(){
         Intent intent = new Intent(this, RouteActivity.class);
@@ -96,3 +101,4 @@ public class RouteDetailsActivity extends AppCompatActivity {
         launchRoute();
     }
 }
+
