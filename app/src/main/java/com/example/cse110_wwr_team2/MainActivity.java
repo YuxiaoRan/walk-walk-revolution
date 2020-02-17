@@ -17,7 +17,7 @@ import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-    public String mainKey = "main";
+    private String mainKey = "main";
     private String walkKey = "walk";
     private FitnessService fitnessService;
 
@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         //clearAllRoute();
 
         // check if user has input height
-        // checkUserInputHeight();
+        checkUserInputHeight();
 
         Intent i = getIntent();
-        boolean isMock = i.getBooleanExtra("test_label", false);
+        boolean isTest = i.getBooleanExtra("test_label", false);
 
         stepCount = findViewById(R.id.main_step_count);
         CurrDistance = findViewById(R.id.main_distance);
@@ -63,9 +63,8 @@ public class MainActivity extends AppCompatActivity {
         lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
 
-
-        // not mocking
-        if(!isMock) {
+        // not testing
+        if(!isTest) {
             FitnessServiceFactory.put(mainKey, new FitnessServiceFactory.BluePrint() {
                 @Override
                 public FitnessService create(AppCompatActivity mainActivity) {
@@ -141,14 +140,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
 
     private void goToRoute() {
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
     }
-  
+
     private void goToWalk() {
         Intent intent = new Intent(this, WalkActivity.class);
         String routeName = null;
@@ -194,24 +192,24 @@ public class MainActivity extends AppCompatActivity {
         editor.clear().commit();
     }
 
-//    private void checkUserInputHeight() {
-//        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
-//
-//        int heightInt = spfs.getInt("height", 0);
-//        boolean isFirstTime = spfs.getBoolean("firstLogin", true);
-//
-//        if(heightInt > 0 && !isFirstTime) {
-//            return;
-//        } else {
-//            // if it's first-time login, go to InputHeight page
-//            goToInputHeight();
-//        }
-//    }
-//
-//    private void goToInputHeight() {
-//        Intent intent = new Intent(this, InputHeightActivity.class);
-//        startActivity(intent);
-//    }
+    private void checkUserInputHeight() {
+        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+
+        int heightInt = spfs.getInt("height", 0);
+        boolean isFirstTime = spfs.getBoolean("firstLogin", true);
+
+        if(heightInt > 0 && !isFirstTime) {
+            return;
+        } else {
+            // if it's first-time login, go to InputHeight page
+            goToInputHeight();
+        }
+    }
+
+    private void goToInputHeight() {
+        Intent intent = new Intent(this, InputHeightActivity.class);
+        startActivity(intent);
+    }
 
 
     public void setStepCount(int total){
@@ -278,3 +276,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
