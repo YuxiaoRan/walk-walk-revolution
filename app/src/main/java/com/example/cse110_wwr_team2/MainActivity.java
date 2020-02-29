@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
@@ -244,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
     private class WalkTracker extends AsyncTask<String, String, String> {
         private String resp;
 
-        @Override
         protected String doInBackground(String... param){
             try{
                 Log.d("TAG","In Task");

@@ -1,6 +1,9 @@
-package com.example.cse110_wwr_team2;
+package com.example.cse110_wwr_team2.Route;
+
+import com.example.cse110_wwr_team2.RandomIDGenerator.UUIDGenerator;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /*
  * This is the simplest class for a route
@@ -9,20 +12,56 @@ import java.io.Serializable;
  *      int step_cnt: the step count of this route
  */
 public class Route implements Serializable {
+    private String id;
     private String start_point;
     private String name;
     private String note;
     private int step_cnt;
     private float distance;
     private String features;
+    private String userGmail;
+    private String userTeamID;
+
+    public Route(){}
 
     public Route(String start_point, String name, int step_cnt, String note, String features, float distance){
+        if(this.id == null){
+            // Ramdonly generating a route id
+            this.id = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
+        }
         this.start_point = start_point;
         this.name = name;
         this.step_cnt = step_cnt;
         this.note = note;
         this.features = features;
         this.distance = distance;
+    }
+
+    public Route(String start_point, String name, String note, int step_cnt, float distance, String features, String userGmail, String userTeamID) {
+        if(this.id == null){
+            // Ramdonly generating a route id
+            this.id = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
+        }
+        this.start_point = start_point;
+        this.name = name;
+        this.note = note;
+        this.step_cnt = step_cnt;
+        this.distance = distance;
+        this.features = features;
+        this.userGmail = userGmail;
+        this.userTeamID = userTeamID;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUserTeamID() {
+        return userTeamID;
+    }
+
+    public void setUserTeamID(String userTeamID) {
+        this.userTeamID = userTeamID;
     }
 
     public double getDistance(){
