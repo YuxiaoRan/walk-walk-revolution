@@ -1,11 +1,8 @@
 package com.example.cse110_wwr_team2;
 
-import android.content.Intent;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -18,9 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.shadows.ShadowToast;
 
-import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(AndroidJUnit4.class)
 public class RouteActivityUnitTest {
