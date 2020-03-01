@@ -18,7 +18,7 @@ public class RouteAdapter implements FireBaseFireStoreService {
     }
 
     @Override
-    public void read() {
+    public void read(String id) {
         // Need different implementation because getting data from firebase is an async task
     }
 }

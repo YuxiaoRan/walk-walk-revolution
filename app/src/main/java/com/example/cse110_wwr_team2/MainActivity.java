@@ -195,37 +195,19 @@ public class MainActivity extends AppCompatActivity {
         editor.clear().commit();
     }
 
-//    private void checkUserInputHeight() {
-//        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
-//
-//        int heightInt = spfs.getInt("height", 0);
-//        boolean isFirstTime = spfs.getBoolean("firstLogin", true);
-//
-//        if(heightInt > 0 && !isFirstTime) {
-//            return;
-//        } else {
-//            // if it's first-time login, go to InputHeight page
-//            goToInputHeight();
-//        }
-//    }
-//
-//    private void goToInputHeight() {
-//        Intent intent = new Intent(this, InputHeightActivity.class);
-//        startActivity(intent);
-//    }
-
-
     public void setStepCount(int total){
-        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
-        int mock_step = sharedPreferences.getInt("mock_step",0);
+        //SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+        //int mock_step = sharedPreferences.getInt("mock_step",0);
 
-        stepCount.setText(String.valueOf(total+mock_step));
+        //stepCount.setText(String.valueOf(total+mock_step));
+        stepCount.setText(String.valueOf(total));
     }
 
     public void setCurrDistance(double distance){
-        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
-        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
-        CurrDistance.setText(String.valueOf(distance + mock_distance));
+//        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
+//        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
+//        CurrDistance.setText(String.valueOf(distance + mock_distance));
+        CurrDistance.setText(String.valueOf(distance));
     }
 
     public void setMainKey(String mainKey) {

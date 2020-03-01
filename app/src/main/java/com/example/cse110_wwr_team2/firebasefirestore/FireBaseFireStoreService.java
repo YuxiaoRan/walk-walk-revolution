@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface FireBaseFireStoreService {
     public void write();
-    public void read();
+    public void read(String id);
 }

@@ -27,11 +27,12 @@ public class UserAdapter implements FireBaseFireStoreService {
     }
     @Override
     public void write() {
-        db.collection("Users").document(user.getGmail()).set(user);
+        db.collection("Users").document(user.getId()).set(user);
     }
 
     @Override
-    public void read() {
+    public void read(String id) {
         // Need different implementation because of getting data from firebase is an async task
+
     }
 }

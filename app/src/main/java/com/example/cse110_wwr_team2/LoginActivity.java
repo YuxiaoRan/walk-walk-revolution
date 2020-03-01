@@ -1,8 +1,10 @@
 package com.example.cse110_wwr_team2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,13 +19,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 0;
+    private static final String TAG = "LoginActivity: ";
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mAuth = FirebaseAuth.getInstance();
 
         configureSignInButton(signInButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
             Log.w("Google Sign In Error",
                     "signInResult:failed code=" + e.getStatusCode());
@@ -87,12 +101,59 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            saveUserInfo(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onStart() {
+        super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            saveUserInfo(currentUser);
+
+            SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+            int heightInt = spfs.getInt("height", 0);
+            boolean isFirstTime = spfs.getBoolean("firstLogin", true);
+
+            if(heightInt > 0 && !isFirstTime) {
+                startActivity(new Intent(this, MainActivity.class));
+            }else{
+                startActivity(new Intent(this, InputHeightActivity.class));
+            }
         }
-        super.onStart();
+    }
+
+    /**
+     * saving Firebase User's info
+     * @param user
+     */
+    private void saveUserInfo(FirebaseUser user){
+        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("id", user.getUid());
+        editor.putString("gmail", user.getEmail());
+        editor.putString("name", user.getDisplayName());
+        editor.apply();
     }
 }
