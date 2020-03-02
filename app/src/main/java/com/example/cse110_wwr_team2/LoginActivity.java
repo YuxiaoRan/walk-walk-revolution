@@ -160,9 +160,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
 
         // Create a reference to the users collection
-        CollectionReference citiesRef = db.collection("users");
-        // Create a query against the collection.
-        Task<QuerySnapshot> query = citiesRef.whereEqualTo("id", user.getUid())
+        db.collection("Users").whereEqualTo("id", user.getUid())
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
