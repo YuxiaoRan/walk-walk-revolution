@@ -43,7 +43,7 @@ public class RouteSaver implements FireBaseFireStoreService {
     }
 
     /*
-     * This method gets all the routes from the local file and put into routes
+     * This method gets all the routes from the Firebase and put into routes
      * which will be shown in the activity
      * The file is saved in such format:
      *          "route_list" is a Set<String>, and should be a TreeSet<String>
@@ -54,21 +54,6 @@ public class RouteSaver implements FireBaseFireStoreService {
      *               of the route with route_name
      */
     public void getAllRoutes(MyCallback callback){
-//        String userId = CurrentUserInfo.getId(context);
-//        SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
-//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-//        Iterator<String> itr = routes_list.iterator();
-//        ArrayList<Route> routes = new ArrayList<>();
-//        while(itr.hasNext()){
-//            String route_name = itr.next();
-//            String route_start_point = spfs.getString(route_name + "_start_point", "");
-//            int step_cnt = spfs.getInt(route_name+"_step_cnt", 0);
-//            String note = spfs.getString(route_name+"_note", "");
-//            String features = spfs.getString(route_name+"_features", "00000");
-//            float distance = spfs.getFloat(route_name+"_distance", 0);
-//            routes.add(new Route(route_start_point, route_name, step_cnt, note, features, distance,userId));
-//        }
-
 
         String userId = CurrentUserInfo.getId(context);
         Log.d("userId",userId);
@@ -131,24 +116,6 @@ public class RouteSaver implements FireBaseFireStoreService {
      */
     public void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
                                    String note_txt, String features, Context context){
-//        SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
-//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-//        SharedPreferences.Editor editor = spfs.edit();
-//
-//
-//
-//        try {
-//            routes_list.add(route_name);
-//            editor.putStringSet("route_list", routes_list);
-//            editor.putString(route_name + "_start_point", start_point);
-//            editor.putInt(route_name + "_step_cnt", step_cnt);
-//            editor.putString(route_name + "_note", note_txt);
-//            editor.putString(route_name + "_features", features);
-//            editor.putFloat(route_name + "_distance", distance);
-//            editor.apply();
-//        }catch (Exception e){
-//            System.err.println(e);
-//        }
 
         String userId = CurrentUserInfo.getId(context);
         Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
