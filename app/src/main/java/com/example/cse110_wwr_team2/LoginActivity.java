@@ -31,6 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -161,12 +162,27 @@ public class LoginActivity extends AppCompatActivity {
         // Create a reference to the users collection
         CollectionReference citiesRef = db.collection("users");
         // Create a query against the collection.
-        Query query = citiesRef.whereEqualTo("id", user.getUid());
+        Task<QuerySnapshot> query = citiesRef.whereEqualTo("id", user.getUid())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            if (task.getResult().isEmpty()){
+                                                gotoInputHeight();
+                                            }else{
+                                                gotoMain();
+                                            }
+                                        }
+                                    }
+                                });
+    }
 
-        if (query.get().getResult().isEmpty()) {
-            startActivity(new Intent(this, InputHeightActivity.class));
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-        }
+    private void gotoInputHeight(){
+        startActivity(new Intent(this, InputHeightActivity.class));
+    }
+
+    private void gotoMain(){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

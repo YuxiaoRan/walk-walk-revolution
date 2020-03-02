@@ -90,34 +90,42 @@ public class InputHeightActivity extends AppCompatActivity {
         CollectionReference citiesRef = db.collection("users");
         // Create a query against the collection.
         Query query = citiesRef.whereEqualTo("id", user_id);
-
-        if(query.get().getResult().isEmpty()){
-            // if there are no this user, simply write it to the firebase
-            int height = sharedPreferences.getInt("height", 0);
-            String name = sharedPreferences.getString("name", null);
-            String gmail = sharedPreferences.getString("gmail", null);
-            User user = new User(user_id, gmail, name, height);
-            UserAdapter servie = new UserAdapter(user);
-            servie.write();
-        }else if(query.get().getResult().size() != 1){
-            Toast.makeText(InputHeightActivity.this,
-                    "More than one users share the same id", Toast.LENGTH_SHORT).show();
-        } else{
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            User userInfo = document.toObject(User.class);
-                            editor.putString("teamId", userInfo.getTeamID());
-                            editor.apply();
-                        }
-                    } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().isEmpty()){
+                        // if there are no this user, simply write it to the firebase
+                        int height = sharedPreferences.getInt("height", 0);
+                        String name = sharedPreferences.getString("name", null);
+                        String gmail = sharedPreferences.getString("gmail", null);
+                        User user = new User(user_id, gmail, name, height);
+                        UserAdapter servie = new UserAdapter(user);
+                        servie.write();
+                    }else if(task.getResult().size() != 1){
+                        Toast.makeText(InputHeightActivity.this,
+                                "More than one users share the same id", Toast.LENGTH_SHORT).show();
+                    }else{
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        User userInfo = document.toObject(User.class);
+                                        editor.putString("teamId", userInfo.getTeamID());
+                                        editor.apply();
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
                     }
+                }else{
+                    Log.d(TAG, "Error getting users: ", task.getException());
                 }
-            });
-        }
+            }
+        });
     }
 }
