@@ -6,7 +6,7 @@ public class User {
     private String name;
     private int height;
     private String teamID;
-    //private String lastWalkID;
+    private String lastWalkID;
 
     public User(){}
 
