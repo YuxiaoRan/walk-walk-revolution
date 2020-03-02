@@ -12,15 +12,16 @@ import java.util.UUID;
  *      int step_cnt: the step count of this route
  */
 public class Route implements Serializable {
-    private String id;
-    private String start_point;
-    private String name;
-    private String note;
-    private int step_cnt;
     private float distance;
     private String features;
-    private String userGmail;
+    private String id;
+    private String name;
+    private String note;
+    private String start_point;
+    private int step_cnt;
     private String userTeamID;
+    private String user_id;
+    String startTime;
 
     public Route(){}
 
@@ -37,7 +38,7 @@ public class Route implements Serializable {
         this.distance = distance;
     }
 
-    public Route(String start_point, String name, String note, int step_cnt, float distance, String features, String userGmail, String userTeamID) {
+    public Route(String start_point, String name, String note, int step_cnt, float distance, String features, String userTeamID) {
         if(this.id == null){
             // Ramdonly generating a route id
             this.id = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
@@ -48,7 +49,6 @@ public class Route implements Serializable {
         this.step_cnt = step_cnt;
         this.distance = distance;
         this.features = features;
-        this.userGmail = userGmail;
         this.userTeamID = userTeamID;
     }
 
