@@ -21,7 +21,7 @@ import java.util.List;
 public class RouteActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayList<Route> routes;
+    ArrayList<Route> Routes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +41,19 @@ public class RouteActivity extends AppCompatActivity {
                     // int position is the position index of the clicked item in the list
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Log.d("button", "item " + position + "in list");
-                        launchRouteDetails(position);
+                        //launchRouteDetails(position);
+                        Intent intent = new Intent(RouteActivity.this, RouteDetailsActivity.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("route_list",(Serializable)routes);
+                        intent.putExtra("BUNDLE",args);
+                        intent.putExtra("index", position);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
         });
 
-        //Log.d("routeActivity",routes.toString());
-
-        // set the route list to the adapter and display on listView
-        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
-        //listView.setAdapter(arrayAdapter);
-
-        // set listener on clicking an item in the list
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            // int position is the position index of the clicked item in the list
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d("button", "item " + position + "in list");
-//                launchRouteDetails(position);
-//            }
-//        });
 
         // the floating add button
         FloatingActionButton fabAdd = findViewById(R.id.add_route);
@@ -92,14 +83,15 @@ public class RouteActivity extends AppCompatActivity {
         finish();
     }
 
+    // refactored into the callback method, in order to get the routes returned by the firebase
     public void launchRouteDetails(int i){
-        Intent intent = new Intent(this, RouteDetailsActivity.class);
-        Bundle args = new Bundle();
-        args.putSerializable("route_list",(Serializable)routes);
-        intent.putExtra("BUNDLE",args);
-        intent.putExtra("index", i);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(this, RouteDetailsActivity.class);
+//        Bundle args = new Bundle();
+//        args.putSerializable("route_list",(Serializable)routes);
+//        intent.putExtra("BUNDLE",args);
+//        intent.putExtra("index", i);
+//        startActivity(intent);
+//        finish();
     }
 
     // launch main activity
