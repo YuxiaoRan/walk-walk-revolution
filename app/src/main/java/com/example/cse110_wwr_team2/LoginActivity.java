@@ -27,6 +27,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
 
         configureSignInButton(signInButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             Log.w("Google Sign In Error",
                     "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Google Sign in Failed", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -113,11 +118,13 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            saveUserInfo(user);
+                            if(task.isComplete()) {
+                                saveUserInfo(user);
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Firebase Authentication Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -129,16 +136,8 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
             FirebaseUser currentUser = mAuth.getCurrentUser();
-            saveUserInfo(currentUser);
-
-            SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
-            int heightInt = spfs.getInt("height", 0);
-            boolean isFirstTime = spfs.getBoolean("firstLogin", true);
-
-            if(heightInt > 0 && !isFirstTime) {
-                startActivity(new Intent(this, MainActivity.class));
-            }else{
-                startActivity(new Intent(this, InputHeightActivity.class));
+            if(currentUser != null) {
+                saveUserInfo(currentUser);
             }
         }
     }
@@ -151,9 +150,21 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        //Log.d(TAG, "saveUserInfo: "+user.getUid());
         editor.putString("id", user.getUid());
         editor.putString("gmail", user.getEmail());
         editor.putString("name", user.getDisplayName());
         editor.apply();
+
+        // Create a reference to the users collection
+        CollectionReference citiesRef = db.collection("users");
+        // Create a query against the collection.
+        Query query = citiesRef.whereEqualTo("id", user.getUid());
+
+        if (query.get().getResult().isEmpty()) {
+            startActivity(new Intent(this, InputHeightActivity.class));
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }
