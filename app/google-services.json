@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "584902297847",
+    "firebase_url": "https://igneous-gamma-267611.firebaseio.com",
+    "project_id": "igneous-gamma-267611",
+    "storage_bucket": "igneous-gamma-267611.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584902297847:android:7a145bc488b8966c21abf2",
+        "android_client_info": {
+          "package_name": "com.example.cse110_wwr_team2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584902297847-spkqp2g7fmkgjgn8qj9kosr78c9v6v3f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cse110_wwr_team2",
+            "certificate_hash": "0dab7a73152c6862e3051c24a0141e13cd59bf33"
+          }
+        },
+        {
+          "client_id": "584902297847-l8m27tf6ksak9kf10mvo03mvkbbu9pc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK8a-XVHGuqJ0s588L8ZCJ8v9uWxGfS7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584902297847-l8m27tf6ksak9kf10mvo03mvkbbu9pc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
