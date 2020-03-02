@@ -196,17 +196,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setStepCount(int total){
-        //SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
-        //int mock_step = sharedPreferences.getInt("mock_step",0);
-
-        //stepCount.setText(String.valueOf(total+mock_step));
         stepCount.setText(String.valueOf(total));
     }
 
     public void setCurrDistance(double distance){
-//        SharedPreferences sharedPreferences = getSharedPreferences("MOCKING",MODE_PRIVATE);
-//        float mock_distance = sharedPreferences.getFloat("mock_distance",0);
-//        CurrDistance.setText(String.valueOf(distance + mock_distance));
         CurrDistance.setText(String.valueOf(distance));
     }
 
