@@ -11,10 +11,12 @@ import android.widget.ListView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.MyCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RouteActivity extends AppCompatActivity {
 
@@ -27,22 +29,40 @@ public class RouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route);
 
         listView = (ListView)findViewById(R.id.route_list);
-        routes = RouteSaver.getAllRoutes(this);
-
-        // set the route list to the adapter and display on listView
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
-        listView.setAdapter(arrayAdapter);
-
-        // set listener on clicking an item in the list
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+        RouteSaver routeSaver = new RouteSaver(this);
+        routeSaver.getAllRoutes(new MyCallback() {
             @Override
-            // int position is the position index of the clicked item in the list
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("button", "item " + position + "in list");
-                launchRouteDetails(position);
+            public void onCallback(List<Route> routes) {
+                ArrayAdapter arrayAdapter = new ArrayAdapter(RouteActivity.this, android.R.layout.simple_list_item_1, routes);
+                listView.setAdapter(arrayAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    // int position is the position index of the clicked item in the list
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("button", "item " + position + "in list");
+                        launchRouteDetails(position);
+                    }
+                });
             }
         });
+
+        //Log.d("routeActivity",routes.toString());
+
+        // set the route list to the adapter and display on listView
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, routes);
+        //listView.setAdapter(arrayAdapter);
+
+        // set listener on clicking an item in the list
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            // int position is the position index of the clicked item in the list
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("button", "item " + position + "in list");
+//                launchRouteDetails(position);
+//            }
+//        });
 
         // the floating add button
         FloatingActionButton fabAdd = findViewById(R.id.add_route);

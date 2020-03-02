@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.User.UserAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -150,14 +151,16 @@ public class LoginActivity extends AppCompatActivity {
      * @param user
      */
     private void saveUserInfo(FirebaseUser user){
-        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        //Log.d(TAG, "saveUserInfo: "+user.getUid());
+//        editor.putString("id", user.getUid());
+//        editor.putString("gmail", user.getEmail());
+//        editor.putString("name", user.getDisplayName());
+//        editor.apply();
 
-        //Log.d(TAG, "saveUserInfo: "+user.getUid());
-        editor.putString("id", user.getUid());
-        editor.putString("gmail", user.getEmail());
-        editor.putString("name", user.getDisplayName());
-        editor.apply();
+        UserAdapter.saveLocalUserInfo(user, this);
 
         // Create a reference to the users collection
         db.collection("Users").whereEqualTo("id", user.getUid())

@@ -59,6 +59,7 @@ public class InputHeightActivity extends AppCompatActivity {
                         return;
                     }
                     heightInt = 12 * heightIntFt + heightIntIn;
+
                     editor.putInt("height", heightInt);
                     editor.putBoolean("firstLogin", false);
                     editor.apply();
