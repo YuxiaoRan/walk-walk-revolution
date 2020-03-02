@@ -1,5 +1,8 @@
 package com.example.cse110_wwr_team2;
 
+import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.User.UserAdapter;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,7 +14,14 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void addition_isCorrect(){
+//        User testAdd = new User();
+//        testAdd.setGmail("zhz396@ucsd.edu");
+//        testAdd.setHeight(178);
+//        testAdd.setName("Leo");
+//        testAdd.setTeamID("Team2");
+//
+//        UserAdapter addService = new UserAdapter(testAdd);
+//        addService.write();
     }
 }
