@@ -15,7 +15,7 @@
         <activity android:name=".InputMockTime" />
         <activity android:name=".MockActivity" />
         <activity android:name=".InputHeightActivity" />
-        <activity android:name=".FirstPageActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,6 @@
         <activity android:name=".WalkActivity" />
         <activity android:name=".RouteDetailsActivity" />
         <activity android:name=".RouteActivity" />
-        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>
