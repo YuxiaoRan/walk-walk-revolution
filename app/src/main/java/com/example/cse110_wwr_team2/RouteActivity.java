@@ -1,6 +1,8 @@
 package com.example.cse110_wwr_team2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,8 @@ import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.MyCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +31,8 @@ public class RouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
+
+
 
         listView = (ListView)findViewById(R.id.route_list);
         RouteSaver routeSaver = new RouteSaver(this);
@@ -97,8 +103,9 @@ public class RouteActivity extends AppCompatActivity {
     // launch main activity
     public void launchHome(){
         Intent intent = new Intent(this, MainActivity.class);
-        Log.d("launch","Home from Home");
+        Log.d("launch","Home from Route");
         startActivity(intent);
         finish();
     }
+
 }
