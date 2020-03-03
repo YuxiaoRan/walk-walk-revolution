@@ -1,7 +1,6 @@
 package com.example.cse110_wwr_team2;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +12,8 @@ import android.widget.ListView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
-import com.example.cse110_wwr_team2.firebasefirestore.MyCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +33,7 @@ public class RouteActivity extends AppCompatActivity {
 
         listView = (ListView)findViewById(R.id.route_list);
         RouteSaver routeSaver = new RouteSaver(this);
-        routeSaver.getAllRoutes(new MyCallback() {
+        routeSaver.getAllRoutes(new RouteCallback() {
             @Override
             public void onCallback(List<Route> routes) {
                 ArrayAdapter arrayAdapter = new ArrayAdapter(RouteActivity.this, android.R.layout.simple_list_item_1, routes);

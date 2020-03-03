@@ -15,6 +15,7 @@ public class User {
         this.gmail = gmail;
         this.name = name;
         this.height = height;
+        this.teamID = teamID;
     }
 
     public User(String gmail, String name, int height, String teamID){

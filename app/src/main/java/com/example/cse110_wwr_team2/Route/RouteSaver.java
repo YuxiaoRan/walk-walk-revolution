@@ -2,17 +2,13 @@ package com.example.cse110_wwr_team2.Route;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.cse110_wwr_team2.Route.Route;
-import com.example.cse110_wwr_team2.RouteActivity;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
-import com.example.cse110_wwr_team2.User.UserAdapter;
 import com.example.cse110_wwr_team2.firebasefirestore.FireBaseFireStoreService;
-import com.example.cse110_wwr_team2.firebasefirestore.MyCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -20,7 +16,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -53,7 +48,7 @@ public class RouteSaver implements FireBaseFireStoreService {
      *          "{route_name}_step_cnt" stores the int number of the step counts
      *               of the route with route_name
      */
-    public void getAllRoutes(MyCallback callback){
+    public void getAllRoutes(RouteCallback callback){
 
         String userId = CurrentUserInfo.getId(context);
         Log.d("userId",userId);
