@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(AndroidJUnit4.class)
-public class IntentActivityUnitTest {
+public class TeamPageTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private Intent intent;
     private int stepCount;

@@ -18,7 +18,7 @@ import org.robolectric.shadows.ShadowToast;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class RouteActivityUnitTest {
+public class TeamRouteTest {
 
     @Rule
     public ActivityTestRule<AddRouteActivity> rActivityTestRule = new ActivityTestRule<>(AddRouteActivity.class);
