@@ -75,6 +75,33 @@ public class RouteSaver implements FireBaseFireStoreService {
                 });
     }
 
+    public void getTeamRoutes(RouteCallback callback){
+        //String teamID = CurrentUserInfo.getTeamId(context);
+        String teamID = "HCteamID";
+        Log.d("teamID", teamID);
+
+        db.collection("Routes")
+                .whereEqualTo("userTeamID", teamID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("getAllRoutes","onComplete");
+                        if (task.isSuccessful()) {
+                            ArrayList<Route> routes = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Route route = document.toObject(Route.class);
+                                routes.add(route);
+                            }
+                            callback.onCallback(routes);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 
 
     @Override

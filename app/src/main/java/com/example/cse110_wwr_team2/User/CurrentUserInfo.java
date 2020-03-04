@@ -10,4 +10,9 @@ public class CurrentUserInfo {
         return sharedPreferences.getString("id", null);
     }
 
+    public static String getTeamId(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("teamID", null);
+    }
+
 }

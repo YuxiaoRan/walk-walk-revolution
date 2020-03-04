@@ -38,7 +38,7 @@ public class RouteDirectorActivity extends AppCompatActivity {
     }
 
     private void toTeamRoutes(){
-        Intent intent = new Intent(this, RouteActivity.class);
+        Intent intent = new Intent(this, TeamRouteActivity.class);
         startActivity(intent);
     }
 }
