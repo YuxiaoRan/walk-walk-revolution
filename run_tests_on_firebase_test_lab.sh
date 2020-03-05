@@ -16,7 +16,7 @@ source /opt/google-cloud-sdk/path.bash.inc
 echo "Authorizing gcloud and setting config defaults..."
 gcloud -q components update
 gcloud auth activate-service-account --key-file=gcloud-service-key.json
-gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+gcloud --quiet config set project "igneous-gamma-267611"
 
 echo "Running Android Tests with Firebase Test Lab..."
 gcloud firebase test android run \

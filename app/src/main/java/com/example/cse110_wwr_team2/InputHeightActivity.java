@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.RandomIDGenerator.UUIDGenerator;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.User.UserAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.UUID;
 
 public class InputHeightActivity extends AppCompatActivity {
 
@@ -100,7 +103,9 @@ public class InputHeightActivity extends AppCompatActivity {
                         int height = sharedPreferences.getInt("height", 0);
                         String name = sharedPreferences.getString("name", null);
                         String gmail = sharedPreferences.getString("gmail", null);
+                        String teamID = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
                         User user = new User(user_id, gmail, name, height);
+                        user.setTeamID(teamID);
                         UserAdapter servie = new UserAdapter(user);
                         servie.write();
                     }else if(task.getResult().size() != 1){
