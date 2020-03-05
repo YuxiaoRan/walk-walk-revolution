@@ -80,6 +80,7 @@ public class RouteSaver implements FireBaseFireStoreService {
         //String teamID = CurrentUserInfo.getTeamId(context);
         String teamID = "HCteamID";
         Log.d("teamID", teamID);
+        String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
 
         db.collection("Routes")
                 .whereEqualTo("userTeamID", teamID)
@@ -93,7 +94,9 @@ public class RouteSaver implements FireBaseFireStoreService {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Route route = document.toObject(Route.class);
-                                routes.add(route);
+                                if(!userID.equals(route.getUserID())){
+                                    routes.add(route);
+                                }
                             }
                             callback.onCallback(routes);
                         } else {
