@@ -21,7 +21,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityUnitTest {
+public class LoginTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     private final long Fifteen_SEC = 15 * 1000;
     private int stepCount;
@@ -65,30 +65,6 @@ public class MainActivityUnitTest {
         assertNotNull(lastDistance);
 
     }
-
-    /*
-    @Test
-    public void testMainValue() {
-
-        mActivityTestRule.launchActivity(new Intent().putExtra("test_label", true));
-        mainActivity = mActivityTestRule.getActivity();
-
-        SharedPreferences sharedPreferences = mainActivity.getSharedPreferences("recent_route", MODE_PRIVATE);
-        int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
-        float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
-
-        TextView mainSteps = mainActivity.findViewById(R.id.main_step_count);
-        TextView mainDistance = mainActivity.findViewById(R.id.main_distance);
-
-        TextView lastStep2 = mainActivity.findViewById(R.id.main_intention_step_count);
-        TextView lastDistance2 = mainActivity.findViewById(R.id.main_intention_distance);
-        int lastStepNum = Integer.parseInt(lastStep2.getText().toString());
-        float lastDistanceNum = Float.parseFloat(lastDistance2.getText().toString());
-
-
-        assertEquals(lastStep, lastStepNum);
-        assertEquals(lastDistance, lastDistanceNum);
-    }*/
 
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
