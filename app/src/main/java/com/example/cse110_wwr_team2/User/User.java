@@ -7,6 +7,7 @@ public class User {
     private int height;
     private String teamID;
     private String lastWalkID;
+    private String token;
 
     public User(){}
 
@@ -62,5 +63,13 @@ public class User {
 
     public void setGmail(String gmail) {
         this.gmail = gmail;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String regToken) {
+        this.token = regToken;
     }
 }
