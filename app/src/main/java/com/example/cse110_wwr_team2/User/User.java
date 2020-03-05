@@ -87,4 +87,7 @@ public class User extends FirebaseMessagingService {
         this.token = regToken;
     }
 
+    public static String getInitial(String name){
+        return ""+name.charAt(0);
+    }
 }

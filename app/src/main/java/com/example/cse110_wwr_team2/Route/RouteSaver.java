@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.FireBaseFireStoreService;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -75,6 +76,36 @@ public class RouteSaver implements FireBaseFireStoreService {
                 });
     }
 
+    public void getTeamRoutes(RouteCallback callback){
+        //String teamID = CurrentUserInfo.getTeamId(context);
+        String teamID = "HCteamID";
+        Log.d("teamID", teamID);
+        String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+
+        db.collection("Routes")
+                .whereEqualTo("userTeamID", teamID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("getAllRoutes","onComplete");
+                        if (task.isSuccessful()) {
+                            ArrayList<Route> routes = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Route route = document.toObject(Route.class);
+                                if(!userID.equals(route.getUserID())){
+                                    routes.add(route);
+                                }
+                            }
+                            callback.onCallback(routes);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 
 
     @Override
@@ -114,6 +145,7 @@ public class RouteSaver implements FireBaseFireStoreService {
 
         String userId = CurrentUserInfo.getId(context);
         Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
+        route.setUserInitial(User.getInitial(context.getSharedPreferences("user", MODE_PRIVATE).getString("name", null)));
         db.collection("Routes").document(route.getId()).set(route);
     }
 

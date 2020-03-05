@@ -21,7 +21,8 @@ public class Route implements Serializable {
     private int stepCnt;
     private String userTeamID;
     private String userId;
-    String startTime;
+    private String userInitial;
+    private String startTime;
 
     public Route(){}
 
@@ -117,6 +118,14 @@ public class Route implements Serializable {
 
     public String toString(){
         return "Route Name: " + this.name + "\nStart point: " + this.startPoint + "\nStep Count: " + this.stepCnt;
+    }
+
+    public void setUserInitial(String userInitial) {
+        this.userInitial = userInitial;
+    }
+
+    public String getUserInitial() {
+        return userInitial;
     }
 
     public String[] toList(){
