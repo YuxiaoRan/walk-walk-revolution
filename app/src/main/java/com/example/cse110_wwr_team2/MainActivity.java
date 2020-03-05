@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button toRoute;
     private Button startRoute;
     private Button mock;
+    private Button toTeam;
     private TextView stepCount;
     private TextView CurrDistance;
     private TextView lastStepCnt;
@@ -66,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         lastDist = findViewById(R.id.main_intention_distance);
         lastTime = findViewById(R.id.main_intention_time);
         setUpLastStat();
+
+        toTeam = findViewById(R.id.team_btn);
+        toTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToTeam();
+            }
+        });
 
 
         // not mocking
@@ -148,8 +157,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void goToTeam(){
+        Intent intent = new Intent(this, TeamActivity.class);
+        startActivity(intent);
+    }
+
     private void goToRoute() {
-        Intent intent = new Intent(this, RouteActivity.class);
+        Intent intent = new Intent(this, RouteDirectorActivity.class);
         startActivity(intent);
     }
   

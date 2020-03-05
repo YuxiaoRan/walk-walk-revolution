@@ -17,25 +17,26 @@ public class Route implements Serializable {
     private String id;
     private String name;
     private String note;
-    private String start_point;
-    private int step_cnt;
+    private String startPoint;
+    private int stepCnt;
     private String userTeamID;
-    private String user_id;
+    private String userId;
     String startTime;
 
     public Route(){}
 
-    public Route(String start_point, String name, int step_cnt, String note, String features, float distance){
+    public Route(String start_point, String name, int step_cnt, String note, String features, float distance, String userId){
         if(this.id == null){
             // Ramdonly generating a route id
             this.id = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
         }
-        this.start_point = start_point;
+        this.startPoint = start_point;
         this.name = name;
-        this.step_cnt = step_cnt;
+        this.stepCnt = step_cnt;
         this.note = note;
         this.features = features;
         this.distance = distance;
+        this.userId = userId;
     }
 
     public Route(String start_point, String name, String note, int step_cnt, float distance, String features, String userTeamID) {
@@ -43,10 +44,10 @@ public class Route implements Serializable {
             // Ramdonly generating a route id
             this.id = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
         }
-        this.start_point = start_point;
+        this.startPoint = start_point;
         this.name = name;
         this.note = note;
-        this.step_cnt = step_cnt;
+        this.stepCnt = step_cnt;
         this.distance = distance;
         this.features = features;
         this.userTeamID = userTeamID;
@@ -64,6 +65,14 @@ public class Route implements Serializable {
         this.userTeamID = userTeamID;
     }
 
+    public String getUserID() {
+        return userId;
+    }
+
+    public void setUserID(String userID) {
+        this.userId = userID;
+    }
+
     public double getDistance(){
         return distance;
     }
@@ -73,9 +82,9 @@ public class Route implements Serializable {
     }
 
     public Route(String start_point, String name, int step_cnt, String note, String features){
-        this.start_point = start_point;
+        this.startPoint = start_point;
         this.name = name;
-        this.step_cnt = step_cnt;
+        this.stepCnt = step_cnt;
         this.note = note;
         this.features = features;
     }
@@ -87,7 +96,7 @@ public class Route implements Serializable {
     public void updateNote(String newNote) {this.note = newNote;}
 
     public String getStartPoint(){
-        return this.start_point;
+        return this.startPoint;
     }
 
     public String getName(){
@@ -95,11 +104,11 @@ public class Route implements Serializable {
     }
 
     public int getStepCnt(){
-        return this.step_cnt;
+        return this.stepCnt;
     }
 
     public void updateStep(int new_step_cnt){
-        this.step_cnt = new_step_cnt;
+        this.stepCnt = new_step_cnt;
     }
 
     public void updateDistance(float distance){
@@ -107,10 +116,10 @@ public class Route implements Serializable {
     }
 
     public String toString(){
-        return "Route Name: " + this.name + "\nStart point: " + this.start_point + "\nStep Count: " + this.step_cnt;
+        return "Route Name: " + this.name + "\nStart point: " + this.startPoint + "\nStep Count: " + this.stepCnt;
     }
 
     public String[] toList(){
-        return new String[]{this.name, this.start_point, Integer.toString(this.step_cnt), Double.toString(distance)};
+        return new String[]{this.name, this.startPoint, Integer.toString(this.stepCnt), Double.toString(distance)};
     }
 }

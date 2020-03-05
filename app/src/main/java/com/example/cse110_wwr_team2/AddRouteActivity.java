@@ -69,7 +69,8 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
+                    RouteSaver routeSaver = new RouteSaver();
+                    routeSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
                             step_cnt, distance,note.getText().toString(), returnFeatures(),AddRouteActivity.this);
                     Log.d(TAG, "onClick: "+returnFeatures());
                     launchRoute();
