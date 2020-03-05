@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.FireBaseFireStoreService;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -141,6 +142,7 @@ public class RouteSaver implements FireBaseFireStoreService {
 
         String userId = CurrentUserInfo.getId(context);
         Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
+        route.setUserInitial(User.getInitial(context.getSharedPreferences("user", MODE_PRIVATE).getString("name", null)));
         db.collection("Routes").document(route.getId()).set(route);
     }
 

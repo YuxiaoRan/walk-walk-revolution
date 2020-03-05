@@ -64,4 +64,8 @@ public class User {
     public void setGmail(String gmail) {
         this.gmail = gmail;
     }
+
+    public static String getInitial(String name){
+        return ""+name.charAt(0);
+    }
 }
