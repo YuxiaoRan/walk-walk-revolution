@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -68,7 +69,8 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    RouteSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
+                    RouteSaver routeSaver = new RouteSaver();
+                    routeSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
                             step_cnt, distance,note.getText().toString(), returnFeatures(),AddRouteActivity.this);
                     Log.d(TAG, "onClick: "+returnFeatures());
                     launchRoute();
@@ -137,48 +139,4 @@ public class AddRouteActivity extends AppCompatActivity {
         return (route_list.size() == 0) || !route_list.contains(route_name);
     }
 
-    /*
-     * This function will add a new route into the file, by writing a new name
-     * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
-     * accordingly
-     */
-  /*
-//<<<<<<< jerryxu
-    public void addNewRoute(int step_cnt){
-        String route_name = name.getText().toString();
-        String start_point = start.getText().toString();
-        String note_txt = note.getText().toString();
-        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        SharedPreferences.Editor editor = spfs.edit();
-        try {
-            routes_list.add(route_name);
-            editor.putStringSet("route_list", routes_list);
-            editor.putString(route_name + "_start_point", start_point);
-            editor.putInt(route_name + "_step_cnt", step_cnt);
-            editor.putString(route_name + "_note", note_txt);
-            editor.putString(route_name + "_features", returnFeatures());
-            editor.apply();
-        }catch (Exception e){
-            System.err.println(e);
-        }
-    }
-=======
-//    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance, String note_txt, String feature){
-//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-//        SharedPreferences.Editor editor = spfs.edit();
-//        try {
-//            routes_list.add(route_name);
-//            editor.putStringSet("route_list", routes_list);
-//            editor.putString(route_name + "_start_point", start_point);
-//            editor.putInt(route_name + "_step_cnt", step_cnt);
-//            editor.putString(route_name + "_note", note_txt);
-//            editor.putString(route_name + "_features", feature);
-//            editor.apply();
-//        }catch (Exception e){
-//            System.err.println(e);
-//        }
-//    }
-//>>>>>>> Leo*/
 }

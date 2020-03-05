@@ -11,14 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_wwr_team2.Route.Route;
+import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class WalkActivity extends AppCompatActivity {
     private String TAG = "WalkActivity";
@@ -158,28 +158,6 @@ public class WalkActivity extends AppCompatActivity {
             Log.d(TAG, "saveRecent: "+e.toString());
         }
     }
-
-    /*
-     * This function will add a new route into the file, by writing a new name
-     * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
-     * accordingly
-     */
-//    public void UpdateRoute(String route_name, String start_point, int step_cnt, float distance){
-//        SharedPreferences spfs = getSharedPreferences("all_routes", MODE_PRIVATE);
-//        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-//        SharedPreferences.Editor editor = spfs.edit();
-//        try {
-//            routes_list.remove(route_name);
-//            routes_list.add(route_name);
-//            editor.putStringSet("route_list", routes_list);
-//            editor.putString(route_name + "_start_point", start_point);
-//            editor.putInt(route_name + "_step_cnt", step_cnt);
-//            editor.putFloat(route_name+"_distance",distance);
-//            editor.apply();
-//        }catch (Exception e){
-//            System.err.println(e);
-//        }
-//    }
 
     private class MyTimer extends AsyncTask<String, String, String>{
         private String resp;

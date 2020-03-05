@@ -18,7 +18,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(AndroidJUnit4.class)
-public class MockActivityUnitTest {
+public class MyRouteTest {
 
     @Rule
     public ActivityTestRule<MockActivity> mActivityTestRule = new ActivityTestRule<>(MockActivity.class);

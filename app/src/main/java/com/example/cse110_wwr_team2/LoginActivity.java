@@ -1,8 +1,10 @@
 package com.example.cse110_wwr_team2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,19 +13,35 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.User.UserAdapter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 0;
+    private static final String TAG = "LoginActivity: ";
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +54,9 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
 
         configureSignInButton(signInButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -80,19 +101,89 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
             Log.w("Google Sign In Error",
                     "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Google Sign in Failed", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if(task.isComplete()) {
+                                Log.d(TAG, "signInWithCredential:complete");
+                                saveUserInfo(user);
+                            }
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Firebase Authentication Failed", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     @Override
     protected void onStart() {
+        super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if(currentUser != null) {
+                saveUserInfo(currentUser);
+            }
         }
-        super.onStart();
+    }
+
+    /**
+     * saving Firebase User's info
+     * @param user
+     */
+    private void saveUserInfo(FirebaseUser user){
+//        SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        //Log.d(TAG, "saveUserInfo: "+user.getUid());
+//        editor.putString("id", user.getUid());
+//        editor.putString("gmail", user.getEmail());
+//        editor.putString("name", user.getDisplayName());
+//        editor.apply();
+
+        UserAdapter.saveLocalUserInfo(user, this);
+
+        // Create a reference to the users collection
+        db.collection("Users").whereEqualTo("id", user.getUid())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            if (task.getResult().isEmpty()){
+                                                gotoInputHeight();
+                                            }else{
+                                                gotoMain();
+                                            }
+                                        }
+                                    }
+                                });
+    }
+
+    private void gotoInputHeight(){
+        startActivity(new Intent(this, InputHeightActivity.class));
+    }
+
+    private void gotoMain(){
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
