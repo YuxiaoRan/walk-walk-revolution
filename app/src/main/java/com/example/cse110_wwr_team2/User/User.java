@@ -1,6 +1,19 @@
 package com.example.cse110_wwr_team2.User;
 
-public class User {
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.cse110_wwr_team2.InvitationActivity;
+import com.example.cse110_wwr_team2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
+
+import androidx.annotation.NonNull;
+
+public class User extends FirebaseMessagingService {
     private String id;
     private String gmail;
     private String name;
@@ -72,4 +85,5 @@ public class User {
     public void setToken(String regToken) {
         this.token = regToken;
     }
+
 }

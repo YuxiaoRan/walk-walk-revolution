@@ -15,6 +15,9 @@ import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
 import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";

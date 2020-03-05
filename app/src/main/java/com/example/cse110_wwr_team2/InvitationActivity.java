@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.FirestoreReferences.FirestoreReferences;
 import com.example.cse110_wwr_team2.Messaging.Invitation;
@@ -18,6 +19,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class InvitationActivity extends AppCompatActivity {
 
