@@ -10,6 +10,8 @@
         android:id="@+id/teammate_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+
     </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,11 +19,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:focusable="true"
         android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="false"
         android:src="@drawable/ic_home_black" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_teammate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_margin="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        app:srcCompat="@drawable/ic_add" />
+
 
 </RelativeLayout>

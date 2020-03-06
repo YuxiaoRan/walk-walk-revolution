@@ -30,7 +30,7 @@ public class InvitationActivity extends AppCompatActivity {
     CollectionReference usersRef, teamsRef;
 
     String userId;
-    String userToken;
+    String userToken = null;
     User sender;
 
     @Override
@@ -65,7 +65,8 @@ public class InvitationActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             userId = doc.getData().get("id").toString();
-                            userToken = doc.getData().get("regToken").toString();
+                            Toast.makeText(InvitationActivity.this, "invitation sent to" + emailAddress, Toast.LENGTH_SHORT).show();
+                            //userToken = doc.getData().get("regToken").toString();
                         }
                     } else {
                         Log.d("query error", "Error getting documents: ",
@@ -88,6 +89,8 @@ public class InvitationActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.d("send error", "Error sending invitation");
             }
+        } else {
+            Log.d("send error", "target not found");
         }
     }
 }
