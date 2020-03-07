@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -115,6 +116,33 @@ public class RouteSaver{
 
     public void read(String id){
 
+    }
+
+    public void UpdateRoute(Route route, RouteUpdateCallback callback){
+        db.collection("Routes").document(route.getId())
+                .update("distance", route.getDistance())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            db.collection("Routes").document(route.getId())
+                                   .update("stepCnt", route.getStepCnt())
+                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Void> task) {
+                                           if(task.isSuccessful()){
+                                               callback.onCallback();
+                                           }
+                                           else{
+                                               Log.d(TAG, "failure to update route's step count");
+                                           }
+                                       }
+                                   });
+                        }else{
+                            Log.d(TAG, "failure to update route's distance");
+                        }
+                    }
+                });
     }
 
     /*

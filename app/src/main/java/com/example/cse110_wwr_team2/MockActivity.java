@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
@@ -126,12 +127,25 @@ public class MockActivity extends AppCompatActivity {
         }else{
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+            RouteSaver saver = new RouteSaver();
+            Intent intent = new Intent(this, RouteActivity.class);
+            saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
+                @Override
+                public void onCallback() {
+                    saveRecent();
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            /*
+            currRoute.updateStep(currStep);
+            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
             //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
             RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
             saveRecent();
             startActivity(intent);
-            finish();
+            finish();*/
         }
     }
 
