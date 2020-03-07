@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.User.User;
-import com.example.cse110_wwr_team2.User.UserAdapter;
+import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -101,7 +101,7 @@ public class InputHeightActivity extends AppCompatActivity {
                         String name = sharedPreferences.getString("name", null);
                         String gmail = sharedPreferences.getString("gmail", null);
                         User user = new User(user_id, gmail, name, height);
-                        UserAdapter servie = new UserAdapter(user);
+                        UserOnlineSaver servie = new UserOnlineSaver(user);
                         servie.write();
                     }else if(task.getResult().size() != 1){
                         Toast.makeText(InputHeightActivity.this,
