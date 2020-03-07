@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -75,7 +76,7 @@ public class RouteSaver{
                 });
     }
 
-    public void getTeamRoutes(RouteCallback callback){
+    public void getTeamRoutes(TeamRouteCallback callback){
         //String teamID = CurrentUserInfo.getTeamId(context);
         String teamID = "HCteamID";
         Log.d("teamID", teamID);
@@ -90,14 +91,19 @@ public class RouteSaver{
                         Log.d("getAllRoutes","onComplete");
                         if (task.isSuccessful()) {
                             ArrayList<Route> routes = new ArrayList<>();
+                            ArrayList<String> routes_info = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Route route = document.toObject(Route.class);
                                 if(!userID.equals(route.getUserID())){
                                     routes.add(route);
+                                    String route_info = "Route Name: " + route.getName() +
+                                            "\nStart point: " + route.getStartPoint() +
+                                            "\nCreator: " + route.getUserInitial();
+                                    routes_info.add(route_info);
                                 }
                             }
-                            callback.onCallback(routes);
+                            callback.onCallback(routes, routes_info);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
