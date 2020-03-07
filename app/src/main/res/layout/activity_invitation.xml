@@ -57,6 +57,7 @@
         android:layout_marginRight="148dp"
         android:layout_marginBottom="288dp"
         android:text="username"
+        android:textAlignment="center"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

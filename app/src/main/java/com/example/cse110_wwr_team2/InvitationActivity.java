@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.cse110_wwr_team2.Invitation.Invitation;
 import com.example.cse110_wwr_team2.Invitation.InvitationOnlineSaver;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +31,7 @@ public class InvitationActivity extends AppCompatActivity {
     private TextView username;
     private Button btnSend;
 
-    private String nameToFind;
+    private String myGmail;
 
     private CollectionReference usersRef;
     private FirebaseFirestore db;
@@ -45,6 +46,9 @@ public class InvitationActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         username = (TextView) findViewById(R.id.user_tofind);
 
+        SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
+        myGmail = spfs.getString("gmail", null);
+
         // set initial visibility
         username.setVisibility(View.GONE);
 
@@ -52,55 +56,49 @@ public class InvitationActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
 
-        // input email
-        String emailAddress = email.getText().toString();
-
         // on clicking search
         btnSearch.setOnClickListener((v) -> {
-            String usernameToDisplay = search(emailAddress);
-            display(usernameToDisplay);
+            String emailAddress = email.getText().toString();
+            search(emailAddress, false);
         });
 
         btnSend.setOnClickListener((v) -> {
-            if(search(emailAddress) != null) {
-                SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
-                String myGmail = spfs.getString("gmail", null);
-                sendInvitation(myGmail, emailAddress);
-            }
+            String emailAddress = email.getText().toString();
+            search(emailAddress, true);
         });
     }
 
     // search email address in database
-    private String search(String emailAddress) {
-        if(emailAddress == null) {
+    private void search(String emailAddress, boolean isSending) {
+        if(emailAddress == null || emailAddress.equals("")) {
             Toast.makeText(InvitationActivity.this, "please input an email", Toast.LENGTH_SHORT);
-            return null;
+            return;
         }
-        nameToFind = null;
         try {
             Query queryUser = usersRef.whereEqualTo("gmail", emailAddress);
-            queryUser.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            nameToFind = doc.get("name").toString();
+                public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        String name = doc.get("name").toString();
+                        if (name != null && !name.equals("")) {
+                            if(!isSending) {
+                                display(name);
+                            } else {
+                                sendInvitation(myGmail, emailAddress);
+                            }
                         }
-                    } else {
-                        Log.d("query", "Error getting documents: ",
-                                task.getException());
                     }
                 }
             });
         } catch (Exception e) {
             Log.d("query", "Error query user with email address" + emailAddress);
         }
-        return nameToFind;
     }
 
     // display a searched name
     private void display(String usernameToDisplay) {
-        if(usernameToDisplay != null) {
+        if(usernameToDisplay != null && !usernameToDisplay.equals("")) {
             username.setText(usernameToDisplay);
             username.setVisibility(View.VISIBLE);
             return;
@@ -110,7 +108,7 @@ public class InvitationActivity extends AppCompatActivity {
 
     // create and send invitation
     private void sendInvitation(String fromGmail, String toGmail) {
-        if(fromGmail == null || toGmail == null) {
+        if(fromGmail == null || fromGmail.equals("") || toGmail == null || toGmail.equals("")) {
             Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_SHORT);
             return;
         }

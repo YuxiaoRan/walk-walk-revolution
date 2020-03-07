@@ -10,7 +10,7 @@ public class Invitation {
     public static final int DECLINED = 2;
 
     public Invitation(String fromGmail, String toGmail, int status) {
-        if(status != PENDING || status != ACCEPTED || status != DECLINED) {
+        if(status != PENDING && status != ACCEPTED && status != DECLINED) {
             throw new IllegalArgumentException("wrong status");
         }
         this.fromGmail = fromGmail;
@@ -27,7 +27,7 @@ public class Invitation {
     }
 
     public void setStatus(int status) {
-        if(status != PENDING || status != ACCEPTED || status != DECLINED) {
+        if(status != PENDING && status != ACCEPTED && status != DECLINED) {
             throw new IllegalArgumentException("wrong status");
         }
         this.status = status;
