@@ -18,6 +18,8 @@ import java.util.List;
 public class TeamActivity extends AppCompatActivity {
 
     ListView listView;
+    FloatingActionButton fabHome;
+    FloatingActionButton fabAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +27,22 @@ public class TeamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_team);
 
         listView = findViewById(R.id.teammate_list);
+        fabHome = findViewById(R.id.team_back_home);
+        fabAdd = fabAdd = findViewById(R.id.add_teammate);
 
-        FloatingActionButton fabHome = findViewById(R.id.team_back_home);
         fabHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("button","back to home activity");
                 launchHome();
+            }
+        });
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("button","invitation activity");
+                launchInvitation();
             }
         });
 
@@ -53,5 +64,12 @@ public class TeamActivity extends AppCompatActivity {
         Log.d("launch","Home from team");
         startActivity(intent);
         finish();
+    }
+
+    // launch invitation activity
+    public void launchInvitation(){
+        Intent intent = new Intent(this, InvitationActivity.class);
+        Log.d("launch","Invitation from team");
+        startActivity(intent);
     }
 }
