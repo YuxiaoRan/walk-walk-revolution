@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeammateCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -54,5 +57,25 @@ public class TeamAdapter {
                 });
     }
 
-
+    public void getAllMap(MapCallBack callback, String teamID){
+        db.collection("Users")
+                .whereEqualTo("teamID", teamID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            Map<String, Integer> acceptMembers = new HashMap<>();
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                User user = document.toObject(User.class);
+                                acceptMembers.put(user.getId(), 0);
+                            }
+                            callback.onCallback(acceptMembers);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 }
