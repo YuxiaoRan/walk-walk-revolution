@@ -54,6 +54,10 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         Creator.setText(currRoute.getUserInitial());
         TextView RouteName = findViewById(R.id.route_name);
         RouteName.setText(currRoute.getName());
+        TextView StepCnt = findViewById(R.id.step_count);
+        StepCnt.setText(""+currRoute.getStepCnt());
+        TextView Distance = findViewById(R.id.distance);
+        Distance.setText(""+currRoute.getDistance());
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(currRoute.getStartPoint());
         note = findViewById(R.id.note);
