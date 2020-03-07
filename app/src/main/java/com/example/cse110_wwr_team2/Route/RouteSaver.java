@@ -116,7 +116,7 @@ public class RouteSaver{
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public static void UpdateRoute(String route_name, String start_point, int step_cnt, float distance, Context context){
+    public static void UpdateRoute(String route_id, String route_name, String start_point, int step_cnt, float distance, Context context){
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -131,6 +131,11 @@ public class RouteSaver{
         }catch (Exception e){
             System.err.println(e);
         }
+    }
+
+    // the database version of the above method
+    public void UpdateRoute(Route route){
+        db.collection("Routes").document(route.getId()).set(route);
     }
 
     /*

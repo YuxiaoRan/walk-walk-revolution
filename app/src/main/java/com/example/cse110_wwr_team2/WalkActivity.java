@@ -118,7 +118,9 @@ public class WalkActivity extends AppCompatActivity {
         }else{
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
+            RouteSaver routeSaver = new RouteSaver();
+            routeSaver.UpdateRoute(currRoute);
+            //RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
             Intent intent = new Intent(this, RouteActivity.class);
             saveRecent();
             startActivity(intent);

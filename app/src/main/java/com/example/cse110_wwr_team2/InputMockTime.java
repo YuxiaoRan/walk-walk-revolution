@@ -32,7 +32,8 @@ public class InputMockTime extends AppCompatActivity {
         inputTime = findViewById(R.id.mock_curr_time);
         btn = findViewById(R.id.mock_time_btn);
 
-        long base_millis = System.currentTimeMillis();
+
+        long base_millis = System.currentTimeMillis(); // the current milli second
         base = LocalDateTime.ofInstant(Instant.ofEpochMilli(base_millis),
                 ZoneId.systemDefault()).toLocalTime();
         Log.d(TAG, "Base Millisecond: "+base_millis);
@@ -41,7 +42,7 @@ public class InputMockTime extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     //curr = LocalTime.parse(inputTime.getText().toString());
-                    long curr_millis = Long.parseLong(inputTime.getText().toString());
+                    long curr_millis = Long.parseLong(inputTime.getText().toString()); // the user input time
                     curr = LocalDateTime.ofInstant(Instant.ofEpochMilli(curr_millis),
                             ZoneId.systemDefault()).toLocalTime();
                     Log.d(TAG, "Current Millisecond: "+curr_millis);

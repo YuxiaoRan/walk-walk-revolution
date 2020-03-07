@@ -65,7 +65,7 @@ public class MockActivity extends AppCompatActivity {
             Bundle args = intent.getBundleExtra("BUNDLE");
             routes = (ArrayList<Route>) args.getSerializable("route_list");
             Log.d("route_list", routes.toString());
-            currRoute = routes.get(index);
+            currRoute = routes.get(index); // the current Route object
             TextView RouteName = findViewById(R.id.mock_routeName);
             RouteName.setText(currRoute.getName());
         }
@@ -127,8 +127,12 @@ public class MockActivity extends AppCompatActivity {
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
             //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
-            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
-            Intent intent = new Intent(this, RouteActivity.class);
+            RouteSaver routeSaver = new RouteSaver();
+            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+            currRoute.updateStep(currStep);
+            routeSaver.UpdateRoute(currRoute);
+            //RouteSaver.UpdateRoute(currRoute.getId(),currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
+            Intent intent = new Intent(this, RouteDirectorActivity.class);
             saveRecent();
             startActivity(intent);
             finish();

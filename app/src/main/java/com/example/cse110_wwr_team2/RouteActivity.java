@@ -86,16 +86,6 @@ public class RouteActivity extends AppCompatActivity {
         finish();
     }
 
-    // refactored into the callback method, in order to get the routes returned by the firebase
-    public void launchRouteDetails(int i){
-//        Intent intent = new Intent(this, RouteDetailsActivity.class);
-//        Bundle args = new Bundle();
-//        args.putSerializable("route_list",(Serializable)routes);
-//        intent.putExtra("BUNDLE",args);
-//        intent.putExtra("index", i);
-//        startActivity(intent);
-//        finish();
-    }
 
     // launch main activity
     public void launchHome(){
