@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 
@@ -118,11 +119,16 @@ public class WalkActivity extends AppCompatActivity {
         }else{
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
+            RouteSaver saver = new RouteSaver();
             Intent intent = new Intent(this, RouteActivity.class);
-            saveRecent();
-            startActivity(intent);
-            finish();
+            saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
+                @Override
+                public void onCallback() {
+                    saveRecent();
+                    startActivity(intent);
+                    finish();
+                }
+            });
         }
     }
 

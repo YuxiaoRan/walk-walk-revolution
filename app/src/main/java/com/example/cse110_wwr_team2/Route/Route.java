@@ -131,4 +131,8 @@ public class Route implements Serializable {
     public String[] toList(){
         return new String[]{this.name, this.startPoint, Integer.toString(this.stepCnt), Double.toString(distance)};
     }
+
+    public void setStepCnt(int stepCnt) {
+        this.stepCnt = stepCnt;
+    }
 }

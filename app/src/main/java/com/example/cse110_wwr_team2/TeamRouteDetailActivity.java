@@ -9,14 +9,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
+import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.material.chip.ChipGroup;
+
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class RouteDetailsActivity extends AppCompatActivity {
+public class TeamRouteDetailActivity extends AppCompatActivity {
 
     private Route currRoute;
     private ArrayList<Route> routes;
@@ -27,7 +33,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_details);
+        setContentView(R.layout.activity_team_route_detail);
 
         // get the string passed from route activity
         Intent intent = getIntent();
@@ -47,14 +53,16 @@ public class RouteDetailsActivity extends AppCompatActivity {
 
 
         // set the text in UI
+        TextView Creator = findViewById(R.id.creator_initial);
+        Creator.setText(currRoute.getUserInitial());
         TextView RouteName = findViewById(R.id.route_name);
         RouteName.setText(currRoute.getName());
-        TextView StartPoint = findViewById(R.id.start_point);
-        StartPoint.setText(currRoute.getStartPoint());
         TextView StepCnt = findViewById(R.id.step_count);
         StepCnt.setText(""+currRoute.getStepCnt());
         TextView Distance = findViewById(R.id.distance);
         Distance.setText(""+currRoute.getDistance());
+        TextView StartPoint = findViewById(R.id.start_point);
+        StartPoint.setText(currRoute.getStartPoint());
         note = findViewById(R.id.note);
         curr_note = currRoute.getNote();
         if (!curr_note.equals("")) {
