@@ -31,4 +31,13 @@
     <string name="mock_btn">Mock</string>
     <string name="mock_time_title">Please enter a valid time in millisecond</string>
     <string name="mock_time">time in millisecond</string>
+    <string name="title_activity_propose_walk">ProposeWalkActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="propose">Propose</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

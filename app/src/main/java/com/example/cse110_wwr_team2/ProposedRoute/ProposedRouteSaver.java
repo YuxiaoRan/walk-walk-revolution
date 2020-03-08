@@ -25,17 +25,12 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class ProposedRouteSaver{
 
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Context context;
 
 
     public ProposedRouteSaver(Context context){
-        db = FirebaseFirestore.getInstance();
         this.context = context;
-    }
-
-    public ProposedRouteSaver(){
-        db = FirebaseFirestore.getInstance();
     }
 
     /*

@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamRouteActivity"></activity>
+        <activity
+            android:name=".ProposeWalkActivity"
+            android:label="@string/title_activity_propose_walk"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
         <activity android:name=".TeamActivity" />
         <activity android:name=".MainActivity" />

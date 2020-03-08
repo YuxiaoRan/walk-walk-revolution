@@ -51,5 +51,11 @@ public class ProposedRoute {
         return acceptMembers;
     }
 
-
+    @Override
+    public String toString() {
+        return  "teamID '" + teamID + '\'' +
+                ", name='" + name + '\'' +
+                ", dataTime='" + dataTime + '\'' +
+                '}';
+    }
 }
