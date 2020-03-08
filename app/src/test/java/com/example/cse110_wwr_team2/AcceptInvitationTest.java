@@ -1,11 +1,6 @@
 package com.example.cse110_wwr_team2;
 
-import com.example.cse110_wwr_team2.User.User;
-import com.example.cse110_wwr_team2.User.UserAdapter;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

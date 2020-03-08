@@ -1,4 +1,4 @@
-package com.example.cse110_wwr_team2.Route;
+package com.example.cse110_wwr_team2.ProposedRoute;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.firebasefirestore.ProposedRouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,18 +23,18 @@ import java.util.TreeSet;
 import static android.content.Context.MODE_PRIVATE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class RouteSaver{
+public class ProposedRouteSaver{
 
     private FirebaseFirestore db;
     private Context context;
 
 
-    public RouteSaver(Context context){
+    public ProposedRouteSaver(Context context){
         db = FirebaseFirestore.getInstance();
         this.context = context;
     }
 
-    public RouteSaver(){
+    public ProposedRouteSaver(){
         db = FirebaseFirestore.getInstance();
     }
 
@@ -48,23 +49,23 @@ public class RouteSaver{
      *          "{route_name}_step_cnt" stores the int number of the step counts
      *               of the route with route_name
      */
-    public void getAllRoutes(RouteCallback callback){
+    public void getAllRoutes(ProposedRouteCallback callback){
 
-        String userId = CurrentUserInfo.getId(context);
-        Log.d("userId",userId);
+        String teamId = CurrentUserInfo.getTeamId(context);
+        Log.d("teamID", teamId);
 
         db.collection("Routes")
-                .whereEqualTo("userID", userId)
+                .whereEqualTo("userTeamID", teamId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         Log.d("getAllRoutes","onComplete");
                         if (task.isSuccessful()) {
-                            ArrayList<Route> routes = new ArrayList<>();
+                            ArrayList<ProposedRoute> routes = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-                                Route route = document.toObject(Route.class);
+                                ProposedRoute route = document.toObject(ProposedRoute.class);
                                 routes.add(route);
                             }
                             callback.onCallback(routes);
@@ -75,41 +76,6 @@ public class RouteSaver{
                 });
     }
 
-    public void getTeamRoutes(RouteCallback callback){
-        //String teamID = CurrentUserInfo.getTeamId(context);
-        String teamID = "HCteamID";
-        Log.d("teamID", teamID);
-        String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
-
-        db.collection("Routes")
-                .whereEqualTo("userTeamID", teamID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        Log.d("getAllRoutes","onComplete");
-                        if (task.isSuccessful()) {
-                            ArrayList<Route> routes = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Route route = document.toObject(Route.class);
-                                if(!userID.equals(route.getUserID())){
-                                    routes.add(route);
-                                }
-                            }
-                            callback.onCallback(routes);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
-
-
-    public void read(String id){
-
-    }
 
     /*
      * This function will add a new route into the file, by writing a new name
@@ -138,17 +104,20 @@ public class RouteSaver{
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
-                                   String note_txt, String features, Context context){
-
-        String userId = CurrentUserInfo.getId(context);
-        Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
-        route.setUserInitial(User.getInitial(context.getSharedPreferences("user", MODE_PRIVATE).getString("name", null)));
+    public void proposeNewRoute(String id, String startPoint, String name, String dataTime, Context context){
+        ProposedRouteBuilder builder = new ProposedRouteBuilder();
+        ProposedRoute route = builder.setId(id)
+                            .setDataTime(dataTime)
+                            .setName(name)
+                            .setProposerID(CurrentUserInfo.getId(context))
+                            .setTeamId(CurrentUserInfo.getTeamId(context))
+                            .setStartPoint(startPoint)
+                            .getRoute();
         db.collection("Routes").document(route.getId()).set(route);
     }
 
-    public void write(){
-
+    public void updateProposedRoute(ProposedRoute route){
+        db.collection("Routes").document(route.getId()).set(route);
     }
 
 
