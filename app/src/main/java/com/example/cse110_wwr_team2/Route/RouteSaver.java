@@ -145,6 +145,33 @@ public class RouteSaver{
                 });
     }
 
+    public void UpdateRouteMap(Route route, RouteUpdateCallback callback){
+        db.collection("Routes").document(route.getId())
+                .update("teammateStepCount", route.getTeammateStepCount())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            db.collection("Routes").document(route.getId())
+                                    .update("teammateDistance", route.getTeammateDistance())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                callback.onCallback();
+                                            }
+                                            else{
+                                                Log.d(TAG, "failure to update route's teammate distance");
+                                            }
+                                        }
+                                    });
+                        }else{
+                            Log.d(TAG, "failure to update route's teammate step count");
+                        }
+                    }
+                });
+    }
+
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
@@ -181,8 +208,9 @@ public class RouteSaver{
         db.collection("Routes").document(route.getId()).set(route);
     }
 
-    public void write(){
-
+    public void addNewRoute(Route route){
+        route.setUserInitial(User.getInitial(context.getSharedPreferences("user", MODE_PRIVATE).getString("name", null)));
+        db.collection("Routes").document(route.getId()).set(route);
     }
 
 

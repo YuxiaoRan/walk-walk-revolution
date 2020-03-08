@@ -34,6 +34,7 @@ public class MockActivity extends AppCompatActivity {
     private ArrayList<Route> routes;
     private int index;
     private String startTime;
+    private boolean ifTeammate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MockActivity extends AppCompatActivity {
         // get the string passed from route activity
         Intent intent = getIntent();
         index = intent.getIntExtra("index",-1);
+        ifTeammate = intent.getBooleanExtra("ifTeammate", false);
 
         /* change of logic, using the object directly to easier modify steps saved
             set currRoute only when it is actually passed
@@ -125,27 +127,34 @@ public class MockActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }else{
-            currRoute.updateStep(currStep);
-            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            RouteSaver saver = new RouteSaver();
-            Intent intent = new Intent(this, RouteActivity.class);
-            saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
-                @Override
-                public void onCallback() {
-                    saveRecent();
-                    startActivity(intent);
-                    finish();
-                }
-            });
-            /*
-            currRoute.updateStep(currStep);
-            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
-            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
-            Intent intent = new Intent(this, RouteActivity.class);
-            saveRecent();
-            startActivity(intent);
-            finish();*/
+            if(ifTeammate){
+                String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+                currRoute.addTeammateDistance(userID, Float.parseFloat(distance.getText().toString()));
+                currRoute.addTeammateStepCount(userID, currStep);
+                RouteSaver saver = new RouteSaver();
+                Intent intent = new Intent(this, TeamRouteActivity.class);
+                saver.UpdateRouteMap(currRoute, new RouteUpdateCallback() {
+                    @Override
+                    public void onCallback() {
+                        saveRecent();
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }else {
+                currRoute.updateStep(currStep);
+                currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+                RouteSaver saver = new RouteSaver();
+                Intent intent = new Intent(this, RouteActivity.class);
+                saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
+                    @Override
+                    public void onCallback() {
+                        saveRecent();
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
         }
     }
 

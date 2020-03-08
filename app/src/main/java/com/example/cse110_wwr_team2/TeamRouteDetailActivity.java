@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.material.chip.ChipGroup;
 
@@ -21,6 +22,7 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TeamRouteDetailActivity extends AppCompatActivity {
 
@@ -51,15 +53,25 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         ChipGroup[] allChips = {shapeTags, flatnessTags, streetTags, surfaceTags, difficultyTags};
         setSelectChips(allChips, currRoute.getFeatures());
 
+        //to find out whether there is your data
+        Map<String, Float> myDistance = currRoute.getTeammateDistance();
+        Map<String, Integer> myStepCnt = currRoute.getTeammateStepCount();
+        String myID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+        if(myDistance.containsKey(myID) && myStepCnt.containsKey(myID)){
+            TextView StepCnt = findViewById(R.id.step_count);
+            StepCnt.setText(""+myStepCnt.get(myID));
+            TextView Distance = findViewById(R.id.distance);
+            Distance.setText(""+myDistance.get(myID));
+        }
 
         // set the text in UI
         TextView Creator = findViewById(R.id.creator_initial);
         Creator.setText(currRoute.getUserInitial());
         TextView RouteName = findViewById(R.id.route_name);
         RouteName.setText(currRoute.getName());
-        TextView StepCnt = findViewById(R.id.step_count);
+        TextView StepCnt = findViewById(R.id.teammate_step_count);
         StepCnt.setText(""+currRoute.getStepCnt());
-        TextView Distance = findViewById(R.id.distance);
+        TextView Distance = findViewById(R.id.teammate_distance);
         Distance.setText(""+currRoute.getDistance());
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(currRoute.getStartPoint());
@@ -111,7 +123,7 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
             editor.putString(currRoute.getName()+"_note", note.getText().toString());
             editor.commit();
         }
-        Intent intent = new Intent(this, RouteActivity.class);
+        Intent intent = new Intent(this, TeamRouteActivity.class);
         startActivity(intent);
         finish();
     }
@@ -119,10 +131,12 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
     public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
         Bundle args = new Bundle();
+        boolean flag = true; // the flag to mark this route as teammate's route
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
         intent.putExtra("routeName", route);
+        intent.putExtra("ifTeammate", flag);
         intent.putExtra("walkKey", "walk");
         startActivity(intent);
         finish();
@@ -134,6 +148,7 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
+        intent.putExtra("ifTeammate", true);
         startActivity(intent);
         finish();
     }

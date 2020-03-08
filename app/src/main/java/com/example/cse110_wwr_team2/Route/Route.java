@@ -3,6 +3,8 @@ package com.example.cse110_wwr_team2.Route;
 import com.example.cse110_wwr_team2.RandomIDGenerator.UUIDGenerator;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /*
@@ -23,6 +25,8 @@ public class Route implements Serializable {
     private String userId;
     private String userInitial;
     private String startTime;
+    private Map<String, Float> teammateDistance;
+    private Map<String, Integer> teammateStepCount;
 
     public Route(){}
 
@@ -38,6 +42,8 @@ public class Route implements Serializable {
         this.features = features;
         this.distance = distance;
         this.userId = userId;
+        this.teammateDistance = new HashMap<>();
+        this.teammateStepCount = new HashMap<>();
     }
 
     public Route(String start_point, String name, String note, int step_cnt, float distance, String features, String userTeamID) {
@@ -52,6 +58,8 @@ public class Route implements Serializable {
         this.distance = distance;
         this.features = features;
         this.userTeamID = userTeamID;
+        this.teammateDistance = new HashMap<>();
+        this.teammateStepCount = new HashMap<>();
     }
 
     public String getId() {
@@ -88,6 +96,18 @@ public class Route implements Serializable {
         this.stepCnt = step_cnt;
         this.note = note;
         this.features = features;
+        this.teammateDistance = new HashMap<>();
+        this.teammateStepCount = new HashMap<>();
+    }
+
+    public Map<String, Float> addTeammateDistance(String teammateID, float distance){
+        this.teammateDistance.put(teammateID, distance);
+        return this.teammateDistance;
+    }
+
+    public Map<String, Integer> addTeammateStepCount(String teammateID, int stepCnt){
+        this.teammateStepCount.put(teammateID, stepCnt);
+        return this.teammateStepCount;
     }
 
     public String getFeatures(){return this.features;}
@@ -134,5 +154,13 @@ public class Route implements Serializable {
 
     public void setStepCnt(int stepCnt) {
         this.stepCnt = stepCnt;
+    }
+
+    public Map<String, Float> getTeammateDistance() {
+        return teammateDistance;
+    }
+
+    public Map<String, Integer> getTeammateStepCount() {
+        return teammateStepCount;
     }
 }
