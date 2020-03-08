@@ -28,7 +28,7 @@ public class TeamActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.teammate_list);
         fabHome = findViewById(R.id.team_back_home);
-        fabAdd = fabAdd = findViewById(R.id.add_teammate);
+        fabAdd = findViewById(R.id.add_teammate);
 
         fabHome.setOnClickListener(new View.OnClickListener() {
             @Override
