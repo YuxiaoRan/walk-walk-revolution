@@ -28,6 +28,9 @@ public class InvitationOnlineSaver {
 
     private void saveData() {
         Map<String, Object> docData = new HashMap<>();
+        docData.put("NameTo", invitation.getToName());
+        docData.put("NameFrom", invitation.getFromName());
+        docData.put("DeviceID", invitation.getDeviceID());
         docData.put("from", invitation.getFromGmail());
         docData.put("to", invitation.getToGmail());
         docData.put("status", invitation.getStatus());

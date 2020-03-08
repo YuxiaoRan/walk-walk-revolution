@@ -23,7 +23,7 @@ public class UserOnlineSaver {
     }
 
 
-    public static void saveLocalUserInfo(FirebaseUser user, Context context) {
+    public static void saveLocalUserInfo(FirebaseUser user, String deviceID, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -31,6 +31,7 @@ public class UserOnlineSaver {
         editor.putString("id", user.getUid());
         editor.putString("gmail", user.getEmail());
         editor.putString("name", user.getDisplayName());
+        editor.putString("device_ID", deviceID);
         editor.apply();
     }
 

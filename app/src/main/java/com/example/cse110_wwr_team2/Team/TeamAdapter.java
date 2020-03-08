@@ -10,8 +10,11 @@ import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeammateCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -55,6 +58,30 @@ public class TeamAdapter {
                         }
                     }
                 });
+
+        // Get pending invitations
+        db.collection("Invitations")
+                .whereEqualTo("status", 0)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<String> teammates = new ArrayList<String>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String name = document.get("NameTo").toString();
+                                teammates.add(name);
+
+                                //Log.d(TAG, document.getId() + " => " + document.getData());
+                                //User user = document.toObject(User.class);
+                            }
+                            callback.onCallbackPending(teammates);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     public void getAllMap(MapCallBack callback, String teamID){

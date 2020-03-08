@@ -100,7 +100,8 @@ public class InputHeightActivity extends AppCompatActivity {
                         int height = sharedPreferences.getInt("height", 0);
                         String name = sharedPreferences.getString("name", null);
                         String gmail = sharedPreferences.getString("gmail", null);
-                        User user = new User(user_id, gmail, name, height);
+                        String deviceID = sharedPreferences.getString("device_ID", null);
+                        User user = new User(user_id, gmail, name, height, deviceID);
                         UserOnlineSaver servie = new UserOnlineSaver(user);
                         servie.write();
                     }else if(task.getResult().size() != 1){

@@ -2,6 +2,7 @@ package com.example.cse110_wwr_team2.User;
 
 public class User {
     private String id;
+    private String device_ID;
     private String gmail;
     private String name;
     private int height;
@@ -10,19 +11,21 @@ public class User {
 
     public User(){}
 
-    public User(String id, String gmail, String name, int height) {
+    public User(String id, String gmail, String name, int height, String deviceID) {
         this.id = id;
         this.gmail = gmail;
         this.name = name;
         this.height = height;
+        this.device_ID = deviceID;
         this.teamID = teamID;
     }
 
-    public User(String gmail, String name, int height, String teamID){
+    public User(String gmail, String name, int height, String teamID, String deviceID){
         this.gmail = gmail;
         this.name = name;
         this.height = height;
         this.teamID = teamID;
+        this.device_ID = deviceID;
     }
 
     public String getId() {
@@ -67,5 +70,9 @@ public class User {
 
     public static String getInitial(String name){
         return ""+name.charAt(0);
+    }
+
+    public String getDeviceID() {
+        return this.device_ID;
     }
 }
