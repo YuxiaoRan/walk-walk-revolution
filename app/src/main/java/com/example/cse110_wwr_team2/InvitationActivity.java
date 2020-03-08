@@ -71,7 +71,7 @@ public class InvitationActivity extends AppCompatActivity {
     // search email address in database
     private void search(String emailAddress, boolean isSending) {
         if(emailAddress == null || emailAddress.equals("")) {
-            Toast.makeText(InvitationActivity.this, "please input an email", Toast.LENGTH_SHORT);
+            Toast.makeText(InvitationActivity.this, "please input an email", Toast.LENGTH_LONG).show();
             return;
         }
         try {
@@ -109,13 +109,13 @@ public class InvitationActivity extends AppCompatActivity {
     // create and send invitation
     private void sendInvitation(String fromGmail, String toGmail) {
         if(fromGmail == null || fromGmail.equals("") || toGmail == null || toGmail.equals("")) {
-            Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_SHORT);
+            Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_LONG).show();
             return;
         }
         Invitation invitation = new Invitation(fromGmail, toGmail);
         InvitationOnlineSaver ios = new InvitationOnlineSaver(invitation);
         ios.write();
-        Toast.makeText(InvitationActivity.this, "invitation sent", Toast.LENGTH_SHORT);
+        Toast.makeText(InvitationActivity.this, "invitation sent", Toast.LENGTH_LONG).show();
         Log.d("invitation", "invitation sent from " + fromGmail + " to " + toGmail);
     }
 }
