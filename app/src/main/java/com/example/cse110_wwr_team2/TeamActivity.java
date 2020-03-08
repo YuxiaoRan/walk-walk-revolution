@@ -42,7 +42,7 @@ public class TeamActivity extends AppCompatActivity {
                 ArrayAdapter arrayAdapter = new ArrayAdapter(TeamActivity.this, android.R.layout.simple_list_item_1, userNames);
                 listView.setAdapter(arrayAdapter);
             }
-        });
+        }, TeamActivity.this);
 
 
     }

@@ -1,5 +1,7 @@
 package com.example.cse110_wwr_team2.ProposedRoute;
 
+import android.content.Context;
+
 import com.example.cse110_wwr_team2.Team.TeamAdapter;
 import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 
@@ -13,6 +15,7 @@ public class ProposedRouteBuilder {
     String dataTime;
     String proposerID;
     Map<String, Integer> acceptMembers;
+    int scheduled;
     public ProposedRouteBuilder(){}
 
     public ProposedRouteBuilder setId(String id) {
@@ -50,17 +53,13 @@ public class ProposedRouteBuilder {
         return this;
     }
 
+    public ProposedRouteBuilder setScheduled(int scheduled){
+        this.scheduled = scheduled;
+        return this;
+    }
+
     public ProposedRoute getRoute(){
-        if(acceptMembers == null){
-            TeamAdapter ta = new TeamAdapter();
-            ta.getAllMap(new MapCallBack() {
-                @Override
-                public void onCallback(Map<String, Integer> members) {
-                    acceptMembers = members;
-                }
-            }, teamID);
-        }
-        return new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers);
+        return new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers, scheduled);
     }
 }
 

@@ -6,8 +6,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.Team.TeamAdapter;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.ProposedRouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +19,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -27,12 +31,16 @@ public class ProposedRouteSaver{
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Context context;
+    private ArrayList<Observer> observers = new ArrayList<>();
 
 
     public ProposedRouteSaver(Context context){
         this.context = context;
     }
 
+    public void register(Observer o){
+        observers.add(o);
+    }
     /*
      * This method gets all the routes from the Firebase and put into routes
      * which will be shown in the activity
@@ -49,8 +57,8 @@ public class ProposedRouteSaver{
         String teamId = CurrentUserInfo.getTeamId(context);
         Log.d("teamID", teamId);
 
-        db.collection("Routes")
-                .whereEqualTo("userTeamID", teamId)
+        db.collection("ProposedRoutes")
+                .whereEqualTo("teamID", teamId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -101,18 +109,32 @@ public class ProposedRouteSaver{
      */
     public void proposeNewRoute(String id, String startPoint, String name, String dataTime, Context context){
         ProposedRouteBuilder builder = new ProposedRouteBuilder();
-        ProposedRoute route = builder.setId(id)
-                            .setDataTime(dataTime)
-                            .setName(name)
-                            .setProposerID(CurrentUserInfo.getId(context))
-                            .setTeamId(CurrentUserInfo.getTeamId(context))
-                            .setStartPoint(startPoint)
-                            .getRoute();
-        db.collection("Routes").document(route.getId()).set(route);
+        TeamAdapter ta = new TeamAdapter();
+        ta.getAllMap(new MapCallBack() {
+            @Override
+            public void onCallback(Map<String, Integer> members, FirebaseFirestore db) {
+                ProposedRoute route = builder.setId(id)
+                        .setDataTime(dataTime)
+                        .setName(name)
+                        .setProposerID(CurrentUserInfo.getId(context))
+                        .setTeamId(CurrentUserInfo.getTeamId(context))
+                        .setStartPoint(startPoint)
+                        .setAcceptMembers(members)
+                        .setScheduled(0)
+                        .getRoute();
+                db.collection("ProposedRoutes").document(route.getId()).set(route);
+            }
+        }, CurrentUserInfo.getTeamId(context), CurrentUserInfo.getId(context));
+        for(Observer i : observers){
+            i.update();
+        }
     }
 
     public void updateProposedRoute(ProposedRoute route){
-        db.collection("Routes").document(route.getId()).set(route);
+        db.collection("ProposedRoutes").document(route.getId()).set(route);
+        for(Observer i : observers){
+            i.update();
+        }
     }
 
 
