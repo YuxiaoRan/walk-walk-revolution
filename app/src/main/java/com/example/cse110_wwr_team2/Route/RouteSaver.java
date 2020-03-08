@@ -3,16 +3,22 @@ package com.example.cse110_wwr_team2.Route;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.RouteActivity;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -118,6 +124,10 @@ public class RouteSaver{
 
     }
 
+    /*
+     * This function will update the route into the file, by writing a new name
+     * into the FireBase
+     */
     public void UpdateRoute(Route route, RouteUpdateCallback callback){
         db.collection("Routes").document(route.getId())
                 .update("distance", route.getDistance())
@@ -186,9 +196,6 @@ public class RouteSaver{
         db.collection("Routes").document(route.getId()).set(route);
     }
 
-    public void write(){
-
-    }
 
 
     // clear the mock data saved at midnight
@@ -199,5 +206,24 @@ public class RouteSaver{
         editor.putFloat("mock_distance",0);
         editor.commit();
     }
+
+    /**
+     *
+     * @param userID
+     * @param routeID
+     * update in firebase of userID of route with routeID
+     */
+    public void initializFavorite(String userID, String routeID){
+        db.collection("Users").document(userID).collection("Favorites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.isEmpty()){
+
+                    Log.d("Route Saver","no favorites");
+                }
+            }
+        });
+    }
+
 
 }

@@ -23,6 +23,7 @@ public class Route implements Serializable {
     private String userId;
     private String userInitial;
     private String startTime;
+    private Boolean isFavourite;
 
     public Route(){}
 

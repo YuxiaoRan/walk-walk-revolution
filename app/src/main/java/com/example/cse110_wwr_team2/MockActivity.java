@@ -128,7 +128,7 @@ public class MockActivity extends AppCompatActivity {
             currRoute.updateStep(currStep);
             currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
             RouteSaver saver = new RouteSaver();
-            Intent intent = new Intent(this, RouteActivity.class);
+            Intent intent = new Intent(this, RouteDirectorActivity.class);
             saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
                 @Override
                 public void onCallback() {

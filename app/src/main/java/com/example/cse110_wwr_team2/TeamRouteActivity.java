@@ -32,8 +32,9 @@ public class TeamRouteActivity extends AppCompatActivity {
         saver.getTeamRoutes(new TeamRouteCallback() {
             @Override
             public void onCallback(List<Route> routes, List<String> routes_info) {
-                ArrayAdapter arrayAdapter = new ArrayAdapter(TeamRouteActivity.this, android.R.layout.simple_list_item_1, routes_info);
-                listView.setAdapter(arrayAdapter);
+                //ArrayAdapter arrayAdapter = new ArrayAdapter(TeamRouteActivity.this, android.R.layout.simple_list_item_1, routes_info);
+                RouteListAdapter routeListAdapter = new RouteListAdapter(TeamRouteActivity.this, android.R.layout.simple_list_item_1,routes, routes_info);
+                listView.setAdapter(routeListAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
