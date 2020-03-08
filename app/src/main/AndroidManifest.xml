@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".InvitationActivity"></activity>
+        <activity android:name=".TeamRouteDetailActivity"></activity>
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
         <activity android:name=".TeamActivity" />
