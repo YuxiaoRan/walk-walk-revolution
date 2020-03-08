@@ -129,13 +129,6 @@ public class WalkActivity extends AppCompatActivity {
                     finish();
                 }
             });
-            /*
-            RouteSaver.UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
-            Intent intent = new Intent(this, RouteActivity.class);
-            saveRecent();
-            startActivity(intent);
-            finish();
-            */
         }
     }
 
