@@ -3,16 +3,22 @@ package com.example.cse110_wwr_team2.Route;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.RouteActivity;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -118,6 +124,10 @@ public class RouteSaver{
 
     }
 
+    /*
+     * This function will update the route into the file, by writing a new name
+     * into the FireBase
+     */
     public void UpdateRoute(Route route, RouteUpdateCallback callback){
         db.collection("Routes").document(route.getId())
                 .update("distance", route.getDistance())
@@ -177,7 +187,7 @@ public class RouteSaver{
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public static void UpdateRoute(String route_name, String start_point, int step_cnt, float distance, Context context){
+    public static void UpdateRoute(String route_id, String route_name, String start_point, int step_cnt, float distance, Context context){
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -192,6 +202,11 @@ public class RouteSaver{
         }catch (Exception e){
             System.err.println(e);
         }
+    }
+
+    // the database version of the above method
+    public void UpdateRoute(Route route){
+        db.collection("Routes").document(route.getId()).set(route);
     }
 
     /*
@@ -222,5 +237,24 @@ public class RouteSaver{
         editor.putFloat("mock_distance",0);
         editor.commit();
     }
+
+    /**
+     *
+     * @param userID
+     * @param routeID
+     * update in firebase of userID of route with routeID
+     */
+    public void initializFavorite(String userID, String routeID){
+        db.collection("Users").document(userID).collection("Favorites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.isEmpty()){
+
+                    Log.d("Route Saver","no favorites");
+                }
+            }
+        });
+    }
+
 
 }

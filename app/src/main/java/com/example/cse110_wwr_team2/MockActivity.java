@@ -68,7 +68,7 @@ public class MockActivity extends AppCompatActivity {
             Bundle args = intent.getBundleExtra("BUNDLE");
             routes = (ArrayList<Route>) args.getSerializable("route_list");
             Log.d("route_list", routes.toString());
-            currRoute = routes.get(index);
+            currRoute = routes.get(index); // the current Route object
             TextView RouteName = findViewById(R.id.mock_routeName);
             RouteName.setText(currRoute.getName());
         }

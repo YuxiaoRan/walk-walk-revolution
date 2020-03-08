@@ -27,6 +27,7 @@ public class Route implements Serializable {
     private String startTime;
     private Map<String, Float> teammateDistance;
     private Map<String, Integer> teammateStepCount;
+    private Boolean isFavourite;
 
     public Route(){}
 
