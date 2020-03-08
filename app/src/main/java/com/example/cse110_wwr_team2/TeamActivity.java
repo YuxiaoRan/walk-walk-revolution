@@ -42,7 +42,7 @@ public class TeamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("button","invitation activity");
-                launchInvitation();
+                //launchInvitation();
             }
         });
 
