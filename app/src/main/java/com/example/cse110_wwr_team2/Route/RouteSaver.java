@@ -12,6 +12,7 @@ import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.SingleRouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -120,8 +121,26 @@ public class RouteSaver{
 
 
 
-    public void read(String id){
-
+    public void getRoute(String id, SingleRouteCallback callback){
+        db.collection("Routes")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            if (task.getResult().isEmpty()){
+                                Log.d(TAG, "The route with id "+id+ "is null");
+                                callback.onCallback(null);
+                            }else {
+                                Log.d(TAG, "The route if find");
+                                callback.onCallback(task.getResult().getDocuments().get(0).toObject(Route.class));
+                            }
+                        }else{
+                            Log.d(TAG, "fail to find the route with id "+id);
+                        }
+                    }
+                });
     }
 
     /*

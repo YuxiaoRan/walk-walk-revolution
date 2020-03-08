@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 
@@ -114,6 +116,7 @@ public class WalkActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance",Float.parseFloat(distance.getText().toString()));
+            intent.putExtra("ifNewFinish", true);
             saveRecent();
             startActivity(intent);
             finish();
@@ -128,11 +131,18 @@ public class WalkActivity extends AppCompatActivity {
                     @Override
                     public void onCallback() {
                         saveRecent();
-                        startActivity(intent);
-                        finish();
+                        UserOnlineSaver userSaver = new UserOnlineSaver();
+                        userSaver.updateLatestWalk(userID, currRoute.getId(), new UserCallBack() {
+                            @Override
+                            public void onCallBack() {
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
                 });
             }else {
+                String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
                 currRoute.updateStep(currStep);
                 currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
                 RouteSaver saver = new RouteSaver();
@@ -141,8 +151,14 @@ public class WalkActivity extends AppCompatActivity {
                     @Override
                     public void onCallback() {
                         saveRecent();
-                        startActivity(intent);
-                        finish();
+                        UserOnlineSaver userSaver = new UserOnlineSaver();
+                        userSaver.updateLatestWalk(userID, currRoute.getId(), new UserCallBack() {
+                            @Override
+                            public void onCallBack() {
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
                 });
             }
