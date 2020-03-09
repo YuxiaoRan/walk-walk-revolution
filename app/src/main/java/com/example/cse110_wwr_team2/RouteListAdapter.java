@@ -74,12 +74,13 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             holder = new ViewHolder();
             holder.textView = v.findViewById(R.id.ListText);
             holder.toggleButton = v.findViewById(R.id.favorite_star);
-            holder.toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            holder.toggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     Route currRoute = entries.get(position);
                     String userID = CurrentUserInfo.getId(getContext());
-                    if(isChecked) {
+                    if(holder.toggleButton.isChecked()){
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         Map<String, Object> map = new HashMap<>();
                         map.put(currRoute.getId(),null);
@@ -89,8 +90,9 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("Users").document(userID).collection("Favorites").document(currRoute.getId()).delete();
                     }
+                }
+            });
 
-        }});
             v.setTag(holder);
         }
         else
@@ -115,10 +117,10 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "Document exists!");
-                        holder.toggleButton.setChecked(false);
+                        holder.toggleButton.setChecked(true);
                     } else {
                         Log.d(TAG, "Document does not exist!");
-                        holder.toggleButton.setChecked(true);
+                        holder.toggleButton.setChecked(false);
                     }
                     Log.d("RouteListAdapter","fetch document successful");
 
