@@ -21,9 +21,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import static android.content.ContentValues.TAG;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingServiceDeclineInvite extends FirebaseMessagingService {
     private String CHANNEL_ID = "ID1";
-    public MyFirebaseMessagingService() {
+    public MyFirebaseMessagingServiceDeclineInvite() {
     }
 
     @Override
@@ -34,9 +34,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String body = remoteMessage.getNotification().getBody();
 
         String click_action = remoteMessage.getNotification().getClickAction();
-        String message = remoteMessage.getData().get("message");
-        String dest_user_id = remoteMessage.getData().get("dest_user_id");
-        String invite_id = remoteMessage.getData().get("invite_id");
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -49,9 +46,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         Intent resultIntent = new Intent(click_action);
-        resultIntent.putExtra("message", message);
-        resultIntent.putExtra("dest_user_id", dest_user_id);
-        resultIntent.putExtra("invite_id", invite_id);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(this, 0, resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);

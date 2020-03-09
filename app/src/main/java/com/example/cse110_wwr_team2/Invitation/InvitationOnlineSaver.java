@@ -29,6 +29,7 @@ public class InvitationOnlineSaver {
     private void saveData() {
         Map<String, Object> docData = new HashMap<>();
         docData.put("NameTo", invitation.getToName());
+        docData.put("ToUserID", invitation.getToUserID());
         docData.put("NameFrom", invitation.getFromName());
         docData.put("DeviceID", invitation.getDeviceID());
         docData.put("from", invitation.getFromGmail());
@@ -40,9 +41,8 @@ public class InvitationOnlineSaver {
 
     public void write() {
         try {
-            Query queryUser = invRef.whereEqualTo("from", invitation.getFromGmail())
-                                    .whereEqualTo("to", invitation.getToGmail())
-                                    .whereEqualTo("status", invitation.getStatus());
+            // Can receive invitation from multiple people to same user, so just check end user
+            Query queryUser = invRef.whereEqualTo("to", invitation.getToGmail());
             queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {

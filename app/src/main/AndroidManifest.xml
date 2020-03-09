@@ -43,6 +43,28 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
+        <activity android:name=".InvitationResponseActivity">
+            <intent-filter>
+                <action android:name="com.example.cse110_wwr_team2.CLICK_NOTIFICATION"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".InvitationAcceptActivity">
+            <intent-filter>
+                <action android:name="com.example.cse110_wwr_team2.CLICK_ACCEPT_NOTIFICATION"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".InvitationDeclineActivity">
+            <intent-filter>
+                <action android:name="com.example.cse110_wwr_team2.CLICK_DECLINE_NOTIFICATION"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

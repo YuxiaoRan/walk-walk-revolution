@@ -34,7 +34,8 @@ public class InvitationActivity extends AppCompatActivity {
 
     private String myGmail;
     private String fromName;
-    private String deviceID;
+    private String fromDeviceID;
+    private String toUserID;
 
     private CollectionReference usersRef;
     private FirebaseFirestore db;
@@ -52,7 +53,8 @@ public class InvitationActivity extends AppCompatActivity {
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
         myGmail = spfs.getString("gmail", null);
         fromName = spfs.getString("name", null);
-        deviceID = spfs.getString("device_ID", null);
+        fromDeviceID = spfs.getString("device_ID", null);
+        //toUserID = spfs.getString("id", null);
 
         // set initial visibility
         username.setVisibility(View.GONE);
@@ -86,13 +88,14 @@ public class InvitationActivity extends AppCompatActivity {
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         String toName = doc.get("name").toString();
+                        toUserID = doc.get("id").toString();
                         if (toName != null && !toName.equals("")) {
                             if(!isSending) {
                                 display(toName);
                                 return;
                             }
                             else {
-                                sendInvitation(myGmail, emailAddress, toName, fromName, deviceID);
+                                sendInvitation(myGmail, emailAddress, toName, fromName, fromDeviceID, toUserID);
                                 return;
                             }
                         }
@@ -117,19 +120,17 @@ public class InvitationActivity extends AppCompatActivity {
     }
 
     // create and send invitation
-    private void sendInvitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID) {
+    private void sendInvitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID, String toUserID) {
         if(fromGmail == null || fromGmail.equals("") || toGmail == null || toGmail.equals("")) {
             Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_SHORT).show();
             return;
         }
-        Invitation invitation = new Invitation(fromGmail, toGmail, toName, fromName, deviceID);
+        Invitation invitation = new Invitation(fromGmail, toGmail, toName, fromName, deviceID, toUserID);
         InvitationOnlineSaver ios = new InvitationOnlineSaver(invitation);
         ios.write();
         Toast.makeText(getApplicationContext(), "invitation sent to " + toName, Toast.LENGTH_SHORT).show();
         username.setVisibility(View.GONE);
         Log.d("invitation", "invitation sent from " + fromGmail + " to " + toGmail);
-        // Call 2 times to display
-        launchTeamPage();
         launchTeamPage();
     }
 

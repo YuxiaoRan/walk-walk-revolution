@@ -6,13 +6,15 @@ public class Invitation {
     private String toName;
     private String fromName;
     private String deviceID;
+    private String toUserID;
+
     private int status;
 
     public static final int PENDING = 0;
     public static final int ACCEPTED = 1;
     public static final int DECLINED = 2;
 
-    public Invitation(String fromGmail, String toGmail, int status, String toName, String fromName, String deviceID) {
+    public Invitation(String fromGmail, String toGmail, int status, String toName, String fromName, String deviceID, String toUserID) {
         if(status != PENDING && status != ACCEPTED && status != DECLINED) {
             throw new IllegalArgumentException("wrong status");
         }
@@ -21,11 +23,12 @@ public class Invitation {
         this.toName = toName;
         this.fromName = fromName;
         this.deviceID = deviceID;
+        this.toUserID = toUserID;
         this.status = status;
     }
 
-    public Invitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID) {
-        this(fromGmail, toGmail, Invitation.PENDING, toName, fromName, deviceID);
+    public Invitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID, String toUserID) {
+        this(fromGmail, toGmail, Invitation.PENDING, toName, fromName, deviceID, toUserID);
     }
 
     public int getStatus() {
@@ -57,5 +60,9 @@ public class Invitation {
 
     public String getDeviceID() {
         return this.deviceID;
+    }
+
+    public String getToUserID() {
+        return this.toUserID;
     }
 }

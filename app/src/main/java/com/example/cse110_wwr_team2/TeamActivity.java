@@ -59,8 +59,19 @@ public class TeamActivity extends AppCompatActivity {
             LinearLayout layout = (LinearLayout) findViewById(R.id.teammate_list2);
             @Override
             public void onCallback(List<String> userNames) {
+                /*
                 ArrayAdapter arrayAdapter = new ArrayAdapter(TeamActivity.this, android.R.layout.simple_list_item_1, userNames);
                 listView.setAdapter(arrayAdapter);
+
+                 */
+
+                for(int i = 0; i < userNames.size(); i++) {
+                    TextView newTextView = new TextView(getApplicationContext());
+                    newTextView.setText(userNames.get(i));
+                    newTextView.setTextSize(30);
+                    newTextView.setTypeface(null, Typeface.ITALIC);
+                    layout.addView(newTextView);
+                }
             }
 
             @Override
