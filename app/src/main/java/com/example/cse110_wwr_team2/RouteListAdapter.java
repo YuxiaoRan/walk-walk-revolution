@@ -7,22 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.solver.widgets.ConstraintAnchor;
-import com.example.cse110_wwr_team2.R;
+
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.firebasefirestore.FavoriteAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +40,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
     public RouteListAdapter(Activity a, int textViewResourceId, List<Route> entries){
         super(a,textViewResourceId,entries);
         this.entries = entries;
+        routeInfo = null;
         activity = a;
     }
 
@@ -56,7 +54,8 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
     // the view format of the route entry
     public static class ViewHolder{
         public TextView textView;
-        public ToggleButton toggleButton;
+        public ToggleButton Star;
+        public ToggleButton CheckBox;
     }
 
     /**
@@ -73,24 +72,27 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             v = layoutInflater.inflate(R.layout.list_item,null);
             holder = new ViewHolder();
             holder.textView = v.findViewById(R.id.ListText);
-            holder.toggleButton = v.findViewById(R.id.favorite_star);
-            holder.toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.Star = v.findViewById(R.id.favorite_star);
+            holder.CheckBox = v.findViewById(R.id.check_box); // Refer to list_item.xml checkbox is unclickable
 
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            // the onClick listener for each star in the list view
+            holder.Star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     Route currRoute = entries.get(position);
                     String userID = CurrentUserInfo.getId(getContext());
-                    if(isChecked) {
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> map = new HashMap<>();
-                        map.put(currRoute.getId(),null);
-                        db.collection("Users").document(userID).collection("Favorites").document(currRoute.getId()).set(map);
+                    // using favoriteAdapter to edit firebase data
+                    FavoriteAdapter favoriteAdapter = new FavoriteAdapter();
+                    if(holder.Star.isChecked()){
+                        favoriteAdapter.addToFavorite(userID,currRoute.getId());
                     }
                     else{
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("Users").document(userID).collection("Favorites").document(currRoute.getId()).delete();
+                        favoriteAdapter.deleteFavorite(userID,currRoute.getId());
                     }
+                }
+            });
 
-        }});
             v.setTag(holder);
         }
         else
@@ -98,10 +100,15 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
         final Route currRoute = entries.get(position);
         if(currRoute != null){
-            if(routeInfo == null)
+            if(routeInfo == null) {
+                Log.d("RouteListAdapter","routeInfo == null");
                 holder.textView.setText(currRoute.toString());
-            else
+            }
+            else {
+                Log.d("RouteListAdapter","routeInfo != null");
+                Log.d("RouteListAdapter",routeInfo.get(position));
                 holder.textView.setText(routeInfo.get(position));
+            }
         }
         String userID = CurrentUserInfo.getId(this.getContext());
 
@@ -115,10 +122,10 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "Document exists!");
-                        holder.toggleButton.setChecked(false);
+                        holder.Star.setChecked(true);
                     } else {
                         Log.d(TAG, "Document does not exist!");
-                        holder.toggleButton.setChecked(true);
+                        holder.Star.setChecked(false);
                     }
                     Log.d("RouteListAdapter","fetch document successful");
 
@@ -129,6 +136,33 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 }
             }
         });
+
+        // check on firebase if the current route is walked before
+        FirebaseFirestore dbw = FirebaseFirestore.getInstance();
+        DocumentReference documentReferencew = dbw.collection("Users").document(userID).collection("Walked").document(currRoute.getId());
+        documentReferencew.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "Document exists!");
+                        holder.CheckBox.setChecked(true);
+                    } else {
+                        Log.d(TAG, "Document does not exist!");
+                        holder.CheckBox.setChecked(false);
+                    }
+                    Log.d("RouteListAdapter","fetch document successful");
+
+                }
+                else{
+                    Log.d("RouteListAdapter","fetch document fail");
+
+                }
+            }
+        });
+
+
         return v;
     }
 

@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.UserOnlineSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.LastWalkIDCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.SingleRouteCallback;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
@@ -181,13 +185,42 @@ public class MainActivity extends AppCompatActivity {
      * the method to set up last intentional step count and distance
      */
     private void setUpLastStat(){
+        String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+        final String[] routeID = {""};
+        UserOnlineSaver userSaver = new UserOnlineSaver();
+        userSaver.getLastestWalkID(userID, new LastWalkIDCallback() {
+            @Override
+            public void onCallback(String walkID) {
+                routeID[0] = walkID;
+                RouteSaver routeSaver = new RouteSaver();
+                routeSaver.getRoute(routeID[0], new SingleRouteCallback() {
+                    @Override
+                    public void onCallback(Route route) {
+                        if (route == null){
+                            lastStepCnt.setText(Integer.toString(0));
+                            lastDist.setText(Float.toString(0));
+                        }else {
+                            if (route.getUserID().equals(userID)) {
+                                lastStepCnt.setText(Integer.toString(route.getStepCnt()));
+                                lastDist.setText(Float.toString((float) route.getDistance()));
+                            } else {
+                                int userStepCnt = route.getTeammateStepCount().get(userID);
+                                float userDistance = route.getTeammateDistance().get(userID);
+                                lastStepCnt.setText(Integer.toString(userStepCnt));
+                                lastDist.setText(Float.toString(userDistance));
+                            }
+                        }
+                    }
+                });
+            }
+        });
         SharedPreferences sharedPreferences = getSharedPreferences("recent_route", MODE_PRIVATE);
-        int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
-        float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
+        //int lastStep = sharedPreferences.getInt("recent_step_cnt", 0);
+        //float lastDistance = sharedPreferences.getFloat("recent_distance", 0);
         String startTime = sharedPreferences.getString("time", "NAN");
-        Log.d(TAG, "setUpLastStat: "+"lastStepCount "+lastStep+" lastDistance "+lastDistance);
-        lastStepCnt.setText(Integer.toString(lastStep));
-        lastDist.setText(Float.toString(lastDistance));
+        //Log.d(TAG, "setUpLastStat: "+"lastStepCount "+lastStep+" lastDistance "+lastDistance);
+        //lastStepCnt.setText(Integer.toString(lastStep));
+        //lastDist.setText(Float.toString(lastDistance));
         lastTime.setText(startTime);
     }
 

@@ -7,7 +7,11 @@
     <string name="step_title">Step Count</string>
     <string name="step_count">NAN</string>
     <string name="distance_title">Miles</string>
-    <string name="distance">0</string>
+    <string name="distance">NAN</string>
+    <string name="teammate_step_title">Step Count (your friend)</string>
+    <string name="teammate_step_count">0</string>
+    <string name="teammate_distance_title">Miles (your friend)</string>
+    <string name="teammate_distance">0</string>
     <string name="stop_walking">STOP</string>
     <string name="main_intention_time_title">Time:</string>>
     <string name="main_intention_time">NAN</string>>
