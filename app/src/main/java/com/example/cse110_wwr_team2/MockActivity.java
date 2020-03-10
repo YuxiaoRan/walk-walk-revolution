@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
@@ -34,6 +36,7 @@ public class MockActivity extends AppCompatActivity {
     private ArrayList<Route> routes;
     private int index;
     private String startTime;
+    private boolean ifTeammate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MockActivity extends AppCompatActivity {
         // get the string passed from route activity
         Intent intent = getIntent();
         index = intent.getIntExtra("index",-1);
+        ifTeammate = intent.getBooleanExtra("ifTeammate", false);
 
         /* change of logic, using the object directly to easier modify steps saved
             set currRoute only when it is actually passed
@@ -121,35 +125,52 @@ public class MockActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddRouteActivity.class);
             intent.putExtra("step_cnt", currStep);
             intent.putExtra("distance", Float.parseFloat(distance.getText().toString()));
+            intent.putExtra("ifNewFinish", true);
             saveRecent();
             startActivity(intent);
             finish();
         }else{
-            currRoute.updateStep(currStep);
-            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            RouteSaver saver = new RouteSaver();
-            Intent intent = new Intent(this, RouteDirectorActivity.class);
-            saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
-                @Override
-                public void onCallback() {
-                    saveRecent();
-                    startActivity(intent);
-                    finish();
-                }
-            });
-            /*
-            currRoute.updateStep(currStep);
-            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            //UpdateRoute(currRoute.getName(),currRoute.getStartPoint(),(int)currStep,Float.parseFloat(distance.getText().toString()));
-            RouteSaver routeSaver = new RouteSaver();
-            currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
-            currRoute.updateStep(currStep);
-            routeSaver.UpdateRoute(currRoute);
-            //RouteSaver.UpdateRoute(currRoute.getId(),currRoute.getName(),currRoute.getStartPoint(),currStep,Float.parseFloat(distance.getText().toString()),this);
-            Intent intent = new Intent(this, RouteDirectorActivity.class);
-            saveRecent();
-            startActivity(intent);
-            finish();*/
+            if(ifTeammate){
+                String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+                currRoute.addTeammateDistance(userID, Float.parseFloat(distance.getText().toString()));
+                currRoute.addTeammateStepCount(userID, currStep);
+                RouteSaver saver = new RouteSaver();
+                Intent intent = new Intent(this, RouteActivity.class);
+                saver.UpdateRouteMap(currRoute, new RouteUpdateCallback() {
+                    @Override
+                    public void onCallback() {
+                        saveRecent();
+                        UserOnlineSaver userSaver = new UserOnlineSaver();
+                        userSaver.updateLatestWalk(userID, currRoute.getId(), new UserCallBack() {
+                            @Override
+                            public void onCallBack() {
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+                });
+            }else {
+                String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+                currRoute.updateStep(currStep);
+                currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+                RouteSaver saver = new RouteSaver();
+                Intent intent = new Intent(this, RouteActivity.class);
+                saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
+                    @Override
+                    public void onCallback() {
+                        saveRecent();
+                        UserOnlineSaver userSaver = new UserOnlineSaver();
+                        userSaver.updateLatestWalk(userID, currRoute.getId(), new UserCallBack() {
+                            @Override
+                            public void onCallBack() {
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    }
+                });
+            }
         }
     }
 

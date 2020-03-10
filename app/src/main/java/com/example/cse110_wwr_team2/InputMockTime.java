@@ -77,6 +77,7 @@ public class InputMockTime extends AppCompatActivity {
         outIntent.putExtra("timer", duration);
         outIntent.putExtra("BUNDLE", inIntent.getBundleExtra("BUNDLE"));
         outIntent.putExtra("index", inIntent.getIntExtra("index",-1));
+        outIntent.putExtra("ifTeammate", inIntent.getBooleanExtra("ifTeammate", false));
         startActivity(outIntent);
         finish();
     }

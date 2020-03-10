@@ -42,7 +42,7 @@ public class TeamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("button","invitation activity");
-                launchInvitation();
+                //launchInvitation();
             }
         });
 
@@ -68,8 +68,8 @@ public class TeamActivity extends AppCompatActivity {
 
     // launch invitation activity
     public void launchInvitation(){
-        Intent intent = new Intent(this, InvitationActivity.class);
+        //Intent intent = new Intent(this, InvitationActivity.class);
         Log.d("launch","Invitation from team");
-        startActivity(intent);
+        //startActivity(intent);
     }
 }
