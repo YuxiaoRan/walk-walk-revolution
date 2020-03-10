@@ -16,8 +16,17 @@
 
     <TextView
         android:id="@+id/ListText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"></TextView>
 
+    <ToggleButton
+        android:id="@+id/check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="74dp"
+        android:background="@drawable/checkbox"
+        android:layout_gravity="end"
+        android:textOff=""
+        android:textOn=""
+        android:enabled="false"></ToggleButton>
 
 </LinearLayout>

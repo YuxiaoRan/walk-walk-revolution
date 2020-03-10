@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.firebasefirestore.FavoriteAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -54,6 +55,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
     public static class ViewHolder{
         public TextView textView;
         public ToggleButton Star;
+        public ToggleButton CheckBox;
     }
 
     /**
@@ -71,6 +73,8 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             holder = new ViewHolder();
             holder.textView = v.findViewById(R.id.ListText);
             holder.Star = v.findViewById(R.id.favorite_star);
+            holder.CheckBox = v.findViewById(R.id.check_box); // Refer to list_item.xml checkbox is unclickable
+
 
             // the onClick listener for each star in the list view
             holder.Star.setOnClickListener(new View.OnClickListener() {
@@ -78,15 +82,13 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 public void onClick(View v) {
                     Route currRoute = entries.get(position);
                     String userID = CurrentUserInfo.getId(getContext());
+                    // using favoriteAdapter to edit firebase data
+                    FavoriteAdapter favoriteAdapter = new FavoriteAdapter();
                     if(holder.Star.isChecked()){
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> map = new HashMap<>();
-                        map.put(currRoute.getId(),null);
-                        db.collection("Users").document(userID).collection("Favorites").document(currRoute.getId()).set(map);
+                        favoriteAdapter.addToFavorite(userID,currRoute.getId());
                     }
                     else{
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("Users").document(userID).collection("Favorites").document(currRoute.getId()).delete();
+                        favoriteAdapter.deleteFavorite(userID,currRoute.getId());
                     }
                 }
             });
@@ -134,6 +136,33 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 }
             }
         });
+
+        // check on firebase if the current route is walked before
+        FirebaseFirestore dbw = FirebaseFirestore.getInstance();
+        DocumentReference documentReferencew = dbw.collection("Users").document(userID).collection("Walked").document(currRoute.getId());
+        documentReferencew.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "Document exists!");
+                        holder.CheckBox.setChecked(true);
+                    } else {
+                        Log.d(TAG, "Document does not exist!");
+                        holder.CheckBox.setChecked(false);
+                    }
+                    Log.d("RouteListAdapter","fetch document successful");
+
+                }
+                else{
+                    Log.d("RouteListAdapter","fetch document fail");
+
+                }
+            }
+        });
+
+
         return v;
     }
 

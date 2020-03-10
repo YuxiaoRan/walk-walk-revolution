@@ -13,11 +13,15 @@ import android.widget.ListView;
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The page with all the teammate's routes displayed
+ */
 public class TeamRouteActivity extends AppCompatActivity {
     ListView listView;
     ArrayList<Route> Routes;
@@ -53,5 +57,24 @@ public class TeamRouteActivity extends AppCompatActivity {
                 });
             }
         });
+
+        // add onClickListener to the floating button
+        FloatingActionButton fabHome = findViewById(R.id.team_back_home);
+        fabHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("button","back to home activity");
+                launchHome();
+            }
+        });
+
+    }
+
+    // launch main activity
+    public void launchHome(){
+        Intent intent = new Intent(this, MainActivity.class);
+        Log.d("launch","Home from Route");
+        startActivity(intent);
+        finish();
     }
 }

@@ -15,6 +15,7 @@ import com.example.cse110_wwr_team2.Route.RouteSaver;
 import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
+import com.example.cse110_wwr_team2.firebasefirestore.WalkedRouteAdapter;
 import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MockWalkAdapter;
@@ -37,6 +38,7 @@ public class MockActivity extends AppCompatActivity {
     private int index;
     private String startTime;
     private boolean ifTeammate;
+    private  WalkedRouteAdapter walkedRouteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class MockActivity extends AppCompatActivity {
         distance = findViewById(R.id.mock_distance);
         stop = findViewById(R.id.mock_stop_walking);
         timer = findViewById(R.id.mock_timer);
+
+        walkedRouteAdapter = new WalkedRouteAdapter();
 
         FitnessServiceFactory.put("mock", new FitnessServiceFactory.BluePrint() {
             @Override
@@ -134,6 +138,10 @@ public class MockActivity extends AppCompatActivity {
                 String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
                 currRoute.addTeammateDistance(userID, Float.parseFloat(distance.getText().toString()));
                 currRoute.addTeammateStepCount(userID, currStep);
+
+                // save this route as Walked
+                walkedRouteAdapter.addToWalked(userID,currRoute.getId());
+
                 RouteSaver saver = new RouteSaver();
                 Intent intent = new Intent(this, RouteActivity.class);
                 saver.UpdateRouteMap(currRoute, new RouteUpdateCallback() {
@@ -154,6 +162,7 @@ public class MockActivity extends AppCompatActivity {
                 String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
                 currRoute.updateStep(currStep);
                 currRoute.updateDistance(Float.parseFloat(distance.getText().toString()));
+                walkedRouteAdapter.addToWalked(userID,currRoute.getId());
                 RouteSaver saver = new RouteSaver();
                 Intent intent = new Intent(this, RouteActivity.class);
                 saver.UpdateRoute(currRoute, new RouteUpdateCallback() {
