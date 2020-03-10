@@ -9,7 +9,7 @@
     <ToggleButton
         android:id="@+id/favorite_star"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="74dp"
         android:background="@drawable/ic_favourite"
         android:textOff=""
         android:textOn=""></ToggleButton>
@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/ListText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TextView>
+        android:layout_height="match_parent"></TextView>
 
 
 </LinearLayout>
