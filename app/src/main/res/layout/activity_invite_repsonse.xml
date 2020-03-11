@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InvitationActivity">
+
+    <TextView
+        android:id="@+id/invitation_repsonse_greeting"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="104dp"
+        android:layout_marginBottom="488dp"
+        android:text="Hello Victor"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/invitation_message"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginRight="104dp"
+        android:layout_marginBottom="320dp"
+        android:text="Name Name has invited you to join their team."
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_decline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="132dp"
+        android:layout_marginBottom="212dp"
+        android:text="Decline Invitation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="132dp"
+        android:layout_marginBottom="260dp"
+        android:text="Accept Invitation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
