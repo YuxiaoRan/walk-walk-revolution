@@ -10,11 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:enabled="true"
-        android:exported="true"
-        >
-        <activity android:name=".InvitationActivity" />
+
+        android:theme="@style/AppTheme">
+        <activity android:name=".InvitationActivity"></activity>
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
         <activity android:name=".TeamRouteDetailActivity"></activity>

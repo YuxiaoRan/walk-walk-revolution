@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
+
 import javax.security.auth.callback.Callback;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,13 @@ import static android.content.Context.MODE_PRIVATE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
+
+import javax.security.auth.callback.Callback;
+
+import androidx.annotation.NonNull;
+
 import static android.content.Context.MODE_PRIVATE;
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class UserOnlineSaver {
     private User user;
@@ -54,21 +61,6 @@ public class UserOnlineSaver {
         editor.putString("device_ID", deviceID);
         editor.apply();
     }
-    public void updateLatestWalk(String userID, String routeID, UserCallBack callBack){
-        db.collection("Users").document(userID)
-                .update("lastWalkID", routeID)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            callBack.onCallBack();
-                        }
-                        else{
-                            Log.d(TAG, "Updating latest route failed");
-                        }
-                    }
-                });
-    }
 
     public void getLastestWalkID(String userID, LastWalkIDCallback callback){
         db.collection("Users").document(userID)
@@ -84,6 +76,23 @@ public class UserOnlineSaver {
                         }
                     }
                 });
+    }
+
+
+    public void updateLatestWalk(String userID, String routeID, UserCallBack callBack){
+        db.collection("Users").document(userID)
+                .update("lastWalkID", routeID)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    callBack.onCallBack();
+                }
+                else{
+                    Log.d(TAG, "Updating latest route failed");
+                }
+            }
+        });
     }
 
 

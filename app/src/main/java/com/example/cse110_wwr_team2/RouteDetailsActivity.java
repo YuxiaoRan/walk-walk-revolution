@@ -51,6 +51,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
         RouteName.setText(currRoute.getName());
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(currRoute.getStartPoint());
+        TextView StepCnt = findViewById(R.id.step_count);
+        StepCnt.setText(""+currRoute.getStepCnt());
+        TextView Distance = findViewById(R.id.distance);
+        Distance.setText(""+currRoute.getDistance());
         note = findViewById(R.id.note);
         curr_note = currRoute.getNote();
         if (!curr_note.equals("")) {

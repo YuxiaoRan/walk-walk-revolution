@@ -57,7 +57,6 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         Map<String, Float> myDistance = currRoute.getTeammateDistance();
         Map<String, Integer> myStepCnt = currRoute.getTeammateStepCount();
         String myID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
-        System.out.println(myID);
         if(myDistance.containsKey(myID) && myStepCnt.containsKey(myID)){
             TextView StepCnt = findViewById(R.id.step_count);
             StepCnt.setText(""+myStepCnt.get(myID));
