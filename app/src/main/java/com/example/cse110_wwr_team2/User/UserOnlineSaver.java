@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.cse110_wwr_team2.RandomIDGenerator.UUIDGenerator;
 import com.example.cse110_wwr_team2.firebasefirestore.LastWalkIDCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
+import com.example.cse110_wwr_team2.firebasefirestore.UserTeamIDCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
+import java.util.UUID;
 
 import javax.security.auth.callback.Callback;
 
@@ -95,6 +98,21 @@ public class UserOnlineSaver {
         });
     }
 
-
+    public void getTeamIDOnLine(String userID, UserTeamIDCallBack callBack){
+        db.collection("Users").document(userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            User user = task.getResult().toObject(User.class);
+                            //String teamID = (String)task.getResult().get("teamID");
+                            callBack.onCallback(user.getTeamID());
+                        }else{
+                            Log.d(TAG, "Failure at attaining the team id");
+                        }
+                    }
+                });
+    }
 
 }

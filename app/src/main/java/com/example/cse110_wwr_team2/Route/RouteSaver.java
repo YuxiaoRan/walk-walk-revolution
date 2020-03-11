@@ -85,8 +85,8 @@ public class RouteSaver{
     }
 
     public void getTeamRoutes(TeamRouteCallback callback){
-        //String teamID = CurrentUserInfo.getTeamId(context);
-        String teamID = "HCteamID";
+        String teamID = CurrentUserInfo.getTeamId(context);
+        //String teamID = "HCteamID";
         Log.d("teamID", teamID);
         String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
 

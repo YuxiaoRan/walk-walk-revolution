@@ -62,7 +62,7 @@ public class TeamActivity extends AppCompatActivity {
             }
         });
 
-        TeamAdapter teamAdapter = new TeamAdapter();
+        TeamAdapter teamAdapter = new TeamAdapter(this);
         teamAdapter.getTeammatesNames(new TeammateCallBack() {
             LinearLayout layout = (LinearLayout) findViewById(R.id.teammate_list2);
 

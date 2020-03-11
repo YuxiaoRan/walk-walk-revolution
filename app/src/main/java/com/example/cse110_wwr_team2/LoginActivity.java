@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.User.UserOnlineSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.UserTeamIDCallBack;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -161,8 +162,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             // Get the device token ID for notifications
-                            System.out.println("Hello3");
-                            System.out.println(device_ID);
+//                            System.out.println("Hello3");
+//                            System.out.println(device_ID);
                             if(task.isComplete()) {
                                 Log.d(TAG, "signInWithCredential:complete");
                                 saveUserInfo(user, device_ID);
@@ -201,9 +202,9 @@ public class LoginActivity extends AppCompatActivity {
 //        editor.putString("gmail", user.getEmail());
 //        editor.putString("name", user.getDisplayName());
 //        editor.apply();
-        System.out.println("Hello2");
-        System.out.println(device_ID);
-        UserOnlineSaver.saveLocalUserInfo(user, device_ID, this);
+//        System.out.println("Hello2");
+//        System.out.println(device_ID);
+        UserOnlineSaver.saveLocalUserInfo(user, device_ID,this);
 
         // Create a reference to the users collection
         db.collection("Users").whereEqualTo("id", user.getUid())
@@ -215,7 +216,21 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.getResult().isEmpty()){
                                 gotoInputHeight();
                             }else{
-                                gotoMain();
+                                UserOnlineSaver saver = new UserOnlineSaver();
+                                final String[] myTeamID = {""};
+                                saver.getTeamIDOnLine(user.getUid(), new UserTeamIDCallBack() {
+                                    @Override
+                                    public void onCallback(String teamID) {
+                                        myTeamID[0] = teamID;
+                                        Log.d(TAG, "onComplete: teamID="+myTeamID[0]);
+                                        getSharedPreferences("user", MODE_PRIVATE)
+                                                .edit()
+                                                .putString("teamID", myTeamID[0])
+                                                .apply();
+                                        Log.d(TAG, "onCallback: "+getSharedPreferences("user", MODE_PRIVATE).getString("teamID", null));
+                                        gotoMain();
+                                    }
+                                });
                             }
                         }
                     }

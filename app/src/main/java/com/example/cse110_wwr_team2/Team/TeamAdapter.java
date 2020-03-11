@@ -1,10 +1,12 @@
 package com.example.cse110_wwr_team2.Team;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
@@ -12,6 +14,7 @@ import com.example.cse110_wwr_team2.firebasefirestore.TeammateCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -30,14 +33,18 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class TeamAdapter {
 
     private FirebaseFirestore db;
+    private Context context;
 
-    public TeamAdapter(){
+    public TeamAdapter(Context context){
         db = FirebaseFirestore.getInstance();
+        this.context = context;
     }
 
     public void getTeammatesNames(TeammateCallBack callback){
 
-        String teamId = "HCteamID"; //TODO: change to current user's teamID
+        //String teamId = "HCteamID"; //TODO: change to current user's teamID
+        String teamId = CurrentUserInfo.getTeamId(context);
+        Log.d(TAG, "getTeammatesNames: "+teamId);
 
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)
