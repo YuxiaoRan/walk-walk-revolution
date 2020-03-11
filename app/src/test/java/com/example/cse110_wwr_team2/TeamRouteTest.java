@@ -31,62 +31,62 @@ public class TeamRouteTest {
 
     }
 
-    @Test
-    public void testRouteLaunch() {
-
-            AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-            AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-
-            assertEquals(rName.getText().toString(), "");
-            assertEquals(start.getText().toString(), "");
-        //});
-
-    }
-
-    @Test
-    public void testRouteValues() {
-        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-        rName.setText("Test1");
-        start.setText("UCSD");
-
-        assertEquals(rName.getText().toString(), "Test1");
-        assertEquals(start.getText().toString(), "UCSD");
-
-        AutoCompleteTextView rName2 = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start2 = routeActivity.findViewById(R.id.start_point);
-        rName2.setText("Test2");
-        start2.setText("Market St.");
-
-        assertEquals(rName2.getText().toString(), "Test2");
-        assertEquals(start2.getText().toString(), "Market St.");
-
-
-    }
-
-    @Test
-    public void testNoRouteValues() {
-        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
-        btn.performClick();
-
-        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your route name");
-
-    }
-
-    @Test
-    public void testNoStartValues() {
-        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
-        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
-        rName.setText("Test2");
-        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
-        btn.performClick();
-
-        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your start point");
-
-
-    }
+//    @Test
+//    public void testRouteLaunch() {
+//
+//            AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+//            AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+//
+//            assertEquals(rName.getText().toString(), "");
+//            assertEquals(start.getText().toString(), "");
+//        //});
+//
+//    }
+//
+//    @Test
+//    public void testRouteValues() {
+//        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+//        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+//        rName.setText("Test1");
+//        start.setText("UCSD");
+//
+//        assertEquals(rName.getText().toString(), "Test1");
+//        assertEquals(start.getText().toString(), "UCSD");
+//
+//        AutoCompleteTextView rName2 = routeActivity.findViewById(R.id.route_name);
+//        AutoCompleteTextView start2 = routeActivity.findViewById(R.id.start_point);
+//        rName2.setText("Test2");
+//        start2.setText("Market St.");
+//
+//        assertEquals(rName2.getText().toString(), "Test2");
+//        assertEquals(start2.getText().toString(), "Market St.");
+//
+//
+//    }
+//
+//    @Test
+//    public void testNoRouteValues() {
+//        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+//        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+//        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
+//        btn.performClick();
+//
+//        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your route name");
+//
+//    }
+//
+//    @Test
+//    public void testNoStartValues() {
+//        AutoCompleteTextView rName = routeActivity.findViewById(R.id.route_name);
+//        AutoCompleteTextView start = routeActivity.findViewById(R.id.start_point);
+//        rName.setText("Test2");
+//        FloatingActionButton btn = routeActivity.findViewById(R.id.done_add);
+//        btn.performClick();
+//
+//        assertEquals(ShadowToast.getTextOfLatestToast(), "Please input your start point");
+//
+//
+//    }
     @After
     public void tearDown() {
         routeActivity = null;
