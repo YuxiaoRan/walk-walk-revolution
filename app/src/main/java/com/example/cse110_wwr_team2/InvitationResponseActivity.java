@@ -104,7 +104,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     for(QueryDocumentSnapshot document : task.getResult()) {
                         Map<Object, String> map = new HashMap<>();
-                        map.put("teamID", "HCteamID");
+                        map.put("teamID", getSharedPreferences("user", MODE_PRIVATE).getString("teamID", null));
                         userRef.document(document.getId()).set(map, SetOptions.merge());
                     }
                 }

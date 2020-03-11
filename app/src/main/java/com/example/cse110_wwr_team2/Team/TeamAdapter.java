@@ -42,7 +42,6 @@ public class TeamAdapter {
 
     public void getTeammatesNames(TeammateCallBack callback){
 
-        //String teamId = "HCteamID"; //TODO: change to current user's teamID
         String teamId = CurrentUserInfo.getTeamId(context);
         Log.d(TAG, "getTeammatesNames: "+teamId);
 
