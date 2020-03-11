@@ -69,6 +69,10 @@ public class AllProposedActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
+
+                            public void onCallBack(){
+                                return;
+                            }
                         }, AllProposedActivity.this);
                     }
                 });

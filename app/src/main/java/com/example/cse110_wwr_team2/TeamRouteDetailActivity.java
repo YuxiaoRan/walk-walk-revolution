@@ -9,26 +9,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
+import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.google.android.material.chip.ChipGroup;
+
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class RouteDetailsActivity extends AppCompatActivity {
+public class TeamRouteDetailActivity extends AppCompatActivity {
 
     private Route currRoute;
     private ArrayList<Route> routes;
     private EditText note;
     private int index;
     private String curr_note;
-    private Boolean team;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route_details);
+        setContentView(R.layout.activity_team_route_detail);
 
         // get the string passed from route activity
         Intent intent = getIntent();
@@ -36,7 +43,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("BUNDLE");
         routes = (ArrayList<Route>) args.getSerializable("route_list");
         index = intent.getIntExtra("index",-1);
-        team = intent.getBooleanExtra("team", false);
+
         currRoute = routes.get(index);
         ChipGroup shapeTags = findViewById(R.id.shape_tags);
         ChipGroup flatnessTags = findViewById(R.id.flatness_tags);
@@ -46,16 +53,28 @@ public class RouteDetailsActivity extends AppCompatActivity {
         ChipGroup[] allChips = {shapeTags, flatnessTags, streetTags, surfaceTags, difficultyTags};
         setSelectChips(allChips, currRoute.getFeatures());
 
+        //to find out whether there is your data
+        Map<String, Float> myDistance = currRoute.getTeammateDistance();
+        Map<String, Integer> myStepCnt = currRoute.getTeammateStepCount();
+        String myID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+        if(myDistance.containsKey(myID) && myStepCnt.containsKey(myID)){
+            TextView StepCnt = findViewById(R.id.step_count);
+            StepCnt.setText(""+myStepCnt.get(myID));
+            TextView Distance = findViewById(R.id.distance);
+            Distance.setText(""+myDistance.get(myID));
+        }
 
         // set the text in UI
+        TextView Creator = findViewById(R.id.creator_initial);
+        Creator.setText(currRoute.getUserInitial());
         TextView RouteName = findViewById(R.id.route_name);
         RouteName.setText(currRoute.getName());
+        TextView StepCnt = findViewById(R.id.teammate_step_count);
+        StepCnt.setText(""+currRoute.getStepCnt());
+        TextView Distance = findViewById(R.id.teammate_distance);
+        Distance.setText(""+currRoute.getDistance());
         TextView StartPoint = findViewById(R.id.start_point);
         StartPoint.setText(currRoute.getStartPoint());
-        TextView StepCnt = findViewById(R.id.step_count);
-        StepCnt.setText(""+currRoute.getStepCnt());
-        TextView Distance = findViewById(R.id.distance);
-        Distance.setText(""+currRoute.getDistance());
         note = findViewById(R.id.note);
         curr_note = currRoute.getNote();
         if (!curr_note.equals("")) {
@@ -70,17 +89,10 @@ public class RouteDetailsActivity extends AppCompatActivity {
             }
         });
         Button start = findViewById(R.id.start_walk);
-        if(team){
-            start.setText("Propose Walk");
-        } else {start.setText("Start");}
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!team) {
-                    launchWalk(currRoute.getName());
-                } else {
-                    proposeWalk(currRoute);
-                }
+                launchWalk(currRoute.getName());
             }
         });
         Button mock = findViewById(R.id.mock_route);
@@ -88,6 +100,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchMock();
+            }
+        });
+        Button propose = findViewById(R.id.propose_walk);
+        propose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proposeWalk(currRoute);
             }
         });
     }
@@ -111,23 +130,20 @@ public class RouteDetailsActivity extends AppCompatActivity {
             editor.putString(currRoute.getName()+"_note", note.getText().toString());
             editor.commit();
         }
-        if (!team) {
-            Intent intent = new Intent(this, RouteActivity.class);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, TeamRouteActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, TeamRouteActivity.class);
+        startActivity(intent);
         finish();
     }
 
     public void launchWalk(String route){
         Intent intent = new Intent(this, WalkActivity.class);
         Bundle args = new Bundle();
+        boolean flag = true; // the flag to mark this route as teammate's route
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
         intent.putExtra("routeName", route);
+        intent.putExtra("ifTeammate", flag);
         intent.putExtra("walkKey", "walk");
         startActivity(intent);
         finish();
@@ -139,6 +155,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
+        intent.putExtra("ifTeammate", true);
         startActivity(intent);
         finish();
     }

@@ -5,4 +5,5 @@ import java.util.ArrayList;
 
 public interface UserCallBack {
     void onCallback(ArrayList<User> users);
+    void onCallBack();
 }

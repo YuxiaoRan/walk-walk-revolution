@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ToggleButton;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
@@ -18,7 +19,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+Activity to show personal route list
+ */
 public class RouteActivity extends AppCompatActivity {
 
     ListView listView;
@@ -33,10 +36,11 @@ public class RouteActivity extends AppCompatActivity {
         routeSaver.getAllRoutes(new RouteCallback() {
             @Override
             public void onCallback(List<Route> routes) {
-                ArrayAdapter arrayAdapter = new ArrayAdapter(RouteActivity.this, android.R.layout.simple_list_item_1, routes);
-                listView.setAdapter(arrayAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // ArrayAdapter arrayAdapter = new ArrayAdapter(RouteActivity.this, android.R.layout.simple_list_item_1, routes);
+                RouteListAdapter routeListAdapter = new RouteListAdapter(RouteActivity.this, android.R.layout.simple_list_item_1, routes);
+                listView.setAdapter(routeListAdapter);
 
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     // int position is the position index of the clicked item in the list
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,16 +90,6 @@ public class RouteActivity extends AppCompatActivity {
         finish();
     }
 
-    // refactored into the callback method, in order to get the routes returned by the firebase
-    public void launchRouteDetails(int i){
-//        Intent intent = new Intent(this, RouteDetailsActivity.class);
-//        Bundle args = new Bundle();
-//        args.putSerializable("route_list",(Serializable)routes);
-//        intent.putExtra("BUNDLE",args);
-//        intent.putExtra("index", i);
-//        startActivity(intent);
-//        finish();
-    }
 
     // launch main activity
     public void launchHome(){

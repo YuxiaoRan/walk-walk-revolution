@@ -12,14 +12,23 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.User.UserOnlineSaver;
+import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
+import com.example.cse110_wwr_team2.firebasefirestore.WalkedRouteAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * The page for user to add a route, either manually or just walked
+ */
 public class AddRouteActivity extends AppCompatActivity {
     private String TAG ="AddRouteActivity";
     FloatingActionButton fab;
@@ -27,6 +36,8 @@ public class AddRouteActivity extends AppCompatActivity {
     AutoCompleteTextView name;
     EditText note;
     int[] features;
+    boolean ifNewFinish;
+    private WalkedRouteAdapter walkedRouteAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +48,14 @@ public class AddRouteActivity extends AppCompatActivity {
         final int step_cnt = intent.getIntExtra("step_cnt", 0);
         features = new int[5];
         final float distance = intent.getFloatExtra("distance", 0);
+        ifNewFinish = intent.getBooleanExtra("ifNewFinish", false); // indicates if it is a new walk that's not previously saved
 
         fab = findViewById(R.id.done_add);
         start = findViewById(R.id.start_point);
         name = findViewById(R.id.route_name);
         note = findViewById(R.id.note);
+
+        walkedRouteAdapter = new WalkedRouteAdapter();
 
         // autocomplete options
         String[] nameSuggestion = getResources().getStringArray(R.array.route_names);
@@ -69,10 +83,29 @@ public class AddRouteActivity extends AppCompatActivity {
                 }
                 // Check if the route name is already in the list
                 if (checkName(name.getText().toString())){
-                    RouteSaver routeSaver = new RouteSaver();
-                    routeSaver.addNewRoute(name.getText().toString(), start.getText().toString(),
-                            step_cnt, distance,note.getText().toString(), returnFeatures(),AddRouteActivity.this);
+                    String userID = getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
+                    // Saving the route
+                    RouteSaver routeSaver = new RouteSaver(AddRouteActivity.this);
+                    Route currRoute = new Route(start.getText().toString(), name.getText().toString(),step_cnt,
+                            note.getText().toString(),returnFeatures(), distance, userID);
+                    routeSaver.addNewRoute(currRoute);
                     Log.d(TAG, "onClick: "+returnFeatures());
+                    // if this route is a finished walk
+                    if ( ifNewFinish ){
+                        // save the Route as walked
+                        walkedRouteAdapter.addToWalked(userID,currRoute.getId());
+
+                        UserOnlineSaver userSaver = new UserOnlineSaver();
+                        userSaver.updateLatestWalk(userID, currRoute.getId(), new UserCallBack() {
+                            @Override
+                            public void onCallBack() {
+                                startActivity(intent);
+                                finish();
+                            }
+                            public void onCallback(ArrayList<User> users){return;}
+                        });
+                    }
+
                     launchRoute();
                 } else {
                     Toast.makeText(AddRouteActivity.this, "Please choose another name. This route name has been chosen",

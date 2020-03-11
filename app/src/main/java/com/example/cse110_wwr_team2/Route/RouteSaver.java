@@ -3,14 +3,23 @@ package com.example.cse110_wwr_team2.Route;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.RouteActivity;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.RouteUpdateCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.SingleRouteCallback;
+import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -75,7 +84,7 @@ public class RouteSaver{
                 });
     }
 
-    public void getTeamRoutes(RouteCallback callback){
+    public void getTeamRoutes(TeamRouteCallback callback){
         //String teamID = CurrentUserInfo.getTeamId(context);
         String teamID = "HCteamID";
         Log.d("teamID", teamID);
@@ -90,14 +99,19 @@ public class RouteSaver{
                         Log.d("getAllRoutes","onComplete");
                         if (task.isSuccessful()) {
                             ArrayList<Route> routes = new ArrayList<>();
+                            ArrayList<String> routes_info = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Route route = document.toObject(Route.class);
                                 if(!userID.equals(route.getUserID())){
                                     routes.add(route);
+                                    String route_info = "Route Name: " + route.getName() +
+                                            "\nStart point: " + route.getStartPoint() +
+                                            "\nCreator: " + route.getUserInitial();
+                                    routes_info.add(route_info);
                                 }
                             }
-                            callback.onCallback(routes);
+                            callback.onCallback(routes, routes_info);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -107,8 +121,84 @@ public class RouteSaver{
 
 
 
-    public void read(String id){
+    public void getRoute(String id, SingleRouteCallback callback){
+        db.collection("Routes")
+                .whereEqualTo("id", id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            if (task.getResult().isEmpty()){
+                                Log.d(TAG, "The route with id "+id+ "is null");
+                                callback.onCallback(null);
+                            }else {
+                                Log.d(TAG, "The route if find");
+                                callback.onCallback(task.getResult().getDocuments().get(0).toObject(Route.class));
+                            }
+                        }else{
+                            Log.d(TAG, "fail to find the route with id "+id);
+                        }
+                    }
+                });
+    }
 
+    /*
+     * This function will update the route into the file, by writing a new name
+     * into the FireBase
+     */
+    public void UpdateRoute(Route route, RouteUpdateCallback callback){
+        db.collection("Routes").document(route.getId())
+                .update("distance", route.getDistance())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            db.collection("Routes").document(route.getId())
+                                   .update("stepCnt", route.getStepCnt())
+                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Void> task) {
+                                           if(task.isSuccessful()){
+                                               callback.onCallback();
+                                           }
+                                           else{
+                                               Log.d(TAG, "failure to update route's step count");
+                                           }
+                                       }
+                                   });
+                        }else{
+                            Log.d(TAG, "failure to update route's distance");
+                        }
+                    }
+                });
+    }
+
+    public void UpdateRouteMap(Route route, RouteUpdateCallback callback){
+        db.collection("Routes").document(route.getId())
+                .update("teammateStepCount", route.getTeammateStepCount())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            db.collection("Routes").document(route.getId())
+                                    .update("teammateDistance", route.getTeammateDistance())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                callback.onCallback();
+                                            }
+                                            else{
+                                                Log.d(TAG, "failure to update route's teammate distance");
+                                            }
+                                        }
+                                    });
+                        }else{
+                            Log.d(TAG, "failure to update route's teammate step count");
+                        }
+                    }
+                });
     }
 
     /*
@@ -116,7 +206,7 @@ public class RouteSaver{
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public static void UpdateRoute(String route_name, String start_point, int step_cnt, float distance, Context context){
+    public static void UpdateRoute(String route_id, String route_name, String start_point, int step_cnt, float distance, Context context){
         SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
         Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
         SharedPreferences.Editor editor = spfs.edit();
@@ -133,6 +223,11 @@ public class RouteSaver{
         }
     }
 
+    // the database version of the above method
+    public void UpdateRoute(Route route){
+        db.collection("Routes").document(route.getId()).set(route);
+    }
+
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
@@ -147,8 +242,9 @@ public class RouteSaver{
         db.collection("Routes").document(route.getId()).set(route);
     }
 
-    public void write(){
-
+    public void addNewRoute(Route route){
+        route.setUserInitial(User.getInitial(context.getSharedPreferences("user", MODE_PRIVATE).getString("name", null)));
+        db.collection("Routes").document(route.getId()).set(route);
     }
 
 
@@ -160,5 +256,24 @@ public class RouteSaver{
         editor.putFloat("mock_distance",0);
         editor.commit();
     }
+
+    /**
+     *
+     * @param userID
+     * @param routeID
+     * update in firebase of userID of route with routeID
+     */
+    public void initializFavorite(String userID, String routeID){
+        db.collection("Users").document(userID).collection("Favorites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.isEmpty()){
+
+                    Log.d("Route Saver","no favorites");
+                }
+            }
+        });
+    }
+
 
 }
