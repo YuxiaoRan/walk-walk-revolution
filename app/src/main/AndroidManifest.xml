@@ -17,11 +17,16 @@
         <activity android:name=".InvitationActivity" />
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
+        <activity android:name=".TeamRouteDetailActivity"></activity>
         <activity android:name=".TeamActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".InputMockTime" />
         <activity android:name=".MockActivity" />
         <activity android:name=".InputHeightActivity" />
+        <activity android:name=".AddRouteActivity" />
+        <activity android:name=".WalkActivity" />
+        <activity android:name=".RouteDetailsActivity" />
+        <activity android:name=".RouteActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRouteActivity" />
-        <activity android:name=".WalkActivity" />
-        <activity android:name=".RouteDetailsActivity" />
-        <activity android:name=".RouteActivity" />
         <service
             android:name=".Notifications.MyFirebaseMessagingService"
             android:exported="false">

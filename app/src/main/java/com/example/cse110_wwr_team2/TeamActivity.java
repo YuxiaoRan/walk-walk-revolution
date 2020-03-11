@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -33,8 +35,14 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
+        TextView view = new TextView(getApplicationContext());
+        view.setText("My Team");
+        view.setTextSize(30);
+        view.setGravity(Gravity.CENTER_HORIZONTAL);
+        view.setTypeface(null, Typeface.BOLD);
+
         listView = findViewById(R.id.teammate_list);
-        pendingListView = (TextView) findViewById(R.id.teammate_pending_list);
+        //pendingListView = (TextView) findViewById(R.id.teammate_pending_list);
         fabHome = findViewById(R.id.team_back_home);
         fabAdd = fabAdd = findViewById(R.id.add_teammate);
 
@@ -57,8 +65,10 @@ public class TeamActivity extends AppCompatActivity {
         TeamAdapter teamAdapter = new TeamAdapter();
         teamAdapter.getTeammatesNames(new TeammateCallBack() {
             LinearLayout layout = (LinearLayout) findViewById(R.id.teammate_list2);
+
             @Override
             public void onCallback(List<String> userNames) {
+                layout.addView(view);
                 /*
                 ArrayAdapter arrayAdapter = new ArrayAdapter(TeamActivity.this, android.R.layout.simple_list_item_1, userNames);
                 listView.setAdapter(arrayAdapter);
@@ -68,8 +78,9 @@ public class TeamActivity extends AppCompatActivity {
                 for(int i = 0; i < userNames.size(); i++) {
                     TextView newTextView = new TextView(getApplicationContext());
                     newTextView.setText(userNames.get(i));
-                    newTextView.setTextSize(30);
-                    newTextView.setTypeface(null, Typeface.ITALIC);
+                    newTextView.setTextSize(25);
+                    newTextView.setTypeface(null, Typeface.BOLD);
+                    newTextView.setGravity(Gravity.CENTER_HORIZONTAL);
                     layout.addView(newTextView);
                 }
             }
@@ -80,8 +91,10 @@ public class TeamActivity extends AppCompatActivity {
                 for(int i = 0; i < userNames.size(); i++) {
                     TextView newTextView = new TextView(getApplicationContext());
                     newTextView.setText(userNames.get(i));
-                    newTextView.setTextSize(30);
+                    newTextView.setTextSize(25);
                     newTextView.setTypeface(null, Typeface.ITALIC);
+                    newTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+                    newTextView.setTextColor(Color.parseColor("#dadada"));
                     layout.addView(newTextView);
                 }
 

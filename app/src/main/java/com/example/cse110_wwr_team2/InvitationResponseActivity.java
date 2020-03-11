@@ -3,6 +3,7 @@ package com.example.cse110_wwr_team2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -59,7 +60,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
         this.dest_user_id = dest_user_id;
 
         greeting = (TextView) findViewById(R.id.invitation_repsonse_greeting);
-        greeting.setText(myName);
+        greeting.setText("Hello " + myName);
 
         notificationData = (TextView) findViewById(R.id.invitation_message);
         notificationData.setText(message);
@@ -72,6 +73,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
                 Log.d("button","accept invitation");
                 Toast.makeText(getApplicationContext(), "Accepted Invitation", Toast.LENGTH_SHORT).show();
                 launchTeamPage();
+                finish();
 
             }
         });
@@ -84,6 +86,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
                 Log.d("button","decline invitation");
                 Toast.makeText(getApplicationContext(), "Declined Invitation", Toast.LENGTH_SHORT).show();
                 launchHome();
+                finish();
             }
         });
 
@@ -151,9 +154,15 @@ public class InvitationResponseActivity extends AppCompatActivity {
     }
 
     // launch invitation activity
-    public void launchTeamPage(){
-        Intent intent = new Intent(this, TeamActivity.class);
-        Log.d("launch","Team from Invitation");
-        startActivity(intent);
+    public void launchTeamPage() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+                Log.d("launch", "Team from accept invite");
+                startActivity(intent);
+            }
+        }, 2000);
     }
 }
