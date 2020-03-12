@@ -100,28 +100,36 @@ exports.sendNotification2 = functions.firestore.document('Invitations/{invite_id
 });
 
 
-exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onUpdate((change, context) => {
+exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onWrite((change, context) => {
 
     // Every invite has a unique ID
     const route_id = context.params.route_id;
 
     //
     return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
+        const team_id = result.data().teamID;
+        const name = result.data().name;
+
+        const topic = team_id;
+        console.log("TO TEAM ID: " + topic);
+
         var message = {
             notification:{
-                title: "Update",
-                body: result.updatedUser.concat(" ", result.updatedMessage)
-            }
+                title: "Update on Proposed Walks",
+                body: name + " has created a proposed walk."
+            },
+            topic : topic
+
         };
         return admin.messaging().send(message)
                  .then((response) => {
                    // Response is a message ID string.
-                   console.log('Successfully sent message:', response);
-                   return response;
+                   return console.log('Successfully sent message');
+
                  })
                  .catch((error) => {
-                   console.log('Error sending message:', error);
-                   return error;
+                   return console.log('Error sending message');
+
                  });
     });
 });
