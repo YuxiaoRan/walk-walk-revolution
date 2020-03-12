@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Invitation.Invitation;
 import com.example.cse110_wwr_team2.Invitation.InvitationOnlineSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -104,7 +105,8 @@ public class InvitationResponseActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     for(QueryDocumentSnapshot document : task.getResult()) {
                         Map<Object, String> map = new HashMap<>();
-                        map.put("teamID", getSharedPreferences("user", MODE_PRIVATE).getString("teamID", null));
+                        map.put("teamID", CurrentUserInfo.getTeamId(InvitationResponseActivity.this));
+                        Log.d(TAG, "onComplete: teamID"+map.get("teamID"));
                         userRef.document(document.getId()).set(map, SetOptions.merge());
                     }
                 }
