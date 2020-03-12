@@ -90,6 +90,7 @@ public class TeamAdapter {
 
     public void getTeammates(UserCallBack callback, Context context){
 //        String teamId = "HCteamID"; //TODO: change to current user's teamID
+
         String teamId = CurrentUserInfo.getTeamId(context);
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)
