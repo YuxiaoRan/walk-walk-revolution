@@ -3,8 +3,10 @@ package com.example.cse110_wwr_team2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,10 @@ public class InvitationActivity extends AppCompatActivity {
     private Button btnSend;
 
     private String myGmail;
+    private String fromName;
+    private String fromDeviceID;
+    private String toUserID;
+    private String teamIDToAddTo;
 
     private CollectionReference usersRef;
     private FirebaseFirestore db;
@@ -48,6 +54,10 @@ public class InvitationActivity extends AppCompatActivity {
 
         SharedPreferences spfs = getSharedPreferences("user", MODE_PRIVATE);
         myGmail = spfs.getString("gmail", null);
+        fromName = spfs.getString("name", null);
+        fromDeviceID = spfs.getString("device_ID", null);
+        teamIDToAddTo = spfs.getString("teamID", null);
+        //toUserID = spfs.getString("id", null);
 
         // set initial visibility
         username.setVisibility(View.GONE);
@@ -70,8 +80,9 @@ public class InvitationActivity extends AppCompatActivity {
 
     // search email address in database
     private void search(String emailAddress, boolean isSending) {
-        if(emailAddress == null || emailAddress.equals("")) {
-            Toast.makeText(InvitationActivity.this, "please input an email", Toast.LENGTH_SHORT);
+
+        if(emailAddress == null || emailAddress.equals("") || email.equals("")) {
+            Toast.makeText(InvitationActivity.this, "Please input a valid email", Toast.LENGTH_SHORT).show();
             return;
         }
         try {
@@ -80,15 +91,21 @@ public class InvitationActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        String name = doc.get("name").toString();
-                        if (name != null && !name.equals("")) {
+                        String toName = doc.get("name").toString();
+                        toUserID = doc.get("id").toString();
+                        if (toName != null && !toName.equals("")) {
                             if(!isSending) {
-                                display(name);
-                            } else {
-                                sendInvitation(myGmail, emailAddress);
+                                display(toName);
+                                return;
+                            }
+                            else {
+                                sendInvitation(myGmail, emailAddress, toName, fromName, fromDeviceID, toUserID, teamIDToAddTo);
+                                return;
                             }
                         }
                     }
+                    // Enter an email that is not valid
+                    Toast.makeText(InvitationActivity.this, "Please input a valid email", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
@@ -107,15 +124,34 @@ public class InvitationActivity extends AppCompatActivity {
     }
 
     // create and send invitation
-    private void sendInvitation(String fromGmail, String toGmail) {
+    private void sendInvitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID, String toUserID, String teamID) {
         if(fromGmail == null || fromGmail.equals("") || toGmail == null || toGmail.equals("")) {
             Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_SHORT);
             return;
         }
-        Invitation invitation = new Invitation(fromGmail, toGmail);
+        Invitation invitation = new Invitation(fromGmail, toGmail, toName, fromName, deviceID, toUserID, teamID);
         InvitationOnlineSaver ios = new InvitationOnlineSaver(invitation);
         ios.write();
+        Toast.makeText(getApplicationContext(), "invitation sent to " + toName, Toast.LENGTH_SHORT).show();
+        username.setVisibility(View.GONE);
+
         Toast.makeText(InvitationActivity.this, "invitation sent", Toast.LENGTH_SHORT);
+
         Log.d("invitation", "invitation sent from " + fromGmail + " to " + toGmail);
+        launchTeamPage();
+    }
+
+    // launch invitation activity
+    public void launchTeamPage() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+                Log.d("launch", "Team from Invitation");
+                startActivity(intent);
+                finish();
+            }
+        }, 1500);
     }
 }

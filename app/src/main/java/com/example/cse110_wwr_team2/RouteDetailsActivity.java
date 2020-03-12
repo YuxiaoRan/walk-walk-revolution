@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
@@ -23,6 +24,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private EditText note;
     private int index;
     private String curr_note;
+    private Boolean team;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("BUNDLE");
         routes = (ArrayList<Route>) args.getSerializable("route_list");
         index = intent.getIntExtra("index",-1);
-
+        team = intent.getBooleanExtra("team", false);
         currRoute = routes.get(index);
         ChipGroup shapeTags = findViewById(R.id.shape_tags);
         ChipGroup flatnessTags = findViewById(R.id.flatness_tags);
@@ -69,10 +71,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
             }
         });
         Button start = findViewById(R.id.start_walk);
+        if(team){
+            start.setText("Propose Walk");
+        } else {start.setText("Start");}
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchWalk(currRoute.getName());
+                if (!team) {
+                    launchWalk(currRoute.getName());
+                } else {
+                    proposeWalk(currRoute);
+                }
             }
         });
         Button mock = findViewById(R.id.mock_route);
@@ -82,7 +91,20 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchMock();
             }
         });
+        // navigate to startpoint
+        ImageButton navigate1 = findViewById(R.id.btn_navigate1);
+        navigate1.setOnClickListener((v) -> {
+            launchGoogleMaps();
+        });
     }
+
+    private void launchGoogleMaps() {
+        Intent i = new Intent(this, NavigateActivity.class);
+        i.putExtra("startpoint", currRoute.getStartPoint());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
     private void setSelectChips(ChipGroup[] allchips, String features){
         final int[] prefix = {findViewById(R.id.shape1).getId(),
                 findViewById(R.id.flatness1).getId(),
@@ -103,8 +125,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
             editor.putString(currRoute.getName()+"_note", note.getText().toString());
             editor.commit();
         }
-        Intent intent = new Intent(this, RouteActivity.class);
-        startActivity(intent);
+        if (!team) {
+            Intent intent = new Intent(this, RouteActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, TeamRouteActivity.class);
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -126,6 +153,15 @@ public class RouteDetailsActivity extends AppCompatActivity {
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
+        startActivity(intent);
+        finish();
+    }
+
+    public void proposeWalk(Route route){
+        Intent intent = new Intent(this, ProposeWalkActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route", route);
+        intent.putExtra("BUNDLE",args);
         startActivity(intent);
         finish();
     }

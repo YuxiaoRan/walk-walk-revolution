@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -102,7 +103,27 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
                 launchMock();
             }
         });
+        // navigate to startpoint
+        ImageButton navigate = findViewById(R.id.btn_navigate);
+        navigate.setOnClickListener((v) -> {
+            launchGoogleMaps();
+        });
+        Button propose = findViewById(R.id.propose_walk);
+        propose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proposeWalk(currRoute);
+            }
+        });
     }
+
+    private void launchGoogleMaps() {
+        Intent i = new Intent(this, NavigateActivity.class);
+        i.putExtra("startpoint", currRoute.getStartPoint());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
     private void setSelectChips(ChipGroup[] allchips, String features){
         final int[] prefix = {findViewById(R.id.shape1).getId(),
                 findViewById(R.id.flatness1).getId(),
@@ -149,6 +170,15 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
         intent.putExtra("ifTeammate", true);
+        startActivity(intent);
+        finish();
+    }
+
+    public void proposeWalk(Route route){
+        Intent intent = new Intent(this, ProposeWalkActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route", route);
+        intent.putExtra("BUNDLE",args);
         startActivity(intent);
         finish();
     }

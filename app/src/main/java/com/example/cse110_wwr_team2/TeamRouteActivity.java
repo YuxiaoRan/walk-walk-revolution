@@ -51,6 +51,9 @@ public class TeamRouteActivity extends AppCompatActivity {
                         args.putSerializable("route_list",(Serializable)routes);
                         intent.putExtra("BUNDLE",args);
                         intent.putExtra("index", position);
+
+                        // This indicates that we comes from the team routes page to here
+                        intent.putExtra("team", true);
                         startActivity(intent);
                         finish();
                     }

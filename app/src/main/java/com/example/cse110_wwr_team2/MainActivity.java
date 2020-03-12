@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
@@ -19,6 +21,7 @@ import com.example.cse110_wwr_team2.fitness.FitnessService;
 import com.example.cse110_wwr_team2.fitness.FitnessServiceFactory;
 import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
 import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Button startRoute;
     private Button mock;
     private Button toTeam;
+    private Button toProposed;
     private TextView stepCount;
     private TextView CurrDistance;
     private TextView lastStepCnt;
@@ -74,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 goToTeam();
+            }
+        });
+
+        toProposed = findViewById(R.id.proposed_btn);
+        toProposed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToProposed();
             }
         });
 
@@ -159,9 +171,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToTeam(){
-        Intent intent = new Intent(this, TeamActivity.class);
-        startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1500);
     }
+
 
     private void goToRoute() {
         Intent intent = new Intent(this, RouteDirectorActivity.class);
@@ -178,6 +197,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToMock(){
         Intent intent = new Intent(this, InputMockTime.class);
+        startActivity(intent);
+    }
+
+    private void goToProposed(){
+        Intent intent = new Intent(this, AllProposedActivity.class);
         startActivity(intent);
     }
 
@@ -299,4 +323,18 @@ public class MainActivity extends AppCompatActivity {
             Log.d("TAG","onCancelled");
         }
     }
+
+    private void subscribeToNotificationsTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("ProposedRoutes")
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
 }

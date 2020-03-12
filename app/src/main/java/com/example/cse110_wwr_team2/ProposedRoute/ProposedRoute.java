@@ -1,10 +1,11 @@
 package com.example.cse110_wwr_team2.ProposedRoute;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class ProposedRoute {
+public class ProposedRoute implements Serializable {
     String id;
     String teamID;
     String startPoint;
@@ -12,8 +13,11 @@ public class ProposedRoute {
     String dataTime;
     String proposerID;
     Map<String, Integer> acceptMembers;
+    int scheduled;
+    String updatedUser;
+    String updatedMessage;
 
-    public ProposedRoute(String id, String teamID, String startPoint, String name, String dataTime, String proposerID, Map<String, Integer> map){
+    public ProposedRoute(String id, String teamID, String startPoint, String name, String dataTime, String proposerID, Map<String, Integer> map, int scheduled){
         this.id = id;
         this.teamID = teamID;
         this.startPoint = startPoint;
@@ -21,6 +25,15 @@ public class ProposedRoute {
         this.dataTime = dataTime;
         this.proposerID = proposerID;
         this.acceptMembers = map;
+        this.scheduled = scheduled;
+        this.updatedMessage = "";
+        this.updatedUser = "";
+    }
+
+    public ProposedRoute(){}
+    
+    public int getScheduled() {
+        return scheduled;
     }
 
     public String getId() {
@@ -51,5 +64,24 @@ public class ProposedRoute {
         return acceptMembers;
     }
 
+    @Override
+    public String toString() {
+        return  name + " " + dataTime;
+    }
 
+    public void setAcceptMembers(Map<String, Integer> acceptMembers) {
+        this.acceptMembers = acceptMembers;
+    }
+
+    public void setScheduled(int scheduled) {
+        this.scheduled = scheduled;
+    }
+
+    public void setUpdatedUser(String updatedUser) {
+        this.updatedUser = updatedUser;
+    }
+
+    public void setUpdatedMessage(String updatedMessage) {
+        this.updatedMessage = updatedMessage;
+    }
 }

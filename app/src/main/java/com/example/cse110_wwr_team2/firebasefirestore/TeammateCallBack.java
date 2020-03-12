@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TeammateCallBack {
     void onCallback(List<String> userNames);
+    void onCallbackPending(List<String> userNames);
 }

@@ -115,17 +115,17 @@
             tools:context=".MainActivity">
 
             <TextView
-                android:id="@+id/main_intention_distance_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distance_title"
-                android:textSize="24sp" />
-
-            <TextView
                 android:id="@+id/main_intention_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/distance"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/main_intention_distance_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance_title"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -191,6 +191,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Team Page"
+                android:textSize="24sp"/>
+
+            <Button
+                android:id="@+id/proposed_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proposed Walk Page"
                 android:textSize="24sp"/>
 
         </LinearLayout>

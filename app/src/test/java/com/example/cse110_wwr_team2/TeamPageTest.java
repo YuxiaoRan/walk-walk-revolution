@@ -45,35 +45,8 @@ public class TeamPageTest {
     }
 
     @Test
-    public void testWalking() {
-        /*
-        ActivityScenario<WalkActivity> scenario = ActivityScenario.launch(intent);
-        scenario.onActivity(activity -> {
-            SharedPreferences sharedPreferences = activity.getSharedPreferences("user", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("height", height);
-
-            TextView steps = activity.findViewById(R.id.step_count);
-            TextView distance = activity.findViewById(R.id.distance);
-            stepCount = 0;
-            assertEquals("0",steps.getText().toString());
-            assertEquals("0", distance.getText().toString());
-
-            stepCount = 10;
-        });
-        //wait for 15 seconds to wait for the step to update
-        try {
-            Thread.sleep(Fifteen_SEC);
-        }catch (Exception e){
-            System.err.println("There is an exception in thread sleep");
-            assertFalse(true);
-        }
-        scenario.onActivity(activity -> {
-            TextView steps = activity.findViewById(R.id.step_count);
-            TextView distance = activity.findViewById(R.id.distance);
-            assertEquals("10", steps.getText().toString());
-        });
-        */
+    public void testTeamPage() {
+        // TODO
     }
 
 

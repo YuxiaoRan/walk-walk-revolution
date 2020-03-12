@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cse110_wwr_team2.RandomIDGenerator.UUIDGenerator;
 import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.UUID;
 
 public class InputHeightActivity extends AppCompatActivity {
 
@@ -100,9 +103,16 @@ public class InputHeightActivity extends AppCompatActivity {
                         int height = sharedPreferences.getInt("height", 0);
                         String name = sharedPreferences.getString("name", null);
                         String gmail = sharedPreferences.getString("gmail", null);
-                        User user = new User(user_id, gmail, name, height);
-                        UserOnlineSaver servie = new UserOnlineSaver(user);
-                        servie.write();
+                        String deviceID = sharedPreferences.getString("device_ID", null);
+                        String teamID = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
+                        getSharedPreferences("user", MODE_PRIVATE)
+                                .edit()
+                                .putString("teamID", teamID)
+                                .apply();
+                        User user = new User(user_id, gmail, name, height, deviceID);
+                        user.setTeamID(teamID);
+                        UserOnlineSaver service = new UserOnlineSaver(user);
+                        service.write();
                     }else if(task.getResult().size() != 1){
                         Toast.makeText(InputHeightActivity.this,
                                 "More than one users share the same id", Toast.LENGTH_SHORT).show();

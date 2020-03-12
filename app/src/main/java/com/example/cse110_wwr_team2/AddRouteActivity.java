@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.WalkedRouteAdapter;
@@ -21,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -86,6 +89,7 @@ public class AddRouteActivity extends AppCompatActivity {
                     RouteSaver routeSaver = new RouteSaver(AddRouteActivity.this);
                     Route currRoute = new Route(start.getText().toString(), name.getText().toString(),step_cnt,
                             note.getText().toString(),returnFeatures(), distance, userID);
+                    currRoute.setUserTeamID(CurrentUserInfo.getTeamId(AddRouteActivity.this));
                     routeSaver.addNewRoute(currRoute);
                     Log.d(TAG, "onClick: "+returnFeatures());
                     // if this route is a finished walk
@@ -100,6 +104,7 @@ public class AddRouteActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
+                            public void onCallback(ArrayList<User> users){return;}
                         });
                     }
 

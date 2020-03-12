@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -85,8 +87,8 @@ public class RouteSaver{
     }
 
     public void getTeamRoutes(TeamRouteCallback callback){
-        //String teamID = CurrentUserInfo.getTeamId(context);
-        String teamID = "HCteamID";
+        String teamID = CurrentUserInfo.getTeamId(context);
+        //String teamID = "HCteamID";
         Log.d("teamID", teamID);
         String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
 
@@ -143,6 +145,27 @@ public class RouteSaver{
                 });
     }
 
+    public void UpdateRouteTeamID(String userID, String teamID){
+        db.collection("Routes")
+                .whereEqualTo("userId", userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Route route = document.toObject(Route.class);
+                                db.collection("Routes")
+                                        .document(route.getId())
+                                        .update("userTeamID",teamID);
+                            }
+                        }else{
+                            Log.d(TAG, "UpdateRouteTeamID failed");
+                        }
+                    }
+                });
+    }
+
     /*
      * This function will update the route into the file, by writing a new name
      * into the FireBase
@@ -155,18 +178,18 @@ public class RouteSaver{
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             db.collection("Routes").document(route.getId())
-                                   .update("stepCnt", route.getStepCnt())
-                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task) {
-                                           if(task.isSuccessful()){
-                                               callback.onCallback();
-                                           }
-                                           else{
-                                               Log.d(TAG, "failure to update route's step count");
-                                           }
-                                       }
-                                   });
+                                    .update("stepCnt", route.getStepCnt())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                callback.onCallback();
+                                            }
+                                            else{
+                                                Log.d(TAG, "failure to update route's step count");
+                                            }
+                                        }
+                                    });
                         }else{
                             Log.d(TAG, "failure to update route's distance");
                         }
@@ -234,7 +257,7 @@ public class RouteSaver{
      * accordingly
      */
     public void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
-                                   String note_txt, String features, Context context){
+                            String note_txt, String features, Context context){
 
         String userId = CurrentUserInfo.getId(context);
         Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
