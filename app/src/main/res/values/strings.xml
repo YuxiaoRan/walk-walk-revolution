@@ -37,4 +37,6 @@
     <string name="mock_time">time in millisecond</string>
     <string name="propose_walk">Propose</string>
     <string name="creator">creator</string>
+    <string name="default_notification_channel_id">CH_01</string>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.cse110_wwr_team2.ProposedRoute;
 
+import android.content.Context;
+
 import com.example.cse110_wwr_team2.Team.TeamAdapter;
 import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 
@@ -50,9 +52,9 @@ public class ProposedRouteBuilder {
         return this;
     }
 
-    public ProposedRoute getRoute(){
+    public ProposedRoute getRoute(Context context){
         if(acceptMembers == null){
-            TeamAdapter ta = new TeamAdapter();
+            TeamAdapter ta = new TeamAdapter(context);
             ta.getAllMap(new MapCallBack() {
                 @Override
                 public void onCallback(Map<String, Integer> members) {

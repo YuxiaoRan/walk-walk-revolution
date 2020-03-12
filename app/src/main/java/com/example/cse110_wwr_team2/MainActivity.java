@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -159,9 +160,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToTeam(){
-        Intent intent = new Intent(this, TeamActivity.class);
-        startActivity(intent);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1500);
     }
+
 
     private void goToRoute() {
         Intent intent = new Intent(this, RouteDirectorActivity.class);
