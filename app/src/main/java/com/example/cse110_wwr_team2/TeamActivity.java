@@ -35,13 +35,8 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
-        TextView view = new TextView(getApplicationContext());
-        view.setText("My Team");
-        view.setTextSize(30);
-        view.setGravity(Gravity.CENTER_HORIZONTAL);
-        view.setTypeface(null, Typeface.BOLD);
 
-        listView = findViewById(R.id.teammate_list);
+        //listView = findViewById(R.id.teammate_list);
         //pendingListView = (TextView) findViewById(R.id.teammate_pending_list);
         fabHome = findViewById(R.id.team_back_home);
         fabAdd = fabAdd = findViewById(R.id.add_teammate);
@@ -68,7 +63,7 @@ public class TeamActivity extends AppCompatActivity {
 
             @Override
             public void onCallback(List<String> userNames) {
-                layout.addView(view);
+                //layout.addView(view);
                 /*
                 ArrayAdapter arrayAdapter = new ArrayAdapter(TeamActivity.this, android.R.layout.simple_list_item_1, userNames);
                 listView.setAdapter(arrayAdapter);

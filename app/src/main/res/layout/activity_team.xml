@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-    <RelativeLayout tools:context=".TeamActivity"
+<RelativeLayout tools:context=".TeamActivity"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,12 +12,22 @@
         android:showDividers="middle"
         android:divider="?android:dividerHorizontal"
         android:orientation="vertical"
+        android:layout_marginTop="50dp"
         android:id="@+id/teammate_list2">
     </LinearLayout>
 
-    <ListView android:layout_height="match_parent"
+    <TextView
         android:layout_width="match_parent"
-        android:id="@+id/teammate_list"> </ListView>
+        android:layout_height="wrap_content"
+        android:text="MyTeam"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="30sp"
+
+
+        >
+
+    </TextView>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
