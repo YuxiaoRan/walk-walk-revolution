@@ -31,7 +31,6 @@ public class RouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-
         listView = (ListView)findViewById(R.id.route_list);
         RouteSaver routeSaver = new RouteSaver(this);
         routeSaver.getAllRoutes(new RouteCallback() {
@@ -52,6 +51,9 @@ public class RouteActivity extends AppCompatActivity {
                         args.putSerializable("route_list",(Serializable)routes);
                         intent.putExtra("BUNDLE",args);
                         intent.putExtra("index", position);
+
+                        // This boolean indicates that we are coming from the individual walk
+                        intent.putExtra("team", false);
                         startActivity(intent);
                         finish();
                     }

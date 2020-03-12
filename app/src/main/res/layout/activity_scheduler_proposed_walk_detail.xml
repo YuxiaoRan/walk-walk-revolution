@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".ProposedWalkDetailActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/route_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text = ""
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/route_name"
+                />
+
+            <TextView
+                android:id="@+id/start_point"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text = ""
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_point"
+                />
+
+            <TextView
+                android:id="@+id/data_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text = ""
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Data Time"
+                />
+
+            <TextView
+                android:id="@+id/scheduled"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text = ""
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                />
+
+            <TextView
+                android:id="@+id/scheduler"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text = ""
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Scheduler"
+                />
+
+            <ListView
+                android:id="@+id/accept_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:isScrollContainer="false">
+            </ListView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                tools:context=".AddRouteActivity">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/schedule_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        android:clickable="false"
+                        android:focusable="true"
+                        android:text="back"
+                        app:rippleColor="#1F000000" />
+
+                    <Button
+                        android:id="@+id/back_button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        android:clickable="false"
+                        android:focusable="true"
+                        android:text="START"
+                        app:rippleColor="#1F000000" />
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/mock_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/mock_btn"
+                    app:backgroundTint="#E91E63"
+                    app:rippleColor="#1F000000" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

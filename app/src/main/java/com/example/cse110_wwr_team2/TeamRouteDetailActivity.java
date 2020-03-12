@@ -108,6 +108,13 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         navigate.setOnClickListener((v) -> {
             launchGoogleMaps();
         });
+        Button propose = findViewById(R.id.propose_walk);
+        propose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proposeWalk(currRoute);
+            }
+        });
     }
 
     private void launchGoogleMaps() {
@@ -163,6 +170,15 @@ public class TeamRouteDetailActivity extends AppCompatActivity {
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
         intent.putExtra("ifTeammate", true);
+        startActivity(intent);
+        finish();
+    }
+
+    public void proposeWalk(Route route){
+        Intent intent = new Intent(this, ProposeWalkActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route", route);
+        intent.putExtra("BUNDLE",args);
         startActivity(intent);
         finish();
     }
