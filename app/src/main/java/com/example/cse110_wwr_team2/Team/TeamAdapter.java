@@ -45,7 +45,7 @@ public class TeamAdapter {
 
     public void getTeammatesNames(TeammateCallBack callback, Context context){
 
-//        String teamId = "HCteamID"; //TODO: change to current user's teamID
+//        String teamId = "HCteamID";
         //String teamId = "1";
         String teamId = CurrentUserInfo.getTeamId(context);
         Log.d(TAG, "getTeammatesNames: "+teamId);
@@ -90,7 +90,7 @@ public class TeamAdapter {
 
     public void getTeammates(UserCallBack callback, Context context){
 //        String teamId = "HCteamID"; //TODO: change to current user's teamID
-        String teamId = "1";
+        String teamId = CurrentUserInfo.getTeamId(context);
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)
                 .get()

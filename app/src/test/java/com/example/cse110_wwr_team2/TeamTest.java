@@ -16,10 +16,33 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
+/**
+ * Testing for the TeamAdapter test
+ */
 @RunWith(AndroidJUnit4.class)
 public class TeamTest {
     @Test
     public void testGetTeammateName(){
+        TeamAdapter service = mock(TeamAdapter.class);
+        TeammateCallBack callBack = mock(TeammateCallBack.class);
+        List<String> strings = new ArrayList<>();
+        strings.add("test");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                callBack.onCallback(strings);
+                return null;
+            }
+        }).when(service).getTeammatesNames(any(TeammateCallBack.class));
+
+        service.getTeammatesNames(callBack);
+
+        verify(service, atLeastOnce()).getTeammatesNames(callBack);
+        verify(callBack, atLeastOnce()).onCallback(strings);
+    }
+
+    @Test
+    public void testGetTeammates(){
         TeamAdapter service = mock(TeamAdapter.class);
         TeammateCallBack callBack = mock(TeammateCallBack.class);
         List<String> strings = new ArrayList<>();
