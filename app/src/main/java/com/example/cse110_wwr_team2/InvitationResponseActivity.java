@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference userRef;
     private CollectionReference inviteRef;
+    String DOCUMENT_KEY = "team";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
 
         notificationData = (TextView) findViewById(R.id.invitation_message);
         notificationData.setText(message);
-
+        System.out.println("TEAM ID: " + team_ID);
         accept = findViewById(R.id.btn_accept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,25 @@ public class InvitationResponseActivity extends AppCompatActivity {
 
     }
 
+    private void subscribeToNotificationsTopic() {
+        System.out.println("TEAM ID: " + team_ID);
+        FirebaseMessaging.getInstance().subscribeToTopic(team_ID)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                                System.out.println("Subscribe to notifications failed");
+                            }
+                            Log.d(TAG, msg);
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                    System.out.println("Subscribe to notifications");
+                        }
+
+                );
+    }
+
     public void addUsertoTeam() {
+        subscribeToNotificationsTopic();
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
         userRef.whereEqualTo("id", dest_user_id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
