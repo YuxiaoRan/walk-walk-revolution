@@ -43,10 +43,9 @@ public class TeamAdapter {
         this.context = context;
     }
 
+    // getTeammatesNames2 in testing
     public void getTeammatesNames(TeammateCallBack callback, Context context){
 
-//        String teamId = "HCteamID"; //TODO: change to current user's teamID
-        //String teamId = "1";
         String teamId = CurrentUserInfo.getTeamId(context);
         Log.d(TAG, "getTeammatesNames: "+teamId);
         db.collection("Users")
@@ -72,6 +71,7 @@ public class TeamAdapter {
                 });
     }
 
+    // // getTeammatesNames3 in testing
     public void getTeammatesNames(GetCallBack callback, String userID){
         db.collection("Users").whereEqualTo("id", userID).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -89,8 +89,8 @@ public class TeamAdapter {
     }
 
     public void getTeammates(UserCallBack callback, Context context){
-//        String teamId = "HCteamID"; //TODO: change to current user's teamID
-        String teamId = "1";
+
+        String teamId = CurrentUserInfo.getTeamId(context);
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)
                 .get()
@@ -137,10 +137,11 @@ public class TeamAdapter {
     }
 
 
+    // test for getTeammatesNames1 in testing
     public void getTeammatesNames(TeammateCallBack callback){
 
         String teamId = CurrentUserInfo.getTeamId(context);
-        Log.d(TAG, "ActualID "+teamId);
+        Log.d(TAG, "getTeammatesNames: "+teamId);
 
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)
