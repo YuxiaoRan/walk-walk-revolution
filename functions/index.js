@@ -107,11 +107,21 @@ exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_
 
     //
     return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
+
+        const user_id = result.data().proposerID;
+
+         return admin.firestore().collection("Users").doc(user_id).get().then(device => {
+            const name = device.data().name;
+
+
+        var topic = "team"
         var message = {
             notification:{
-                title: "Update",
-                body: result.updatedUser.concat(" ", result.updatedMessage)
-            }
+                title: "Update From " + name,
+                body: name + " has proposed a walk. Click to see changes.",
+                click_action : "com.example.cse110_wwr_team2.CLICK_PROPOSE"
+            },
+            topic : topic
         };
         return admin.messaging().send(message)
                  .then((response) => {
@@ -122,6 +132,7 @@ exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_
                  .catch((error) => {
                    console.log('Error sending message:', error);
                    return error;
+                 });
                  });
     });
 });

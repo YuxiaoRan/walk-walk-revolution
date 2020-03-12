@@ -21,7 +21,6 @@
             android:name=".ProposeWalkActivity"
             android:label="@string/title_activity_propose_walk"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".InvitationActivity"></activity>
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
         <activity android:name=".TeamActivity" />
@@ -68,6 +67,13 @@
         <activity android:name=".InvitationDeclineActivity">
             <intent-filter>
                 <action android:name="com.example.cse110_wwr_team2.CLICK_DECLINE_NOTIFICATION"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ProposeWalkInvitationResponseActivity">
+            <intent-filter>
+                <action android:name="com.example.cse110_wwr_team2.CLICK_PROPOSE"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
             </intent-filter>
         </activity>
