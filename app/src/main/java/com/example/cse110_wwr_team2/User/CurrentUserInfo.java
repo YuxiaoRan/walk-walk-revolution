@@ -13,8 +13,8 @@ public class CurrentUserInfo {
 
     public static String getTeamId(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-//        return sharedPreferences.getString("teamID", null);
-        return "1";
+        return sharedPreferences.getString("teamID", null);
+//        return "1";
     }
 
 }

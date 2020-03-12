@@ -49,7 +49,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
         name.setText(route.toString());
         date = findViewById(R.id.date);
         time = findViewById(R.id.time);
-        date.setInputType(InputType.TYPE_NULL);
+        dat e.setInputType(InputType.TYPE_NULL);
         time.setInputType(InputType.TYPE_NULL);
 
         date.setOnClickListener(new View.OnClickListener() {
