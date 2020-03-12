@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
@@ -82,7 +83,20 @@ public class RouteDetailsActivity extends AppCompatActivity {
                 launchMock();
             }
         });
+        // navigate to startpoint
+        ImageButton navigate1 = findViewById(R.id.btn_navigate1);
+        navigate1.setOnClickListener((v) -> {
+            launchGoogleMaps();
+        });
     }
+
+    private void launchGoogleMaps() {
+        Intent i = new Intent(this, NavigateActivity.class);
+        i.putExtra("startpoint", currRoute.getStartPoint());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
+
     private void setSelectChips(ChipGroup[] allchips, String features){
         final int[] prefix = {findViewById(R.id.shape1).getId(),
                 findViewById(R.id.flatness1).getId(),
