@@ -103,7 +103,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
     }
 
     private void subscribeToNotificationsTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic(DOCUMENT_KEY)
+        FirebaseMessaging.getInstance().subscribeToTopic(team_ID)
                 .addOnCompleteListener(task -> {
                             String msg = "Subscribed to notifications";
                             if (!task.isSuccessful()) {

@@ -99,8 +99,9 @@ exports.sendNotification2 = functions.firestore.document('Invitations/{invite_id
     });
 });
 
+//**************** Proposed Walks
 
-exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onUpdate((change, context) => {
+exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onCreate((change, context) => {
 
     // Every invite has a unique ID
     const route_id = context.params.route_id;
@@ -109,12 +110,14 @@ exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_
     return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
 
         const user_id = result.data().proposerID;
+        const topic_id = result.data().teamID;
+
 
          return admin.firestore().collection("Users").doc(user_id).get().then(device => {
             const name = device.data().name;
 
 
-        var topic = "team"
+        var topic = topic_id
         var message = {
             notification:{
                 title: "Update From " + name,
