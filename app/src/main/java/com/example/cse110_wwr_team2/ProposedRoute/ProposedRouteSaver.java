@@ -6,9 +6,11 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.cse110_wwr_team2.Team.Team;
 import com.example.cse110_wwr_team2.Team.TeamAdapter;
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.firebasefirestore.GetCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.ProposedRouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
@@ -79,29 +81,6 @@ public class ProposedRouteSaver{
                 });
     }
 
-
-    /*
-     * This function will add a new route into the file, by writing a new name
-     * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
-     * accordingly
-     */
-    public static void UpdateRoute(String route_name, String start_point, int step_cnt, float distance, Context context){
-        SharedPreferences spfs = context.getSharedPreferences("all_routes", MODE_PRIVATE);
-        Set<String> routes_list = spfs.getStringSet("route_list", new TreeSet<String>());
-        SharedPreferences.Editor editor = spfs.edit();
-        try {
-            routes_list.remove(route_name);
-            routes_list.add(route_name);
-            editor.putStringSet("route_list", routes_list);
-            editor.putString(route_name + "_start_point", start_point);
-            editor.putInt(route_name + "_step_cnt", step_cnt);
-            editor.putFloat(route_name+"_distance",distance);
-            editor.apply();
-        }catch (Exception e){
-            System.err.println(e);
-        }
-    }
-
     /*
      * This function will add a new route into the file, by writing a new name
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
@@ -113,16 +92,23 @@ public class ProposedRouteSaver{
         ta.getAllMap(new MapCallBack() {
             @Override
             public void onCallback(Map<String, Integer> members, FirebaseFirestore db) {
-                ProposedRoute route = builder.setId(id)
-                        .setDataTime(dataTime)
-                        .setName(name)
-                        .setProposerID(CurrentUserInfo.getId(context))
-                        .setTeamId(CurrentUserInfo.getTeamId(context))
-                        .setStartPoint(startPoint)
-                        .setAcceptMembers(members)
-                        .setScheduled(0)
-                        .getRoute();
-                db.collection("ProposedRoutes").document(route.getId()).set(route);
+                ta.getTeammatesNames(new GetCallBack() {
+                    @Override
+                    public void onCallBack(String name) {
+                        ProposedRoute route = builder.setId(id)
+                                .setDataTime(dataTime)
+                                .setName(name)
+                                .setProposerID(CurrentUserInfo.getId(context))
+                                .setTeamId(CurrentUserInfo.getTeamId(context))
+                                .setStartPoint(startPoint)
+                                .setAcceptMembers(members)
+                                .setScheduled(0)
+                                .setMessage(name, "proposed a walk")
+                                .getRoute();
+                        db.collection("ProposedRoutes").document(route.getId()).set(route);
+                    }
+                }, CurrentUserInfo.getId(context));
+
             }
         }, CurrentUserInfo.getTeamId(context), CurrentUserInfo.getId(context));
         for(Observer i : observers){
@@ -130,7 +116,38 @@ public class ProposedRouteSaver{
         }
     }
 
-    public void updateProposedRoute(ProposedRoute route){
+    public void updateProposedRoute(ProposedRoute route, String userID){
+        TeamAdapter ta = new TeamAdapter();
+        ta.getTeammatesNames(new GetCallBack() {
+            @Override
+            public void onCallBack(String name) {
+                route.setUpdatedUser(name);
+                String message = "";
+                try {
+                    int decision = route.getAcceptMembers().get(userID);
+                    switch (decision){
+                        case 1:
+                            message = "accept the walk";
+                            break;
+                        case 2:
+                            message = "decline the walk due to bad time";
+                            break;
+                        case 3:
+                            message = "decline the walk due to bad place";
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (NullPointerException e){
+                    System.err.println("wrong id");
+                }
+                route.setUpdatedMessage(message);
+                db.collection("ProposedRoutes").document(route.getId()).set(route);
+                for(Observer i : observers){
+                    i.update();
+                }
+            }
+        }, userID);
         db.collection("ProposedRoutes").document(route.getId()).set(route);
         for(Observer i : observers){
             i.update();

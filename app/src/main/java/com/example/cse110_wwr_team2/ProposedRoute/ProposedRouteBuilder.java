@@ -16,6 +16,9 @@ public class ProposedRouteBuilder {
     String proposerID;
     Map<String, Integer> acceptMembers;
     int scheduled;
+    String user = "";
+    String message = "";
+
     public ProposedRouteBuilder(){}
 
     public ProposedRouteBuilder setId(String id) {
@@ -58,8 +61,18 @@ public class ProposedRouteBuilder {
         return this;
     }
 
+    public ProposedRouteBuilder setMessage(String user, String message){
+        this.user = user;
+        this.message = message;
+        return this;
+    }
+
+
     public ProposedRoute getRoute(){
-        return new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers, scheduled);
+        ProposedRoute a = new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers, scheduled);
+        a.setUpdatedMessage(message);
+        a.setUpdatedUser(user);
+        return a;
     }
 }
 

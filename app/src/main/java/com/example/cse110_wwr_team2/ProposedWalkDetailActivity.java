@@ -134,7 +134,7 @@ public class ProposedWalkDetailActivity extends AppCompatActivity {
                     status.setText("Withdrawn");
                     b2.setVisibility(View.GONE);
                     positive.setVisibility(View.GONE);
-                    saver.updateProposedRoute(route);
+                    saver.updateProposedRoute(route, CurrentUserInfo.getId(ProposedWalkDetailActivity.this));
                 }
             });
             positive.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +146,7 @@ public class ProposedWalkDetailActivity extends AppCompatActivity {
                     positive.setBackgroundColor(Color.rgb(255, 255, 255));
                     b2.setClickable(true);
                     b2.setTextColor(Color.rgb(255, 0, 0));
-                    saver.updateProposedRoute(route);
+                    saver.updateProposedRoute(route, CurrentUserInfo.getId(ProposedWalkDetailActivity.this));
                 }
             });
             if (route.getScheduled() == 2) {
@@ -195,7 +195,7 @@ public class ProposedWalkDetailActivity extends AppCompatActivity {
                     positive.setBackgroundColor(Color.rgb(255, 255, 255));
                     b2.setClickable(true);
                     b2.setBackgroundColor(Color.rgb(211, 211, 211));
-                    saver.updateProposedRoute(route);
+                    saver.updateProposedRoute(route, CurrentUserInfo.getId(ProposedWalkDetailActivity.this));
                 }
             });
             b2.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +216,7 @@ public class ProposedWalkDetailActivity extends AppCompatActivity {
                             Map<String, Integer> map = route.getAcceptMembers();
                             map.replace(CurrentUserInfo.getId(ProposedWalkDetailActivity.this), which+2);
                             route.setAcceptMembers(map);
-                            saver.updateProposedRoute(route);
+                            saver.updateProposedRoute(route, CurrentUserInfo.getId(ProposedWalkDetailActivity.this));
                         }
                     });
                     builder.show();

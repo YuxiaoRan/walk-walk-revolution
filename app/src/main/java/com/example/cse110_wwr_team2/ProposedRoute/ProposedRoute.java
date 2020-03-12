@@ -14,6 +14,8 @@ public class ProposedRoute implements Serializable {
     String proposerID;
     Map<String, Integer> acceptMembers;
     int scheduled;
+    String updatedUser;
+    String updatedMessage;
 
     public ProposedRoute(String id, String teamID, String startPoint, String name, String dataTime, String proposerID, Map<String, Integer> map, int scheduled){
         this.id = id;
@@ -24,10 +26,12 @@ public class ProposedRoute implements Serializable {
         this.proposerID = proposerID;
         this.acceptMembers = map;
         this.scheduled = scheduled;
+        this.updatedMessage = "";
+        this.updatedUser = "";
     }
 
     public ProposedRoute(){}
-
+    
     public int getScheduled() {
         return scheduled;
     }
@@ -71,5 +75,13 @@ public class ProposedRoute implements Serializable {
 
     public void setScheduled(int scheduled) {
         this.scheduled = scheduled;
+    }
+
+    public void setUpdatedUser(String updatedUser) {
+        this.updatedUser = updatedUser;
+    }
+
+    public void setUpdatedMessage(String updatedMessage) {
+        this.updatedMessage = updatedMessage;
     }
 }

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.cse110_wwr_team2.User.CurrentUserInfo;
 import com.example.cse110_wwr_team2.User.User;
+import com.example.cse110_wwr_team2.firebasefirestore.GetCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.MapCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
 import com.example.cse110_wwr_team2.firebasefirestore.TeammateCallBack;
@@ -55,6 +56,22 @@ public class TeamAdapter {
                             callback.onCallback(teammates);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void getTeammatesNames(GetCallBack callback, String userID){
+        db.collection("Users").whereEqualTo("id", userID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            String username = "";
+                            for (QueryDocumentSnapshot document: task.getResult()){
+                                username = document.toObject(User.class).getName();
+                            }
+                            callback.onCallBack(username);
                         }
                     }
                 });
