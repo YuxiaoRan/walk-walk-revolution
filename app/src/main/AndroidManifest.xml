@@ -12,6 +12,12 @@
         android:supportsRtl="true"
 
         android:theme="@style/AppTheme">
+        <activity android:name=".ProposedWalkDetailActivity" />
+        <activity android:name=".AllProposedActivity" />
+        <activity
+            android:name=".ProposeWalkActivity"
+            android:label="@string/title_activity_propose_walk"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InvitationActivity"></activity>
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />

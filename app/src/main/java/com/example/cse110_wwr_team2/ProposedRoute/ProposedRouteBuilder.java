@@ -15,6 +15,10 @@ public class ProposedRouteBuilder {
     String dataTime;
     String proposerID;
     Map<String, Integer> acceptMembers;
+    int scheduled;
+    String user = "";
+    String message = "";
+
     public ProposedRouteBuilder(){}
 
     public ProposedRouteBuilder setId(String id) {
@@ -52,17 +56,24 @@ public class ProposedRouteBuilder {
         return this;
     }
 
-    public ProposedRoute getRoute(Context context){
-        if(acceptMembers == null){
-            TeamAdapter ta = new TeamAdapter(context);
-            ta.getAllMap(new MapCallBack() {
-                @Override
-                public void onCallback(Map<String, Integer> members) {
-                    acceptMembers = members;
-                }
-            }, teamID);
-        }
-        return new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers);
+
+    public ProposedRouteBuilder setScheduled(int scheduled){
+        this.scheduled = scheduled;
+        return this;
+    }
+
+    public ProposedRouteBuilder setMessage(String user, String message){
+        this.user = user;
+        this.message = message;
+        return this;
+    }
+
+
+    public ProposedRoute getRoute(){
+        ProposedRoute a = new ProposedRoute(id, teamID, startPoint, name, dataTime, proposerID, acceptMembers, scheduled);
+        a.setUpdatedMessage(message);
+        a.setUpdatedUser(user);
+        return a;
     }
 }
 

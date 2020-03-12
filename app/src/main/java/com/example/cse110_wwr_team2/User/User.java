@@ -1,6 +1,8 @@
 package com.example.cse110_wwr_team2.User;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id;
     private String device_ID;
     private String gmail;

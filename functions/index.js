@@ -98,6 +98,33 @@ exports.sendNotification2 = functions.firestore.document('Invitations/{invite_id
     });
 });
 
+
+exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onUpdate((change, context) => {
+
+    // Every invite has a unique ID
+    const route_id = context.params.route_id;
+
+    //
+    return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
+        var message = {
+            notification:{
+                title: "Update"
+                body: result.updatedUser.concat(" ", result.updatedMessage)
+            }
+        };
+        return admin.messaging().send(message)
+                 .then((response) => {
+                   // Response is a message ID string.
+                   console.log('Successfully sent message:', response);
+                   return response;
+                 })
+                 .catch((error) => {
+                   console.log('Error sending message:', error);
+                   return error;
+                 });
+    });
+});
+
 //************** Currently have no way of implementing this.
 
 // Notification everytime a invitation is declined, happens when Invitation is deleted

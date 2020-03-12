@@ -23,6 +23,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
     private EditText note;
     private int index;
     private String curr_note;
+    private Boolean team;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("BUNDLE");
         routes = (ArrayList<Route>) args.getSerializable("route_list");
         index = intent.getIntExtra("index",-1);
-
+        team = intent.getBooleanExtra("team", false);
         currRoute = routes.get(index);
         ChipGroup shapeTags = findViewById(R.id.shape_tags);
         ChipGroup flatnessTags = findViewById(R.id.flatness_tags);
@@ -69,10 +70,17 @@ public class RouteDetailsActivity extends AppCompatActivity {
             }
         });
         Button start = findViewById(R.id.start_walk);
+        if(team){
+            start.setText("Propose Walk");
+        } else {start.setText("Start");}
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchWalk(currRoute.getName());
+                if (!team) {
+                    launchWalk(currRoute.getName());
+                } else {
+                    proposeWalk(currRoute);
+                }
             }
         });
         Button mock = findViewById(R.id.mock_route);
@@ -103,8 +111,13 @@ public class RouteDetailsActivity extends AppCompatActivity {
             editor.putString(currRoute.getName()+"_note", note.getText().toString());
             editor.commit();
         }
-        Intent intent = new Intent(this, RouteActivity.class);
-        startActivity(intent);
+        if (!team) {
+            Intent intent = new Intent(this, RouteActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, TeamRouteActivity.class);
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -126,6 +139,15 @@ public class RouteDetailsActivity extends AppCompatActivity {
         args.putSerializable("route_list",(Serializable)routes);
         intent.putExtra("BUNDLE",args);
         intent.putExtra("index", index);
+        startActivity(intent);
+        finish();
+    }
+
+    public void proposeWalk(Route route){
+        Intent intent = new Intent(this, ProposeWalkActivity.class);
+        Bundle args = new Bundle();
+        args.putSerializable("route", route);
+        intent.putExtra("BUNDLE",args);
         startActivity(intent);
         finish();
     }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.User.UserOnlineSaver;
 import com.example.cse110_wwr_team2.firebasefirestore.UserCallBack;
 import com.example.cse110_wwr_team2.firebasefirestore.WalkedRouteAdapter;
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -100,6 +102,7 @@ public class AddRouteActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
+                            public void onCallback(ArrayList<User> users){return;}
                         });
                     }
 
