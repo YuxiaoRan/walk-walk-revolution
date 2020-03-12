@@ -135,10 +135,12 @@ public class TeamAdapter {
                     }
                 });
     }
+
+
     public void getTeammatesNames(TeammateCallBack callback){
 
         String teamId = CurrentUserInfo.getTeamId(context);
-        Log.d(TAG, "getTeammatesNames: "+teamId);
+        Log.d(TAG, "ActualID "+teamId);
 
         db.collection("Users")
                 .whereEqualTo("teamID", teamId)

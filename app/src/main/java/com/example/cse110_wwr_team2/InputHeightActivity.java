@@ -107,7 +107,8 @@ public class InputHeightActivity extends AppCompatActivity {
                         String teamID = UUIDGenerator.uuidHexToUuid64(UUID.randomUUID().toString());
                         getSharedPreferences("user", MODE_PRIVATE)
                                 .edit().
-                                putString("teamID", teamID);
+                                putString("teamID", teamID)
+                        .apply();
                         User user = new User(user_id, gmail, name, height, deviceID);
                         user.setTeamID(teamID);
                         UserOnlineSaver service = new UserOnlineSaver(user);

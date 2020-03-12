@@ -107,7 +107,7 @@ public class TeamActivity extends AppCompatActivity {
 
 
             }
-        }, TeamActivity.this);
+        });
 
 
     }

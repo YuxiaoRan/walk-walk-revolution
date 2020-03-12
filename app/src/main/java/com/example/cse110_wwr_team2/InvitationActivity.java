@@ -37,6 +37,7 @@ public class InvitationActivity extends AppCompatActivity {
     private String fromName;
     private String fromDeviceID;
     private String toUserID;
+    private String teamIDToAddTo;
 
     private CollectionReference usersRef;
     private FirebaseFirestore db;
@@ -55,6 +56,7 @@ public class InvitationActivity extends AppCompatActivity {
         myGmail = spfs.getString("gmail", null);
         fromName = spfs.getString("name", null);
         fromDeviceID = spfs.getString("device_ID", null);
+        teamIDToAddTo = spfs.getString("teamID", null);
         //toUserID = spfs.getString("id", null);
 
         // set initial visibility
@@ -97,7 +99,7 @@ public class InvitationActivity extends AppCompatActivity {
                                 return;
                             }
                             else {
-                                sendInvitation(myGmail, emailAddress, toName, fromName, fromDeviceID, toUserID);
+                                sendInvitation(myGmail, emailAddress, toName, fromName, fromDeviceID, toUserID, teamIDToAddTo);
                                 return;
                             }
                         }
@@ -122,12 +124,12 @@ public class InvitationActivity extends AppCompatActivity {
     }
 
     // create and send invitation
-    private void sendInvitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID, String toUserID) {
+    private void sendInvitation(String fromGmail, String toGmail, String toName, String fromName, String deviceID, String toUserID, String teamID) {
         if(fromGmail == null || fromGmail.equals("") || toGmail == null || toGmail.equals("")) {
             Toast.makeText(InvitationActivity.this, "error sending invitation", Toast.LENGTH_SHORT);
             return;
         }
-        Invitation invitation = new Invitation(fromGmail, toGmail, toName, fromName, deviceID, toUserID);
+        Invitation invitation = new Invitation(fromGmail, toGmail, toName, fromName, deviceID, toUserID, teamID);
         InvitationOnlineSaver ios = new InvitationOnlineSaver(invitation);
         ios.write();
         Toast.makeText(getApplicationContext(), "invitation sent to " + toName, Toast.LENGTH_SHORT).show();

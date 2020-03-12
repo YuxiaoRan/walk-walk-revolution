@@ -39,6 +39,7 @@ public class InvitationOnlineSaver {
         docData.put("from", invitation.getFromGmail());
         docData.put("to", invitation.getToGmail());
         docData.put("status", invitation.getStatus());
+        docData.put("TeamIDtoAddto", invitation.getTeamID());
 
         invRef.add(docData);
     }

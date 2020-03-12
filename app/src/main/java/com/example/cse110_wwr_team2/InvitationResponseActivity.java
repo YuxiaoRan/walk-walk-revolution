@@ -43,6 +43,8 @@ public class InvitationResponseActivity extends AppCompatActivity {
     private String dest_user_id;
     private String invite_id;
 
+    private String team_ID;
+
     private FirebaseFirestore db;
     private CollectionReference userRef;
     private CollectionReference inviteRef;
@@ -57,6 +59,8 @@ public class InvitationResponseActivity extends AppCompatActivity {
         String message = getIntent().getStringExtra("message");
         String dest_user_id = getIntent().getStringExtra("dest_user_id");
         String invite_id = getIntent().getStringExtra("invite_id");
+        String team_ID = getIntent().getStringExtra("teamID");
+        this.team_ID = team_ID;
         this.invite_id = invite_id;
         this.dest_user_id = dest_user_id;
 
@@ -105,7 +109,7 @@ public class InvitationResponseActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     for(QueryDocumentSnapshot document : task.getResult()) {
                         Map<Object, String> map = new HashMap<>();
-                        map.put("teamID", CurrentUserInfo.getTeamId(InvitationResponseActivity.this));
+                        map.put("teamID", team_ID);
                         Log.d(TAG, "onComplete: teamID"+map.get("teamID"));
                         userRef.document(document.getId()).set(map, SetOptions.merge());
                     }

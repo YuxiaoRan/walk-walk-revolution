@@ -37,6 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String message = remoteMessage.getData().get("message");
         String dest_user_id = remoteMessage.getData().get("dest_user_id");
         String invite_id = remoteMessage.getData().get("invite_id");
+        String team_ID = remoteMessage.getData().get("team_ID");
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -52,6 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         resultIntent.putExtra("message", message);
         resultIntent.putExtra("dest_user_id", dest_user_id);
         resultIntent.putExtra("invite_id", invite_id);
+        resultIntent.putExtra("teamID", team_ID);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(this, 0, resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);

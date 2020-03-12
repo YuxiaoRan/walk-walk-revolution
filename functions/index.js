@@ -15,19 +15,19 @@ exports.sendNotification = functions.firestore.document('Invitations/{invite_id}
         const from = result.data().NameFrom;
         const to = result.data().NameTo;
         const to_user_id = result.data().ToUserID;
+        const id_to_add_user_to = result.data().TeamIDtoAddto;
 
         return Promise.all([from, to, to_user_id]).then(res => {
             const from_name = from;
             const to_name = to;
-            global_to = to;
             const dest_user_id = to_user_id;
+            const team_ID = id_to_add_user_to;
 
             // Store the ID for the user receiveing the notificaition
             // Query the user name and store their user ID into the invition itseld
             // Now query here for the specific user ID and get the toekn ID
              return admin.firestore().collection("Users").doc(dest_user_id).get().then(device => {
                 const token_id = device.data().deviceID;
-                  global_device = token_id;
                  //console.log("FROM: " + from_name + " TO: " + to_name);
                  console.log("TO USER ID: " + dest_user_id);
 
@@ -42,7 +42,8 @@ exports.sendNotification = functions.firestore.document('Invitations/{invite_id}
                                  data: {
                                     message : from_name + " has invited you to join their team.",
                                     dest_user_id : dest_user_id,
-                                    invite_id : to_name
+                                    invite_id : to_name,
+                                    team_ID : team_ID
                                  }
 
 
@@ -108,7 +109,7 @@ exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_
     return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
         var message = {
             notification:{
-                title: "Update"
+                title: "Update",
                 body: result.updatedUser.concat(" ", result.updatedMessage)
             }
         };
