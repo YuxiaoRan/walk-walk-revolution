@@ -25,6 +25,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -138,6 +140,27 @@ public class RouteSaver{
                             }
                         }else{
                             Log.d(TAG, "fail to find the route with id "+id);
+                        }
+                    }
+                });
+    }
+
+    public void UpdateRouteTeamID(String userID, String teamID){
+        db.collection("Routes")
+                .whereEqualTo("userId", userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Route route = document.toObject(Route.class);
+                                db.collection("Routes")
+                                        .document(route.getId())
+                                        .update("userTeamID",teamID);
+                            }
+                        }else{
+                            Log.d(TAG, "UpdateRouteTeamID failed");
                         }
                     }
                 });
