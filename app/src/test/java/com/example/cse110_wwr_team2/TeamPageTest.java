@@ -44,6 +44,11 @@ public class TeamPageTest {
         intent.putExtra("walkKey", TEST_SERVICE);
     }
 
+    @Test
+    public void testTeamPage() {
+        // TODO
+    }
+
 
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
