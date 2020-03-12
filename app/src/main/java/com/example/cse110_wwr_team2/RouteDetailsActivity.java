@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.cse110_wwr_team2.Route.Route;
@@ -83,8 +84,8 @@ public class RouteDetailsActivity extends AppCompatActivity {
             }
         });
         // navigate to startpoint
-        Button navigate = findViewById(R.id.btn_navigate);
-        navigate.setOnClickListener((v) -> {
+        ImageButton navigate1 = findViewById(R.id.btn_navigate1);
+        navigate1.setOnClickListener((v) -> {
             launchGoogleMaps();
         });
     }

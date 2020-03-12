@@ -32,7 +32,7 @@ public class NavigateActivity extends AppCompatActivity {
         if(query.length() > 0) {
             query = query.substring(0, query.length() - 1);
         }
-        String base = "http://maps.google.com/maps/search/?api=1&query=";
+        String base = "http://www.google.com/maps/search/?api=1&query=";
         return base + query;
     }
 
