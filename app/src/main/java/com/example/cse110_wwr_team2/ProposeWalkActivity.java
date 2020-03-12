@@ -49,7 +49,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
         name.setText(route.toString());
         date = findViewById(R.id.date);
         time = findViewById(R.id.time);
-        dat e.setInputType(InputType.TYPE_NULL);
+        date.setInputType(InputType.TYPE_NULL);
         time.setInputType(InputType.TYPE_NULL);
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
                             "Please input date and time", Toast.LENGTH_SHORT).show();
                 } else {
                     saver = new ProposedRouteSaver(ProposeWalkActivity.this);
-                    saver.proposeNewRoute(route.getId(), route.getStartPoint(), route.getName(), "", ProposeWalkActivity.this);
+                    saver.proposeNewRoute(route.getId(), route.getStartPoint(), route.getName(), date.getText().toString(), ProposeWalkActivity.this);
                     finish();
                 }
             }
