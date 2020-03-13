@@ -16,12 +16,18 @@
         <activity android:name=".InvitationActivity" />
         <activity android:name=".TeamRouteDetailActivity" />
         <activity android:name=".ProposedWalkDetailActivity" />
-        <activity android:name=".AllProposedActivity" />
+        <activity android:name=".AllProposedActivity">
+            <intent-filter>
+                <action android:name="com.example.cse110_wwr_team2.CLICK_PROPOSE_NOTIFICATION"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ProposeWalkActivity"
             android:label="@string/title_activity_propose_walk"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".InvitationActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".TeamRouteActivity" />
         <activity android:name=".RouteDirectorActivity" />
         <activity android:name=".TeamActivity" />
@@ -50,6 +56,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id2"
+            android:value="@string/default_notification_channel_id2" />
 
         <activity android:name=".InvitationResponseActivity">
             <intent-filter>

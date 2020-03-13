@@ -36,6 +36,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         String click_action = remoteMessage.getNotification().getClickAction();
+        // Handle the proposed walk changes
+        if( click_action == null) {
+            click_action = "com.example.cse110_wwr_team2.CLICK_PROPOSE_NOTIFICATION";
+        }
         String message = remoteMessage.getData().get("message");
         String dest_user_id = remoteMessage.getData().get("dest_user_id");
         String invite_id = remoteMessage.getData().get("invite_id");
