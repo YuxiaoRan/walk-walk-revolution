@@ -47,5 +47,6 @@
     <string name="propose_walk">Propose</string>
     <string name="creator">creator</string>
     <string name="default_notification_channel_id">CH_01</string>
+    <string name="default_notification_channel_id2">CH_02</string>
 
 </resources>
