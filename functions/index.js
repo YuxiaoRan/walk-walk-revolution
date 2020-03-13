@@ -99,8 +99,8 @@ exports.sendNotification2 = functions.firestore.document('Invitations/{invite_id
     });
 });
 
-
-exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onWrite((change, context) => {
+// Create proposed walks
+exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_id}').onCreate((change, context) => {
 
     // Every invite has a unique ID
     const route_id = context.params.route_id;
@@ -109,27 +109,114 @@ exports.sendNotification4 = functions.firestore.document('ProposedRoutes/{route_
     return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
         const team_id = result.data().teamID;
         const name = result.data().name;
+        const start = result.data().startPoint;
+        const date = result.data().dataTime;
 
         const topic = team_id;
         console.log("TO TEAM ID: " + topic);
 
-        var message = {
+        const payload = {
             notification:{
                 title: "Update on Proposed Walks",
-                body: name + " has created a proposed walk."
+                body: name + " proposed a walk on: " + date + " at " + start + ".",
+            },
+            data : {
+                click_action : "com.example.cse110_wwr_team2.CLICK_PROPOSE_NOTIFICATION"
             },
             topic : topic
 
         };
-        return admin.messaging().send(message)
-                 .then((response) => {
+        return admin.messaging().send(payload).then((response) => {
                    // Response is a message ID string.
                    return console.log('Successfully sent message');
 
                  })
                  .catch((error) => {
-                   return console.log('Error sending message');
+                   return console.log('Error sending message', error);
 
+                 });
+    });
+});
+
+
+// Schedule/Withdraw/Update Walk.. ASSUME USER WILL NOT PROPOSE THE SAME WALK TWICE
+exports.sendNotification5 = functions.firestore.document('ProposedRoutes/{route_id}').onUpdate((change, context) => {
+
+
+    const route_id = context.params.route_id;
+
+    //
+    return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
+        const team_id = result.data().teamID;
+        const name = result.data().name;
+        const start = result.data().startPoint;
+        const date = result.data().dataTime;
+
+        const topic = team_id;
+        console.log("TO TEAM ID: " + topic);
+
+        const payload = {
+            notification:{
+                title: "Proposed Walks UPDATE",
+                body: " An UPDATE POSTED for proposed walk on: " + date + " at " + start + ".",
+            },
+            data : {
+                click_action : "com.example.cse110_wwr_team2.CLICK_PROPOSE_NOTIFICATION"
+            },
+            topic : topic
+
+        };
+        return admin.messaging().send(payload).then((response) => {
+                   // Response is a message ID string.
+                   return console.log('Successfully sent message');
+
+                 })
+                 .catch((error) => {
+                   return console.log('Error sending message', error);
+
+                 });
+    });
+});
+
+// Team member updates
+exports.sendNotification6 = functions.firestore.document('ProposedRoutes/{route_id}/acceptMembers/{mem_ID}').onUpdate((change, context) => {
+
+    // Every invite has a unique ID
+    const route_id = context.params.route_id;
+    const mem_id = context.params.mem_ID;
+
+    //
+    return admin.firestore().collection("ProposedRoutes").doc(route_id).get().then(result => {
+        const team_id = result.data().teamID;
+        const name = result.data().name;
+        const start = result.data().startPoint;
+        const date = result.data().dataTime;
+        const id = mem_id;
+
+        const topic = team_id;
+        console.log("TO TEAM ID: " + topic);
+
+         return admin.firestore().collection("Users").doc(id).get().then(result => {
+            const name = result.data().name;
+
+        const payload = {
+            notification:{
+                title: "Update on Proposed Walk from: " + name,
+                body: name + "has changed their status for walk on: " + date + ".",
+            },
+            topic : topic
+
+        };
+
+        return admin.messaging().send(payload).then((response) => {
+                   // Response is a message ID string.
+                   return console.log('Successfully sent message');
+
+                 })
+                 .catch((error) => {
+                   return console.log('Error sending message', error);
+
+                 });
                  });
     });
 });
