@@ -1,8 +1,10 @@
 package com.example.cse110_wwr_team2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,8 +15,14 @@ import android.widget.ToggleButton;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.RouteCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +41,30 @@ public class RouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_route);
         listView = (ListView)findViewById(R.id.route_list);
         RouteSaver routeSaver = new RouteSaver(this);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users").document(CurrentUserInfo.getId(this))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            User user = task.getResult().toObject(User.class);
+                            String teamID = (String)task.getResult().get("teamID");
+
+                            SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("teamID",teamID);
+                            editor.apply();
+
+                            //callBack.onCallback(user.getTeamID());
+                        }else{
+                            Log.d("", "Failure at attaining the team id");
+                        }
+                    }
+                });
+
+
         routeSaver.getAllRoutes(new RouteCallback() {
             @Override
             public void onCallback(List<Route> routes) {

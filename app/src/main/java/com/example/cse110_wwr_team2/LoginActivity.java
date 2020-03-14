@@ -35,6 +35,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+/**
+ * new user login
+ * assign randomly generated userID, teamID ect
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 0;

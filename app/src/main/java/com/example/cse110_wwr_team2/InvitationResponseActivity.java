@@ -32,6 +32,9 @@ import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+/**
+ * take charge if invitation response
+ */
 public class InvitationResponseActivity extends AppCompatActivity {
 
     private TextView notificationData;

@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The detail of user's responses due to a specific proposed walk
+ */
 public class ProposedWalkDetailActivity extends AppCompatActivity {
     ListView listView;
     ProposedRoute route;
