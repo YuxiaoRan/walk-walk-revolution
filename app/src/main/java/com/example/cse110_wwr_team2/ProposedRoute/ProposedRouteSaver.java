@@ -86,7 +86,7 @@ public class ProposedRouteSaver{
      * into the Set<String> and update "{route_name}_start_point" and "{route_name}_step_cnt"
      * accordingly
      */
-    public void proposeNewRoute(String id, String startPoint, String name, String dataTime, Context context){
+    public void proposeNewRoute(String id, String startPoint, String routename, String dataTime, Context context){
         ProposedRouteBuilder builder = new ProposedRouteBuilder();
         TeamAdapter ta = new TeamAdapter();
         ta.getAllMap(new MapCallBack() {
@@ -97,7 +97,7 @@ public class ProposedRouteSaver{
                     public void onCallBack(String name) {
                         ProposedRoute route = builder.setId(id)
                                 .setDataTime(dataTime)
-                                .setName(name)
+                                .setName(routename)
                                 .setProposerID(CurrentUserInfo.getId(context))
                                 .setTeamId(CurrentUserInfo.getTeamId(context))
                                 .setStartPoint(startPoint)

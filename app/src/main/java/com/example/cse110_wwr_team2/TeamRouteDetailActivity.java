@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * teammate's route detail, including a propose button
+ */
 public class TeamRouteDetailActivity extends AppCompatActivity {
 
     private Route currRoute;

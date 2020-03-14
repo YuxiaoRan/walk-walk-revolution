@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * activity to propose a new route
+ */
 public class ProposeWalkActivity extends AppCompatActivity {
     private Route route;
     private EditText date;

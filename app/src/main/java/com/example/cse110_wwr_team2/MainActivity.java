@@ -23,6 +23,9 @@ import com.example.cse110_wwr_team2.fitness.MainFitAdapter;
 import com.example.cse110_wwr_team2.fitness.WalkFitAdapter;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+/**
+ * home page
+ */
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
     public String mainKey = "main";

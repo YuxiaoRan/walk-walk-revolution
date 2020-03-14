@@ -25,6 +25,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The activity taking charge of the all proposed walk
+ */
 public class AllProposedActivity extends AppCompatActivity {
     ListView listView;
 
