@@ -25,6 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * activity triggered when sending invitation
@@ -137,6 +140,7 @@ public class InvitationActivity extends AppCompatActivity {
         ios.write();
         Toast.makeText(getApplicationContext(), "invitation sent to " + toName, Toast.LENGTH_SHORT).show();
         username.setVisibility(View.GONE);
+        subscribeToNotificationsTopic();
 
         Toast.makeText(InvitationActivity.this, "invitation sent", Toast.LENGTH_SHORT);
 
@@ -156,5 +160,21 @@ public class InvitationActivity extends AppCompatActivity {
                 finish();
             }
         }, 1500);
+    }
+
+    private void subscribeToNotificationsTopic() {
+        System.out.println("TEAM ID: " + teamIDToAddTo);
+        FirebaseMessaging.getInstance().subscribeToTopic(teamIDToAddTo)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to notifications failed";
+                                System.out.println("Subscribe to notifications failed");
+                            }
+                            Log.d(TAG, msg);
+                            System.out.println("Subscribe to notifications");
+                        }
+
+                );
     }
 }
