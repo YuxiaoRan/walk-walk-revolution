@@ -112,7 +112,7 @@ public class ProposedRouteSaver{
                             .setProposerID(CurrentUserInfo.getId(context))
                             .setTeamId(CurrentUserInfo.getTeamId(context))
                             .setStartPoint(startPoint)
-                            .getRoute();
+                            .getRoute(context);
         db.collection("Routes").document(route.getId()).set(route);
     }
 

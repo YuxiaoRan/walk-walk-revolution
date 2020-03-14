@@ -85,8 +85,8 @@ public class RouteSaver{
     }
 
     public void getTeamRoutes(TeamRouteCallback callback){
-        //String teamID = CurrentUserInfo.getTeamId(context);
-        String teamID = "HCteamID";
+        String teamID = CurrentUserInfo.getTeamId(context);
+        //String teamID = "HCteamID";
         Log.d("teamID", teamID);
         String userID = context.getSharedPreferences("user", MODE_PRIVATE).getString("id", null);
 
@@ -155,18 +155,18 @@ public class RouteSaver{
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             db.collection("Routes").document(route.getId())
-                                   .update("stepCnt", route.getStepCnt())
-                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task) {
-                                           if(task.isSuccessful()){
-                                               callback.onCallback();
-                                           }
-                                           else{
-                                               Log.d(TAG, "failure to update route's step count");
-                                           }
-                                       }
-                                   });
+                                    .update("stepCnt", route.getStepCnt())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                callback.onCallback();
+                                            }
+                                            else{
+                                                Log.d(TAG, "failure to update route's step count");
+                                            }
+                                        }
+                                    });
                         }else{
                             Log.d(TAG, "failure to update route's distance");
                         }
@@ -234,7 +234,7 @@ public class RouteSaver{
      * accordingly
      */
     public void addNewRoute(String route_name, String start_point, int step_cnt, float distance,
-                                   String note_txt, String features, Context context){
+                            String note_txt, String features, Context context){
 
         String userId = CurrentUserInfo.getId(context);
         Route route = new Route(start_point,route_name,step_cnt,note_txt,features,distance,userId);
