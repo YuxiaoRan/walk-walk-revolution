@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The page with all the teammate's routes displayed
+ * The page with all the teamdddddddddddddmate's routes displayed
+ *
+ *
+ *
+ *
+ *
+ *
  */
 public class TeamRouteActivity extends AppCompatActivity {
     ListView listView;
