@@ -26,6 +26,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * activity triggered when sending invitation
+ */
 public class InvitationActivity extends AppCompatActivity {
 
     private ImageButton btnSearch;

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * personal route or teamroute
+ */
 public class RouteDirectorActivity extends AppCompatActivity {
 
     @Override

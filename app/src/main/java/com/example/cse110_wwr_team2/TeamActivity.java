@@ -23,6 +23,9 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+/**
+ * display teammates name, greyed out if not accpeted yet
+ */
 public class TeamActivity extends AppCompatActivity {
 
     ListView listView;

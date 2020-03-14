@@ -7,6 +7,9 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * the activity launched when a user accept an invitation
+ */
 public class InvitationAcceptActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

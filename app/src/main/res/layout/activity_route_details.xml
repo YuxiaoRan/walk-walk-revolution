@@ -261,6 +261,7 @@
                     android:text="difficult"/>
 
             </com.google.android.material.chip.ChipGroup>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -277,56 +278,49 @@
                     android:orientation="horizontal">
 
 
-                <Button
-                    android:id="@+id/done_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="16dp"
-                    android:clickable="false"
-                    android:focusable="true"
-                    android:text="back"
-                    app:backgroundTint="#E91E63"
-                    app:rippleColor="#1F000000" />
+                    <Button
+                        android:id="@+id/done_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        android:clickable="false"
+                        android:focusable="true"
+                        android:text="back"
+                        app:backgroundTint="#E91E63"
+                        app:rippleColor="#1F000000" />
 
 
-                <Button
-                    android:id="@+id/start_walk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="16dp"
-                    android:clickable="false"
-                    android:focusable="true"
-                    android:text="START"
-                    app:backgroundTint="#E91E63"
-                    app:rippleColor="#1F000000" />
+                    <Button
+                        android:id="@+id/start_walk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="16dp"
+                        android:clickable="false"
+                        android:focusable="true"
+                        android:text="START"
+                        app:backgroundTint="#E91E63"
+                        app:rippleColor="#1F000000" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
-                <Button
-                    android:id="@+id/mock_route"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="0dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="@string/mock_btn"
-                    app:backgroundTint="#E91E63"
-                    app:rippleColor="#1F000000" />
-                </LinearLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/mock_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_gravity="center_horizontal"
+                android:clickable="false"
+                android:focusable="true"
+                android:text="MOCK"
+                app:backgroundTint="#E91E63"
+                app:rippleColor="#1F000000" />
         </LinearLayout>
 
 
