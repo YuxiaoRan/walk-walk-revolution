@@ -1,8 +1,10 @@
 package com.example.cse110_wwr_team2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,12 +14,20 @@ import android.widget.ListView;
 
 import com.example.cse110_wwr_team2.Route.Route;
 import com.example.cse110_wwr_team2.Route.RouteSaver;
+import com.example.cse110_wwr_team2.User.CurrentUserInfo;
+import com.example.cse110_wwr_team2.User.User;
 import com.example.cse110_wwr_team2.firebasefirestore.TeamRouteCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * The page with all the teammate's routes displayed
@@ -33,6 +43,28 @@ public class TeamRouteActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.team_route_list);
         RouteSaver saver = new RouteSaver(this);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Users").document(CurrentUserInfo.getId(this))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            User user = task.getResult().toObject(User.class);
+                            String teamID = (String)task.getResult().get("teamID");
+
+                            SharedPreferences sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("teamID",teamID);
+                            editor.apply();
+
+                            //callBack.onCallback(user.getTeamID());
+                        }else{
+                            Log.d(TAG, "Failure at attaining the team id");
+                        }
+                    }
+                });
+
         saver.getTeamRoutes(new TeamRouteCallback() {
             @Override
             public void onCallback(List<Route> routes, List<String> routes_info) {
